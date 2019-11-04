@@ -1,0 +1,9 @@
+---
+
+- name: 'Patching'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop: "{{ query('items', unattended_upgrade_server) }}"

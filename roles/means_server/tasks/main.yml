@@ -1,0 +1,19 @@
+---
+
+# Patching
+- name: 'Patching'
+  include_tasks: patching.yml
+  tags:
+  - patching_server
+
+# Packages
+- name: 'Packages'
+  include_tasks: packages.yml
+  tags:
+  - packages_server
+
+# SSHD
+- name: 'SSHD'
+  include_tasks: sshd.yml
+  tags:
+  - sshd

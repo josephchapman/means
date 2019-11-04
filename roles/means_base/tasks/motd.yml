@@ -1,0 +1,18 @@
+---
+
+- name: 'Deploy /etc/update-motd.d/99-reboot-scheduled'
+  become: true
+  copy:
+    content: |
+      #!/bin/bash
+      # Custom addition - deployed by Ansible
+      if [ -f /run/systemd/shutdown/scheduled ]; then
+          MODE=$(awk -F'=' '/MODE/ {print $2}' /run/systemd/shutdown/scheduled)
+          SHUTDOWN_USEC=$(awk -F'=' '/USEC/ {print $2}' /run/systemd/shutdown/scheduled)
+          SHUTDOWN_SEC=$((${SHUTDOWN_USEC}/1000000))
+          SHUTDOWN_DATE=$(date -d @${SHUTDOWN_SEC} +'%a %F %T %Z')
+          HOURS_REMAINING=$((($(date -d @${SHUTDOWN_SEC} +'%s') - $(date +'%s')) / 3600))
+          echo -e "${MODE^} scheduled for:\n    ${SHUTDOWN_DATE}    (${HOURS_REMAINING} hours remaining)\n"
+      fi
+    dest: /etc/update-motd.d/99-reboot-scheduled
+    mode: 0755

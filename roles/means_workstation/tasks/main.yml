@@ -1,0 +1,13 @@
+---
+
+# Packages
+- name: 'Packages'
+  include_tasks: packages.yml
+  tags:
+  - packages_workstation
+
+# Atom editor
+- name: 'Atom'
+  include_tasks: atom.yml
+  tags:
+  - atom

@@ -1,0 +1,31 @@
+---
+
+- name: 'Backup `GRUB` configs'
+  become: true
+  ignore_errors: true
+  copy:
+    remote_src: yes
+    src: "{{ item }}"
+    dest: "{{ backup_dir }}/"
+  loop:
+    - '/etc/default/grub'
+    - '/boot/grub/grub.cfg'
+  changed_when: false
+
+- name: 'Alter `GRUB` file'
+  become: true
+  ignore_errors: true
+  ini_file:
+    path: /etc/default/grub
+    section: null
+    option: '{{ item.key }}'
+    value: '{{ item.value }}'
+    no_extra_spaces: yes
+  loop: "{{ query('items', grub_options)}}"
+  register: grub_alteration
+
+- name: 'Refresh `GRUB` config'
+  become: true
+  ignore_errors: true
+  when: grub_alteration.changed
+  command: grub-mkconfig -o /boot/grub/grub.cfg

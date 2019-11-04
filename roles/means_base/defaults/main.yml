@@ -1,0 +1,37 @@
+---
+
+package_mirrors:
+  x86_64:
+    primary: http://gb.archive.ubuntu.com/ubuntu
+    security: http://security.ubuntu.com/ubuntu
+  aarch64:
+    primary: http://ports.ubuntu.com/ubuntu-ports
+    security: http://ports.ubuntu.com/ubuntu-ports
+
+login_defs:
+- regexp: '^\s*(#\s*)?UMASK\s*\S*\s*$'
+  line: 'UMASK		077'
+- regexp: '^\s*(#\s*)?USERGROUPS_ENAB\s*\S*\s*$'
+  line: 'USERGROUPS_ENAB no'
+
+unattended_upgrade:
+- regexp: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}";$'
+  line: '        "${distro_id}:${distro_codename}";'
+- regexp: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-security";$'
+  line: '	"${distro_id}:${distro_codename}-security";'
+- regexp: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-updates";$'
+  line: '	"${distro_id}:${distro_codename}-updates";'
+#- regexp: '^\s*(//\s*)?Unattended-Upgrade::MinimalSteps\s*\S*\s*$'
+#  line: 'Unattended-Upgrade::MinimalSteps "true";'
+- regexp: '^\s*(//\s*)?Unattended-Upgrade::Remove-Unused-Dependencies\s*\S*\s*$'
+  line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+
+grub_options:
+- key: 'GRUB_TIMEOUT_STYLE'
+  value: 'menu'
+- key: 'GRUB_TIMEOUT'
+  value: '10'
+- key: 'GRUB_CMDLINE_LINUX_DEFAULT'
+  value: '""'
+- key: 'GRUB_GFXMODE'
+  value: '1920x1080x32,640x480,auto'

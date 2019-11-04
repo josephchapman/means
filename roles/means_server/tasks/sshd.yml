@@ -1,0 +1,27 @@
+---
+
+- name: 'UFW allow to SSHD port'
+  become: true
+  ufw:
+    rule: allow
+    port: "{{ sshd_port }}"
+    proto: tcp
+
+- name: 'Backup existing login.defs'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/ssh/sshd_config
+    dest: "{{ backup_dir }}/sshd_config"
+  changed_when: false
+
+- name: 'SSHD'
+  become: true
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    validate: '/usr/sbin/sshd -tf %s'
+  loop: "{{ query('items', sshd_config) }}"
+  notify:
+  - 'Restart SSHD'

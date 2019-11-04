@@ -1,0 +1,16 @@
+---
+
+- name: '`python-psutil` dependency for `dconf` module'
+  become: true
+  apt:
+    name: python-psutil
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: 'dconf settings'
+  dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  loop: "{{ query('items', dconf_options)}}"

@@ -1,0 +1,37 @@
+---
+
+# Packages
+- name: 'Packages'
+  include_tasks: packages.yml
+  tags:
+  - packages_desktop
+
+# Fonts
+- name: 'Fonts'
+  include_tasks: fonts.yml
+  tags:
+  - fonts
+
+# dconf settings
+- name: 'dconf'
+  include_tasks: dconf.yml
+  tags:
+  - dconf
+
+# X Session
+- name: 'xsession'
+  include_tasks: xsession.yml
+  tags:
+  - xsession
+
+# Google Chrome
+- name: 'Chrome'
+  include_tasks: chrome.yml
+  tags:
+  - google-chrome
+
+# Firefox
+- name: 'Firefox'
+  include_tasks: firefox.yml
+  tags:
+  - firefox

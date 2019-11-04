@@ -1,0 +1,22 @@
+---
+
+sshd_port: '2222'
+
+apt_packages_server:
+- sysstat                        # main
+
+sshd_config:
+- regexp: '^\s*(#\s*)?Port\s*\S*\s*$'
+  line: 'Port {{ sshd_port }}'
+- regexp: '^\s*(#\s*)?PermitRootLogin\s*\S*\s*$'
+  line: 'PermitRootLogin no'
+- regexp: '^\s*(#\s*)?PasswordAuthentication\s*\S*\s*$'
+  line: 'PasswordAuthentication no'
+- regexp: '^\s*(#\s*)?AllowUsers'
+  line: 'AllowUsers {{ ansible_env.USER }}'
+
+unattended_upgrade_server:
+- regexp: '^\s*(//\s*)?Unattended-Upgrade::Automatic-Reboot\s*\S*\s*$'
+  line: 'Unattended-Upgrade::Automatic-Reboot "true";'
+- regexp: '^\s*(//\s*)?Unattended-Upgrade::Automatic-Reboot-Time\s*\S*\s*$'
+  line: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";'

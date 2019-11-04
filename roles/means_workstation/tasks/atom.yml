@@ -1,0 +1,88 @@
+---
+
+- name: 'Atom''s signing key'
+  become: true
+  apt_key:
+    url: https://packagecloud.io/AtomEditor/atom/gpgkey
+    keyring: /etc/apt/trusted.gpg.d/atom.gpg
+    state: present
+
+- name: 'Atom repository'
+  become: true
+  apt_repository:
+    repo: 'deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main'
+    state: present
+    update_cache: yes
+    filename: atom
+    mode: 0600
+
+- name: 'Allow Unattended-upgrade to use Atom Repo'
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"packagecloud.io/AtomEditor/atom:any";\s*$'
+    line: '        "packagecloud.io/AtomEditor/atom:any";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: '`atom` package'
+  become: true
+  apt:
+    name: atom
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: '`~/.atom/` directory'
+  file:
+    path: "{{ ansible_env.HOME }}/.atom/"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0775
+
+- name: 'Check if there is an existing `~/.atom/config.cson`'
+  stat:
+    path: "{{ ansible_env.HOME }}/.atom/config.cson"
+  register: atom_config
+  changed_when: false
+
+- name: 'Backup existing `~/.atom/config.cson` (if it exists)'
+  when: atom_config.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.atom/config.cson"
+    dest: "{{ backup_dir }}/config.cson"
+  changed_when: false
+
+- name: 'Deploy `~/.atom/config.cson`'
+  copy:
+    content: |
+      "*":
+        "autocomplete-plus":
+          confirmCompletion: "tab"
+        core:
+          disabledPackages: [
+            "exception-reporting"
+          ]
+          telemetryConsent: "no"
+        editor:
+          atomicSoftTabs: false
+          autoIndentOnPaste: false
+          fontFamily: "Source Code Pro, monospace"
+          fontSize: 15
+          preferredLineLength: 79
+          scrollPastEnd: true
+          softWrap: true
+          tabLength: 4
+          tabType: "soft"
+        "spell-check":
+          localePaths: [
+            "/usr/share/dictionaries-common/"
+          ]
+          locales: [
+            "en_US"
+          ]
+        welcome:
+          showOnStartup: false
+    dest: "{{ ansible_env.HOME }}/.atom/config.cson"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"

@@ -1,0 +1,17 @@
+---
+
+- name: 'Backup existing login.defs'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/login.defs
+    dest: "{{ backup_dir }}/login.defs"
+  changed_when: false
+
+- name: 'Configure login.defs'
+  become: true
+  lineinfile:
+    path: /etc/login.defs
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop: "{{ query('items', login_defs) }}"

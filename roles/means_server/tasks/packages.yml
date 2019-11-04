@@ -1,0 +1,9 @@
+---
+
+- name: 'Install server packages'
+  become: true
+  apt:
+    name: "{{ apt_packages_server }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest

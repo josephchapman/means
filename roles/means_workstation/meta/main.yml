@@ -1,0 +1,5 @@
+---
+
+dependencies:
+- means_desktop
+- means_docker

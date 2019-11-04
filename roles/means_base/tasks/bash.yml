@@ -1,0 +1,23 @@
+---
+
+- name: 'Check if there is an existing `~/.bash_aliases`'
+  stat:
+    path: "{{ ansible_env.HOME }}/.bash_aliases"
+  register: bash_aliases
+  changed_when: false
+
+- name: 'Backup existing `~/.bash_aliases` (if it exists)'
+  when: bash_aliases.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.bash_aliases"
+    dest: "{{ backup_dir }}/.bash_aliases"
+  changed_when: false
+
+- name: 'Deploy new `~/.bash_aliases`'
+  copy:
+    content: |
+      export HISTTIMEFORMAT='%FT%T%z  '
+    dest: "{{ ansible_env.HOME }}/.bash_aliases"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"

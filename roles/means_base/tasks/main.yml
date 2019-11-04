@@ -1,0 +1,67 @@
+---
+
+# Repositories
+- name: 'Respositories'
+  include_tasks: repositories.yml
+  tags:
+  - repositories
+
+# Patching
+- name: 'Patching'
+  include_tasks: patching.yml
+  tags:
+  - patching
+
+# Apply Upgrades
+- name: 'Upgrades'
+  include_tasks: upgrades.yml
+  tags:
+  - upgrades
+
+# login.defs
+- name: 'login.defs'
+  include_tasks: login_defs.yml
+  tags:
+  - login_defs
+
+# Firewall
+- name: 'Firewall'
+  include_tasks: firewall.yml
+  tags:
+  - firewall
+
+# MOTD
+- name: 'MOTD'
+  include_tasks: motd.yml
+  tags:
+  - motd
+
+# NTP
+- name: 'NTP'
+  include_tasks: ntp.yml
+  tags:
+  - ntp
+
+# Privacy
+- name: 'Privacy'
+  include_tasks: privacy.yml
+  tags:
+  - privacy
+
+# Bash
+- name: 'BASH'
+  include_tasks: bash.yml
+  tags:
+  - bash
+
+# Snapd
+- name: 'snapd'
+  include_tasks: snapd.yml
+  tags:
+  - snapd
+
+# GRUB
+- name: 'GRUB'
+  include_tasks: grub.yml
+  tags:
+  - grub

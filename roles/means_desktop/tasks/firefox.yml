@@ -1,0 +1,54 @@
+---
+
+- name: 'Ensure default profile exists'
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  command: firefox -no-remote -CreateProfile default    # This command takes no action if it already exists
+  changed_when: false
+
+- name: 'Locate Firefox profile directory'
+  find:
+    paths: "{{ ansible_env.HOME }}/.mozilla/firefox/"
+    file_type: directory
+    patterns: "^[A-Za-z0-9]{8}.default$"
+    use_regex: yes
+  register: firefox_directory
+
+- name: 'Check if there is an existing `~/.mozilla/firefox/XXXXXXXX.default/user.js`'
+  stat:
+    path: "{{ firefox_directory.files.0.path }}/user.js"
+  register: firefox_userjs
+  changed_when: false
+
+- name: 'Backup existing `~/.mozilla/firefox/XXXXXXXX.default/user.js` (if it exists)'
+  when: firefox_userjs.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ firefox_directory.files.0.path }}/user.js"
+    dest: "{{ backup_dir }}/user.js"
+  changed_when: false
+
+- name: 'Delete existing user.js'
+  file:
+    path: "{{ firefox_directory.files.0.path }}/user.js"
+    state: absent
+  changed_when: false
+
+- name: 'Create blank user.js'
+  file:
+    path: "{{ firefox_directory.files.0.path }}/user.js"
+    state: touch
+  changed_when: false
+
+- name: 'Deploy new `~/.mozilla/firefox/XXXXXXXX.default/user.js` file'
+  lineinfile:
+    path: "{{ firefox_directory.files.0.path }}/user.js"
+    mode: 0600
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    line: |
+      // {{ item.comment }}
+      user_pref("{{ item.key }}", {{ item.value }});
+
+  loop: "{{ query('items', firefox_preferences)}}"
+  changed_when: false

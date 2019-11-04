@@ -1,0 +1,24 @@
+---
+
+- name: 'Backup existing /var/lib/AccountsService/users/'
+  become: true
+  copy:
+    remote_src: yes
+    src: /var/lib/AccountsService/users/{{ ansible_env.USER }}
+    dest: "{{ backup_dir }}/{{ ansible_env.USER }}"
+  changed_when: false
+
+- name: 'Default Desktop Environment is Gnome'
+  become: true
+  ini_file:
+    path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
+    section: User
+    option: XSession
+    value: gnome
+    no_extra_spaces: yes
+  register: xsession_update
+
+- name: 'Note if reboot will be required' # Restarting GDM doesn't seem to kill session
+  when: xsession_update.changed
+  set_fact:
+    reboot_required: true

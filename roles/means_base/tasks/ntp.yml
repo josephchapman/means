@@ -1,0 +1,14 @@
+---
+
+- name: 'Ensure systemd-timesyncd.service is enabled and started'
+  become: true
+  systemd:
+    name: systemd-timesyncd.service
+    masked: no
+    state: started
+    enabled: yes
+
+- name: 'Ensure timedatectl timezone is Europe/London'
+  become: true
+  timezone:
+    name: Europe/London

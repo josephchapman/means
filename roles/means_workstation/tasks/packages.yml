@@ -1,0 +1,9 @@
+---
+
+- name: 'Install workstation packages'
+  become: true
+  apt:
+    name: "{{ apt_packages_workstation }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest

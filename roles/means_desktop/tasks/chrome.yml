@@ -1,0 +1,33 @@
+---
+
+- name: 'Google''s Linux signing key'
+  become: true
+  apt_key:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    keyring: /etc/apt/trusted.gpg.d/google-linux.gpg
+    state: present
+
+- name: 'Google repository'
+  become: true
+  apt_repository:
+    repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+    state: present
+    update_cache: yes
+    filename: google-chrome
+    mode: 0600
+
+- name: 'Allow Unattended-upgrade to use Google Repo'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"Google LLC:stable";\s*$'
+    line: '        "Google LLC:stable";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: '`google-chrome-stable` package'
+  become: true
+  apt:
+    name: google-chrome-stable
+    force_apt_get: yes
+    update_cache: yes
+    state: latest

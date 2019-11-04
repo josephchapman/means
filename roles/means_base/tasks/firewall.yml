@@ -1,0 +1,26 @@
+---
+
+- name: 'UFW deny incoming'
+  become: true
+  ufw:
+    policy: deny
+    direction: incoming
+
+- name: 'UFW allow outgoing'
+  become: true
+  ufw:
+    policy: allow
+    direction: outgoing
+
+- name: 'UFW enable'
+  become: true
+  ufw:
+    state: enabled
+
+- name: 'UFW service started, enabled'
+  become: true
+  systemd:
+    name: ufw.service
+    masked: no
+    state: started
+    enabled: yes

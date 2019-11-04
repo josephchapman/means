@@ -1,0 +1,47 @@
+---
+
+# Docker-CE
+- name: 'Docker Linux signing key'
+  become: true
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /etc/apt/trusted.gpg.d/docker-linux.gpg
+    state: present
+
+- name: 'Docker repository'
+  become: true
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+    state: present
+    update_cache: yes
+    filename: docker-ce
+    mode: 0600
+
+- name: 'Allow Unattended-upgrade to use Docker Repo'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"Docker:bionic";\s*$'
+    line: '        "Docker:bionic";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: '`docker-ce` package'
+  become: true
+  apt:
+    name: docker-ce
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: 'Add user to `docker` group'
+  become: true
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: docker
+    append: yes
+  register: docker_user_group
+
+- name: 'Note if logout will be required'
+  when: docker_user_group.changed
+  set_fact:
+    logout_required: true

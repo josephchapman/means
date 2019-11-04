@@ -1,0 +1,30 @@
+---
+
+- name: 'Backup existing /etc/apt/sources.list'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/apt/sources.list
+    dest: "{{ backup_dir }}/sources.list"
+  changed_when: false
+
+- name: 'Deploy new /etc/apt/sources.list (excluding multiverse)'
+  become: true
+  template:
+    src: sources.list_exclude_multiverse.j2
+    dest: /etc/apt/sources.list
+  when: "'raspi2' not in ansible_kernel"
+
+- name: 'Deploy new /etc/apt/sources.list (including multiverse)'
+  become: true
+  template:
+    src: sources.list_include_multiverse.j2
+    dest: /etc/apt/sources.list
+  when: "'raspi2' in ansible_kernel"  # multiverse required for `linux-firmware-raspi2`
+
+- name: 'Update APT cache'
+  become: true
+  apt:
+    force_apt_get: yes
+    update_cache: yes
+  changed_when: false

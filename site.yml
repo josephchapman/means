@@ -1,0 +1,127 @@
+---
+
+- hosts: 127.0.0.1
+  connection: local
+
+  vars:
+    # Flag to be set if a task requires a manual action
+    # Manual actions then relayed to user at the end of the play
+    logout_required: false
+
+    # Each run of this play creates a new directory named by its timestamp
+    # Files which are changed by the play are backed up here
+    backup_dir: "{{ ansible_env.HOME }}/.ansible_backups/{{ ansible_date_time.iso8601 }}"
+
+  pre_tasks:
+  - block:
+    - name: 'Check host is Ubuntu 18.04 (bionic)'
+      assert:
+        that:
+        - ansible_distribution == 'Ubuntu'
+        - ansible_distribution_version == '18.04'
+        - ansible_distribution_release == 'bionic'
+        msg:
+        - This Ansible playbook has been designed for Ubuntu 18.04 (bionic)
+        - This appears to be {{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
+        - ABORTING
+    - name: 'Create directory for backup files'
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+        owner: "{{ ansible_env.USER }}"
+        group: "{{ ansible_env.USER }}"
+        mode: 0700
+      changed_when: false
+    tags:
+    - always
+
+
+  roles:
+  - role: means_desktop
+    tags:
+    - desktop
+  - role: means_workstation
+    tags:
+    - workstation
+  - role: means_server
+    tags:
+    - server
+
+
+  tasks:
+  - block:
+    - name: 'Create systemd unit file to disable Pi3 LEDs'
+      copy:
+        content: |
+          [Unit]
+          Description=Disable PWR and ACT LEDs on Raspberry Pi
+
+          [Service]
+          Type=oneshot
+          ExecStart=/bin/bash -c "/bin/echo 'none' > /sys/class/leds/led0/trigger; /bin/echo '0' > /sys/class/leds/led0/brightness; /bin/echo 'none' > /sys/class/leds/led1/trigger; /bin/echo '0' > /sys/class/leds/led1/brightness"
+          RemainAfterExit=true
+          ExecStop=/bin/bash -c "/bin/echo 'mmc0' > /sys/class/leds/led0/trigger; /bin/echo '1' > /sys/class/leds/led0/brightness; /bin/echo 'input' > /sys/class/leds/led1/trigger; /bin/echo '1' > /sys/class/leds/led1/brightness"
+          StandardOutput=journal
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/disable-pi-leds.service
+        owner: root
+        group: root
+        mode: 0644
+    - name: 'systemctl daemon-reload, then enable and start systemd service to disable Pi3 LEDs'
+      systemd:
+        daemon_reload: yes
+        name: disable-pi-leds.service
+        enabled: yes
+        state: started
+    become: true
+    tags:
+    - never
+    - pi3
+
+
+  # PulseAudio
+  - block:
+    - name: 'Add HDMI audio output'
+      blockinfile:
+        path: /etc/pulse/default.pa
+        block: |
+          load-module module-alsa-sink device=plughw:0,2
+          set-default-sink alsa_output.plughw_0_2
+    - name: 'Restart PulseAudio'
+      command: pulseaudio -k
+      become_user: "{{ ansible_env.USER }}"
+      register: pulse_restart
+      failed_when: pulse_restart.rc > 1
+      changed_when: false
+    become: true
+    tags:
+    - never
+    - computestick
+
+
+
+  post_tasks:
+  - block:
+    - name: 'Test for /run/reboot-required'
+      stat:
+        path: /run/reboot-required
+      register: reboot_required
+      become: true
+    - name: 'Advise if a logout + login is required'
+      when: logout_required
+      debug:
+        msg:
+          - '!!!!!'
+          - A LOGOUT + LOGIN is required for some changes to take effect
+          - '!!!!!'
+    - name: 'Advise if a reboot is required'
+      when: reboot_required.stat.exists
+      debug:
+        msg:
+          - '!!!!!'
+          - A REBOOT is required for some changes to take effect
+          - '!!!!!'
+    tags:
+    - always

@@ -1,0 +1,25 @@
+---
+
+- name: 'Purge whoopsie, ubuntu-report'
+  become: true
+  apt:
+    name: [whoopsie, ubuntu-report]
+    force_apt_get: yes
+    update_cache: yes
+    state: absent
+    purge: yes
+
+- name: 'Ensure PopCon override exists'
+  become: true
+  file:
+    path: /etc/popularity-contest.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: 'Ensure PopCon opt-out'
+  become: true
+  lineinfile:
+    path: /etc/popularity-contest.conf
+    regexp: '^\s*(#\s*)?PARTICIPATE'
+    line: 'PARTICIPATE="no"'
