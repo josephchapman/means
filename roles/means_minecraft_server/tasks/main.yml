@@ -74,10 +74,10 @@
   ini_file:
     path: ~/server.properties
     section: null
-    option: "{{ item.key }}"
-    value: "{{ item.value }}"
+    option: "{{ item.value.key }}"
+    value: "{{ item.value.value }}"
     no_extra_spaces: yes
-  loop: "{{ query('items', minecraft_server_properties) }}"
+  loop: "{{ query('dict', minecraft_server_properties) }}"
   notify: 'Restart Minecraft'
 
 - name: 'Original Op'
@@ -141,3 +141,10 @@
     state: started
   environment:
     XDG_RUNTIME_DIR: /run/user/{{ minecraft_user_id.stdout }}
+
+- name: 'UFW allow Minecraft port'
+  become: true
+  ufw:
+    rule: allow
+    port: "{{ minecraft_server_properties.server_port.value }}"
+    proto: tcp

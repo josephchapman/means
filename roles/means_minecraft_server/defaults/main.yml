@@ -8,23 +8,36 @@ minecraft_max_mem: '1024'
 minecraft_initial_mem: '1024'
 
 minecraft_server_properties:
-#- key: 'allow-nether'
-#  value: 'true'
-#- key: 'level-name'
-#  value: 'world'
-- key: 'player-idle-timeout'
-  value: '60'
-#- key: 'motd'
-#  value: 'A Minecraft Server'
-- key: 'white-list'
-  value: 'true'
-- key: 'pvp'
-  value: 'false'
-- key: 'difficulty'
-  value: 'peaceful'
-- key: 'max-players'
-  value: '5'
-#- key: 'online_mode'
-#  value: 'true'
-- key: 'max-world-size'
-  value: '8192'
+  server_port:
+    key: 'server-port'
+    value: '25565'
+#  allow_nether:
+#    key: 'allow-nether'
+#    value: 'true'
+#  level_name:
+#    key: 'level-name'
+#    value: 'world'
+  player_idle_timeout:
+    key: 'player-idle-timeout'
+    value: '60'
+#  motd:
+#    key: 'motd'
+#    value: 'A Minecraft Server'
+  white_list:
+    key: 'white-list'
+    value: 'true'
+  pvp:
+    key: 'pvp'
+    value: 'false'
+  difficulty:
+    key: 'difficulty'
+    value: 'peaceful'
+  max_players:
+    key: 'max-players'
+    value: '5'
+#  online_mode:
+#    key: 'online-mode'
+#    value: 'true'
+  max_world_size:
+    key: 'max-world-size'
+    value: '8192'
