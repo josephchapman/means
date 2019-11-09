@@ -4,7 +4,7 @@
   shell: echo {{ ansible_env['SSH_CONNECTION'] }} | awk '{print $NF}'
   register: initial_ssh_connection
   changed_when: false
-  when: ansible_env['SSH_CONNECTION']
+  when: ansible_env['SSH_CONNECTION'] is defined
 
 - name: 'UFW allow for existing connection (if exists)'
   become: true
@@ -12,7 +12,7 @@
     rule: allow
     port: "{{ initial_ssh_connection.stdout }}"
     proto: tcp
-  when: initial_ssh_connection
+  when: initial_ssh_connection.stdout is defined
 
 - name: 'UFW deny incoming'
   become: true
