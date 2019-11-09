@@ -1,0 +1,30 @@
+---
+
+minecraft_user: minecraft
+
+minecraft_eula: false
+
+minecraft_max_mem: '1024'
+minecraft_initial_mem: '1024'
+
+minecraft_server_properties:
+#- key: 'allow-nether'
+#  value: 'true'
+#- key: 'level-name'
+#  value: 'world'
+- key: 'player-idle-timeout'
+  value: '60'
+#- key: 'motd'
+#  value: 'A Minecraft Server'
+- key: 'white-list'
+  value: 'true'
+- key: 'pvp'
+  value: 'false'
+- key: 'difficulty'
+  value: 'peaceful'
+- key: 'max-players'
+  value: '5'
+#- key: 'online_mode'
+#  value: 'true'
+- key: 'max-world-size'
+  value: '8192'

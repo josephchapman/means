@@ -1,0 +1,143 @@
+---
+
+- name: 'Java installed'
+  become: true
+  apt:
+    name: openjdk-11-jre-headless
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: 'User'
+  become: true
+  user:
+    name: "{{ minecraft_user }}"
+    shell: /bin/false
+
+- name: 'Get user''s UID'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  command: id -ru
+  register: minecraft_user_id
+  changed_when: false
+
+- name: '~/.bash_aliases'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  copy:
+    src: bash_aliases
+    dest: ~/.bash_aliases
+
+- name: 'Check linger'
+  become: true
+  stat:
+    path: /var/lib/systemd/linger/{{ minecraft_user }}
+  register: minecraft_user_linger
+
+- name: 'Enable logind linger for user'
+  become: true
+  command: loginctl enable-linger {{ minecraft_user }}
+  when: not minecraft_user_linger.stat.exists
+
+- name: 'Download Minecraft Server'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  get_url:
+    url: https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
+    dest: ~/minecraft_server.1.14.4.jar
+
+- name: 'EULA'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  template:
+    src: eula.txt.j2
+    dest: ~/eula.txt
+
+- name: 'Check if server.properties exists'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  stat:
+    path: ~/server.properties
+  register: minecraft_server_properties_stat
+
+- name: 'Create default server.properties'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  copy:
+    src: server.properties
+    dest: ~/server.properties
+  when: not minecraft_server_properties_stat.stat.exists
+
+- name: 'server.properties config'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  ini_file:
+    path: ~/server.properties
+    section: null
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: yes
+  loop: "{{ query('items', minecraft_server_properties) }}"
+  notify: 'Restart Minecraft'
+
+- name: 'Original Op'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  template:
+    src: ops.json.j2
+    dest: ~/ops.json
+  when:
+  - minecraft_uuid is defined
+  - minecraft_accountname is defined
+  notify: 'Restart Minecraft'
+
+- name: '~/.config/'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  file:
+    path: ~/.config/
+    state: directory
+
+- name: '~/.config/systemd/'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  file:
+    path: ~/.config/systemd/
+    state: directory
+
+- name: '~/.config/systemd/user/'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  file:
+    path: ~/.config/systemd/user/
+    state: directory
+
+- name: 'systemd minecraft.service unit file'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  template:
+    src: minecraft.service.j2
+    dest: ~/.config/systemd/user/minecraft.service
+  notify:
+  - 'Minecraft user systemctl daemon reload'
+  - 'Restart Minecraft'
+
+- name: 'systemctl daemon-reload'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  systemd:
+    daemon_reload: yes
+    user: yes
+  environment:
+    XDG_RUNTIME_DIR: /run/user/{{ minecraft_user_id.stdout }}
+
+- name: 'minecraft.service started and enabled'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  systemd:
+    name: minecraft.service
+    user: yes
+    enabled: yes
+    state: started
+  environment:
+    XDG_RUNTIME_DIR: /run/user/{{ minecraft_user_id.stdout }}

@@ -1,0 +1,14 @@
+[Unit]
+Description=Minecraft Server
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -Xmx{{ minecraft_max_mem }}M -Xms{{ minecraft_initial_mem }}M -jar minecraft_server.1.14.4.jar nogui
+Restart=always
+RestartSec=30
+KillSignal=SIGINT
+SuccessExitStatus=130
+
+[Install]
+WantedBy=default.target

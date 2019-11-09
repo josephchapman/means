@@ -1,0 +1,33 @@
+---
+
+- name: 'Get user''s UID'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  command: id -ru
+  register: minecraft_user_id
+  changed_when: false
+  listen:
+  - 'Minecraft user systemctl daemon reload'
+  - 'Restart Minecraft'
+
+- name: 'systemctl daemon-reload'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  systemd:
+    daemon_reload: yes
+    user: yes
+  environment:
+    XDG_RUNTIME_DIR: /run/user/{{ minecraft_user_id.stdout }}
+  listen: 'Minecraft user systemctl daemon reload'
+
+- name: 'Restart minecraft.service'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  systemd:
+    name: minecraft.service
+    user: yes
+    state: restarted
+  environment:
+    XDG_RUNTIME_DIR: /run/user/{{ minecraft_user_id.stdout }}
+  listen:
+  - 'Restart Minecraft'

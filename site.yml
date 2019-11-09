@@ -1,7 +1,6 @@
 ---
 
-- hosts: 127.0.0.1
-  connection: local
+- hosts: all
 
   vars:
     # Flag to be set if a task requires a manual action
@@ -46,7 +45,9 @@
   - role: means_server
     tags:
     - server
-
+  - role: means_minecraft_server
+    tags:
+    - minecraft_server
 
   tasks:
   - block:
