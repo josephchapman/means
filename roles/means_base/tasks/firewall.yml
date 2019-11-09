@@ -1,5 +1,19 @@
 ---
 
+- name: 'Assess initial SSH connection (if exists)'
+  shell: echo {{ ansible_env['SSH_CONNECTION'] }} | awk '{print $NF}'
+  register: initial_ssh_connection
+  changed_when: false
+  when: ansible_env['SSH_CONNECTION']
+
+- name: 'UFW allow for existing connection (if exists)'
+  become: true
+  ufw:
+    rule: allow
+    port: "{{ initial_ssh_connection.stdout }}"
+    proto: tcp
+  when: initial_ssh_connection
+
 - name: 'UFW deny incoming'
   become: true
   ufw:
