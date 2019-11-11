@@ -1,0 +1,7 @@
+---
+
+dependencies:
+- role: means_docker
+  vars:
+    docker_version: 18.06.1~ce~3-0~ubuntu
+    docker_version_hold: true

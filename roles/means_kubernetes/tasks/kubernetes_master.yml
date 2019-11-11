@@ -1,0 +1,64 @@
+---
+
+- name: 'Check if Kubernetes has already been initialized'
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubernetes_init_stat
+
+- name: 'Initialize Kubernetes master (if not already)'
+  become: true
+  command: >
+    kubeadm init
+    --pod-network-cidr=10.244.0.0/16
+    --apiserver-advertise-address={{ kubernetes_apiserver_advertise_address }}
+  when: not kubernetes_init_stat.stat.exists
+
+- name: 'Ensure ~/.kube exists'
+  file:
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: 'Ensure ~/.kube/config populated'
+  become: true
+  copy:
+    remote_src: true
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: 'UFW allow Kubernetes port 6443'
+  become: true
+  ufw:
+    rule: allow
+    port: 6443
+    proto: tcp
+
+- name: 'Configure Flannel networking'
+  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+  register: flannel_result
+  changed_when: "'created' in flannel_result.stdout"
+
+- name: 'Get the kubeadm join command'
+  command: kubeadm token create --print-join-command
+  changed_when: false
+  register: kubernetes_join_command_result
+
+- name: 'Set the kubeadm join command for each device'
+  set_fact:
+    kubernetes_join_command: "{{ kubernetes_join_command_result.stdout }}"
+  when: kubernetes_join_command_result is defined
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  with_items: "{{ groups['all'] }}"
+
+- name: 'Check for existing master taint'
+  shell: kubectl describe nodes | grep '^\s*Taints'
+  changed_when: false
+  register: kubernetes_taints
+
+- name: 'Untaint all masters'
+  command: 'kubectl taint nodes --all node-role.kubernetes.io/master-'
+  when: "'node-role.kubernetes.io/master' in kubernetes_taints.stdout"
