@@ -1,0 +1,10 @@
+---
+
+- name: 'Enable sysstat logging'
+  become: true
+  copy:
+    src: sysstat
+    dest: /etc/default/sysstat
+    owner: root
+    group: root
+    mode: 0644
