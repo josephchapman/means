@@ -40,7 +40,7 @@
     name: docker-ce={{ docker_version }}
     force_apt_get: yes
     update_cache: yes
-    state: latest
+    state: present
   when: docker_version is defined
 
 - name: 'Add user to `docker` group'
