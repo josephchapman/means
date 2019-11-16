@@ -19,7 +19,7 @@ minecraft_server_properties:
 #    value: 'world'
   player_idle_timeout:
     key: 'player-idle-timeout'
-    value: '60'
+    value: '180'
 #  motd:
 #    key: 'motd'
 #    value: 'A Minecraft Server'
@@ -40,4 +40,4 @@ minecraft_server_properties:
 #    value: 'true'
   max_world_size:
     key: 'max-world-size'
-    value: '8192'
+    value: '65536'
