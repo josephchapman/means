@@ -39,25 +39,32 @@
   command: loginctl enable-linger {{ minecraft_user }}
   when: not minecraft_user_linger.stat.exists
 
+- name: '~/minecraft_server/'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  file:
+    path: ~/minecraft_server/
+    state: directory
+
 - name: 'Download Minecraft Server'
   become: true
   become_user: "{{ minecraft_user }}"
   get_url:
     url: https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
-    dest: ~/minecraft_server.1.14.4.jar
+    dest: ~/minecraft_server/minecraft_server.1.14.4.jar
 
 - name: 'EULA'
   become: true
   become_user: "{{ minecraft_user }}"
   template:
     src: eula.txt.j2
-    dest: ~/eula.txt
+    dest: ~/minecraft_server/eula.txt
 
 - name: 'Check if server.properties exists'
   become: true
   become_user: "{{ minecraft_user }}"
   stat:
-    path: ~/server.properties
+    path: ~/minecraft_server/server.properties
   register: minecraft_server_properties_stat
 
 - name: 'Create default server.properties'
@@ -65,14 +72,14 @@
   become_user: "{{ minecraft_user }}"
   copy:
     src: server.properties
-    dest: ~/server.properties
+    dest: ~/minecraft_server/server.properties
   when: not minecraft_server_properties_stat.stat.exists
 
 - name: 'server.properties config'
   become: true
   become_user: "{{ minecraft_user }}"
   ini_file:
-    path: ~/server.properties
+    path: ~/minecraft_server/server.properties
     section: null
     option: "{{ item.value.key }}"
     value: "{{ item.value.value }}"
@@ -85,7 +92,7 @@
   become_user: "{{ minecraft_user }}"
   template:
     src: ops.json.j2
-    dest: ~/ops.json
+    dest: ~/minecraft_server/ops.json
   when:
   - minecraft_uuid is defined
   - minecraft_accountname is defined
