@@ -21,6 +21,13 @@
   register: minecraft_user_id
   changed_when: false
 
+- name: 'Get user''s home'
+  become: true
+  become_user: "{{ minecraft_user }}"
+  command: echo ~{{ minecraft_user }}
+  register: minecraft_user_home
+  changed_when: false
+
 - name: '~/.bash_aliases'
   become: true
   become_user: "{{ minecraft_user }}"
