@@ -10,17 +10,17 @@
   find:
     paths: "{{ ansible_env.HOME }}/.mozilla/firefox/"
     file_type: directory
-    patterns: "^[A-Za-z0-9]{8}.default$"
+    patterns: "^[A-Za-z0-9]{8}.default-release$"
     use_regex: yes
   register: firefox_directory
 
-- name: 'Check if there is an existing `~/.mozilla/firefox/XXXXXXXX.default/user.js`'
+- name: 'Check if there is an existing `~/.mozilla/firefox/XXXXXXXX.default-release/user.js`'
   stat:
     path: "{{ firefox_directory.files.0.path }}/user.js"
   register: firefox_userjs
   changed_when: false
 
-- name: 'Backup existing `~/.mozilla/firefox/XXXXXXXX.default/user.js` (if it exists)'
+- name: 'Backup existing `~/.mozilla/firefox/XXXXXXXX.default-release/user.js` (if it exists)'
   when: firefox_userjs.stat.exists
   copy:
     remote_src: yes
@@ -40,7 +40,7 @@
     state: touch
   changed_when: false
 
-- name: 'Deploy new `~/.mozilla/firefox/XXXXXXXX.default/user.js` file'
+- name: 'Deploy new `~/.mozilla/firefox/XXXXXXXX.default-release/user.js` file'
   lineinfile:
     path: "{{ firefox_directory.files.0.path }}/user.js"
     mode: 0600
