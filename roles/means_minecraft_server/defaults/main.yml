@@ -40,4 +40,7 @@ minecraft_server_properties:
 #    value: 'true'
   max_world_size:
     key: 'max-world-size'
-    value: '65536'
+    value: '10240'
+  spawn_protection:
+    key: 'spawn-protection'
+    value: '184'
