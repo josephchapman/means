@@ -17,6 +17,7 @@
     mode: 0600
 
 - name: 'Allow Unattended-upgrade to use Atom Repo'
+  become: true
   lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
     regexp: '^\s*(//\s*)?"packagecloud.io/AtomEditor/atom:any";\s*$'
