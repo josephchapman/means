@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 WorkingDirectory={{ minecraft_user_home.stdout }}/minecraft_server/
 Type=simple
-ExecStart=/usr/bin/java -Xmx{{ minecraft_max_mem }}M -Xms{{ minecraft_initial_mem }}M -jar minecraft_server.1.14.4.jar nogui
+ExecStart=/usr/bin/java -Xmx{{ minecraft_max_mem }}M -Xms{{ minecraft_initial_mem }}M -jar minecraft_server.1.15.2.jar nogui
 Restart=always
 RestartSec=30
 KillSignal=SIGINT

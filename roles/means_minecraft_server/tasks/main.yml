@@ -57,8 +57,8 @@
   become: true
   become_user: "{{ minecraft_user }}"
   get_url:
-    url: https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
-    dest: ~/minecraft_server/minecraft_server.1.14.4.jar
+    url: https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar
+    dest: ~/minecraft_server/minecraft_server.1.15.2.jar
 
 - name: 'EULA'
   become: true
