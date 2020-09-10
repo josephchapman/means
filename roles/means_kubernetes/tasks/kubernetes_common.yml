@@ -24,6 +24,16 @@
     line: '        "kubernetes-xenial:kubernetes-xenial";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
+- name: 'Kubernetes dependencies'
+  become: true
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: present
+  with_items:
+  - kubernetes-cni=0.7.5-00
+
 - name: 'Kubernetes packages'
   become: true
   apt:
@@ -35,6 +45,12 @@
   - kubelet=1.12.7-00
   - kubeadm=1.12.7-00
   - kubectl=1.12.7-00
+
+- name: 'Prevent upgrades to kubernetes-cni'
+  become: true
+  command: apt-mark hold kubernetes-cni
+  register: apt_hold_kubernetes_cni
+  changed_when: "'kubernetes-cni was already set on hold' not in apt_hold_kubernetes_cni.stdout"
 
 - name: 'Prevent upgrades to kubelet'
   become: true
