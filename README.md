@@ -8,15 +8,33 @@ Changes are made at both a system-level and user-level, so this needs to be run 
 
 A fresh install of Ubuntu 18.04 doesn't have `ansible` or `git`, so these either need installing manually or via automated methods such as `cloud-init`.
 
-This is written to be run on `localhost` with a `local` Ansible connection.  Some modification is possible to run this on remote hosts.  However, alterations to SSHD during the playbook would need considering.
-
+The roles have the following dependencies to each other:
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┓
+┃ means_minecraft_server ┃   ┃ means_workstation ┃   ┃ means_kubernetes ┃
+┗━━━━━━━━━━━━━━━━━┯━━━━━━┛   ┗━━━━━━━━━┯━━━━┯━━━━┛   ┗━━━━━━━┯━━━━━━━━━━┛
+                  │                    │    │                │
+                  │                    │    └────────────┐   │
+                  │                    │                 │   │
+          ┏━━━━━━━v━━━━━━┓     ┏━━━━━━━v━━━━━━━┓     ┏━━━v━━━v━━━━━━┓
+          ┃ means_server ┃     ┃ means_desktop ┃     ┃ means_docker ┃
+          ┗━━━━━━━┯━━━━━━┛     ┗━━━━━━━┯━━━━━━━┛     ┗━━━━━━━┯━━━━━━┛
+                  │                    │                     │
+                  └────────────────┐   │   ┌─────────────────┘
+                                   │   │   │
+                                ┏━━v━━━v━━━v━━┓
+                                ┃ means_base  ┃
+                                ┗━━━━━━━━━━━━━┛
+```
 
 `git clone` this repository:
 ```
 $ git clone https://github.com/josephchapman/means.git
 ```
 
+This is written to be run on `localhost` with a `local` Ansible connection.  Some modification is possible to run this on remote hosts.  However, alterations to SSHD during the playbook would need considering.
+
 Example utilization: Run the `desktop` tag to configure basic functionality:
 ```
-$ ansible-playbook means/site.yml --tags 'desktop'
+$ ansible-playbook -i '127.0.0.1,' -c local means/site.yml --ask-become-pass --tags 'desktop'
 ```
