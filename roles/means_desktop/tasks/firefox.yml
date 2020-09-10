@@ -1,9 +1,9 @@
 ---
 
-- name: 'Ensure default profile exists'
+- name: 'Ensure default-release profile exists'
   become: true
   become_user: "{{ ansible_env.USER }}"
-  command: firefox -no-remote -CreateProfile default    # This command takes no action if it already exists
+  command: firefox -no-remote -CreateProfile default-release    # This command takes no action if it already exists
   changed_when: false
 
 - name: 'Locate Firefox profile directory'
