@@ -1,0 +1,11 @@
+---
+
+- name: 'Check if node has already been joined'
+  stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kubernetes_join_stat
+
+- name: 'Join node to the Kubernetes master (if not already)'
+  become: true
+  command: "{{ kubernetes_join_command }}"
+  when: not kubernetes_join_stat.stat.exists

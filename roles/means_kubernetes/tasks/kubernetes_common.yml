@@ -1,0 +1,79 @@
+---
+
+- name: 'Google packages signing key'
+  become: true
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /etc/apt/trusted.gpg.d/google-packages-apt.gpg
+    state: present
+
+- name: 'Kubernetes repository'
+  become: true
+  apt_repository:
+    repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main'
+    state: present
+    update_cache: yes
+    filename: kubernetes
+    mode: 0600
+
+- name: 'Allow Unattended-upgrade to use Kubernetes Repo'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"kubernetes-xenial:kubernetes-xenial";\s*$'
+    line: '        "kubernetes-xenial:kubernetes-xenial";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: 'Kubernetes dependencies'
+  become: true
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: present
+  with_items:
+  - kubernetes-cni=0.7.5-00
+
+- name: 'Kubernetes packages'
+  become: true
+  apt:
+    name: "{{ item }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: present
+  with_items:
+  - kubelet=1.12.7-00
+  - kubeadm=1.12.7-00
+  - kubectl=1.12.7-00
+
+- name: 'Prevent upgrades to kubernetes-cni'
+  become: true
+  command: apt-mark hold kubernetes-cni
+  register: apt_hold_kubernetes_cni
+  changed_when: "'kubernetes-cni was already set on hold' not in apt_hold_kubernetes_cni.stdout"
+
+- name: 'Prevent upgrades to kubelet'
+  become: true
+  command: apt-mark hold kubelet
+  register: apt_hold_kubelet
+  changed_when: "'kubelet was already set on hold' not in apt_hold_kubelet.stdout"
+
+- name: 'Prevent upgrades to kubeadm'
+  become: true
+  command: apt-mark hold kubeadm
+  register: apt_hold_kubeadm
+  changed_when: "'kubeadm was already set on hold' not in apt_hold_kubeadm.stdout"
+
+- name: 'Prevent upgrades to kubectl'
+  become: true
+  command: apt-mark hold kubectl
+  register: apt_hold_kubectl
+  changed_when: "'kubectl was already set on hold' not in apt_hold_kubectl.stdout"
+
+- name: 'net.bridge.bridge-nf-call-iptables'
+  become: true
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    sysctl_file: /etc/sysctl.d/flannel.conf
+    reload: yes
