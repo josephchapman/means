@@ -1,5 +1,10 @@
 ---
 
+- name: 'Disable UFW'
+  become: true
+  ufw:
+    state: disabled
+
 - name: 'Google packages signing key'
   become: true
   apt_key:

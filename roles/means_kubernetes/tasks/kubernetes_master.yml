@@ -29,13 +29,6 @@
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
 
-- name: 'UFW allow Kubernetes port 6443'
-  become: true
-  ufw:
-    rule: allow
-    port: 6443
-    proto: tcp
-
 - name: 'Configure Flannel networking'
   command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
   register: flannel_result
