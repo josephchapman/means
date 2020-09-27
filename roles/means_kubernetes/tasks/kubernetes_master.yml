@@ -29,10 +29,10 @@
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
 
-- name: 'Configure Flannel networking'
-  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
-  register: flannel_result
-  changed_when: "'created' in flannel_result.stdout"
+- name: 'Configure CNI networking'
+  command: kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+  register: cni_result
+  changed_when: "'created' in cni_result.stdout"
 
 - name: 'Get the kubeadm join command'
   command: kubeadm token create --print-join-command
