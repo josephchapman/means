@@ -32,7 +32,7 @@
     update_cache: yes
     state: present
   with_items:
-  - kubernetes-cni=0.7.5-00
+  - kubernetes-cni
 
 - name: 'Kubernetes packages'
   become: true
@@ -42,9 +42,9 @@
     update_cache: yes
     state: present
   with_items:
-  - kubelet=1.12.7-00
-  - kubeadm=1.12.7-00
-  - kubectl=1.12.7-00
+  - kubelet={{ kubernetes_version }}
+  - kubeadm={{ kubernetes_version }}
+  - kubectl={{ kubernetes_version }}
 
 - name: 'Prevent upgrades to kubernetes-cni'
   become: true

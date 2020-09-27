@@ -1,4 +1,5 @@
 ---
 
+kubernetes_version: 1.17.8-00
 kubernetes_role: master
 kubernetes_apiserver_advertise_address: "{{ ansible_default_ipv4.address }}"
