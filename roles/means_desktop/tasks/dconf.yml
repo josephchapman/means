@@ -1,9 +1,9 @@
 ---
 
-- name: '`python-psutil` dependency for `dconf` module'
+- name: '`python3-psutil` dependency for `dconf` module'
   become: true
   apt:
-    name: python-psutil
+    name: python3-psutil
     force_apt_get: yes
     update_cache: yes
     state: latest

@@ -8,10 +8,10 @@ apt_packages_workstation:
 - pwgen                          # universe
 - jq                             # universe
 # Programming
-- python-pip                     # universe
+#- python-pip                     # universe
 - python3-pip                    # universe
 # Virtualization
-- libvirt-bin                    # main
+- libvirt-daemon                    # main
 - qemu-kvm                       # main
 - virt-manager                   # universe
 - virt-viewer                    # universe
