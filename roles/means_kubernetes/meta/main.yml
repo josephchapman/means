@@ -3,5 +3,5 @@
 dependencies:
 - role: means_docker
   vars:
-    docker_version: 5:19.03.12~3-0~ubuntu-bionic
+    docker_version: 5:19.03.12~3-0~ubuntu-focal
     docker_version_hold: true

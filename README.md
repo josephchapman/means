@@ -2,11 +2,11 @@
 
 A personal project to automate host configuration for various purposes using Ansible.
 
-This repository is written for hosts running Ubuntu 18.04 LTS (bionic), and the first task checks that this requirement is met before continuing.
+This repository is written for hosts running Ubuntu 20.04 LTS (focal), and the first task checks that this requirement is met before continuing.
 
 Changes are made at both a system-level and user-level, so this needs to be run as the user intended to receive these changes, with root privileges.
 
-A fresh install of Ubuntu 18.04 doesn't have `ansible` or `git`, so these either need installing manually or via automated methods such as `cloud-init`.
+A fresh install of Ubuntu 20.04 doesn't have `ansible` or `git`, so these either need installing manually or via automated methods such as `cloud-init`.
 
 The roles have the following dependencies to each other:
 ```
