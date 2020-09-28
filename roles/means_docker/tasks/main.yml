@@ -11,7 +11,7 @@
 - name: 'Docker repository'
   become: true
   apt_repository:
-    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable'
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable'
     state: present
     update_cache: yes
     filename: docker-ce
@@ -21,8 +21,8 @@
   become: true
   lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '^\s*(//\s*)?"Docker:bionic";\s*$'
-    line: '        "Docker:bionic";'
+    regexp: '^\s*(//\s*)?"Docker:focal";\s*$'
+    line: '        "Docker:focal";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
 - name: '`docker-ce` package (latest)'
