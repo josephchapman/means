@@ -22,7 +22,7 @@
 
 - name: 'list non-core, non-base snaps'
   become: true
-  shell: snap list | awk '$1 !~ /^\s*Name/ && $6 !~ /(core|base)/ {print $1}'
+  shell: snap list | awk '$1 !~ /^\s*Name/ && $6 !~ /(core|base|snapd)/ {print $1}'
   register: snap_list_non_base
   changed_when: false
 

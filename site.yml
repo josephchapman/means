@@ -13,14 +13,14 @@
 
   pre_tasks:
   - block:
-    - name: 'Check host is Ubuntu 18.04 (bionic)'
+    - name: 'Check host is Ubuntu 20.04 (bionic)'
       assert:
         that:
         - ansible_distribution == 'Ubuntu'
-        - ansible_distribution_version == '18.04'
-        - ansible_distribution_release == 'bionic'
+        - ansible_distribution_version == '20.04'
+        - ansible_distribution_release == 'focal'
         msg:
-        - This Ansible playbook has been designed for Ubuntu 18.04 (bionic)
+        - This Ansible playbook has been designed for Ubuntu 20.04 (bionic)
         - This appears to be {{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
         - ABORTING
     - name: 'Create directory for backup files'
