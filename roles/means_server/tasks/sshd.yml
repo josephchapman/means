@@ -15,7 +15,7 @@
     dest: "{{ backup_dir }}/sshd_config"
   changed_when: false
 
-- name: 'SSHD'
+- name: 'SSHD config'
   become: true
   lineinfile:
     path: /etc/ssh/sshd_config
@@ -25,3 +25,9 @@
   loop: "{{ query('items', sshd_config) }}"
   notify:
   - 'Restart SSHD'
+
+- name: 'SSHD enabled and started'
+  systemd:
+    name: sshd
+    enabled: yes
+    state: started
