@@ -7,7 +7,7 @@
     port: "{{ sshd_port }}"
     proto: tcp
 
-- name: 'Backup existing login.defs'
+- name: 'Backup existing sshd_config'
   become: true
   copy:
     remote_src: yes

@@ -20,24 +20,24 @@
   - snapd.service
   - snapd.socket
 
-- name: 'list non-core, non-base snaps'
+- name: 'list non-snapd, non-base snaps'
   become: true
-  shell: snap list | awk '$1 !~ /^\s*Name/ && $6 !~ /(core|base|snapd)/ {print $1}'
+  shell: snap list | awk '$1 !~ /^\s*Name/ && $6 !~ /(base|snapd)/ {print $1}'
   register: snap_list_non_base
   changed_when: false
 
-- name: 'Uninstall non-core, non-base snaps'
+- name: 'Uninstall non-snapd, non-base snaps'
   become: true
   shell: snap remove {{ item }}
   loop: "{{ snap_list_non_base.stdout_lines }}"
 
-- name: 'list non-core, base snaps'
+- name: 'list non-snapd, base snaps'
   become: true
   shell: snap list | awk '$1 !~ /^\s*Name/ && $6 ~ /base/ {print $1}'
   register: snap_list_base
   changed_when: false
 
-- name: 'Uninstall non-core, base snaps'
+- name: 'Uninstall non-snapd, base snaps'
   become: true
   shell: snap remove {{ item }}
   loop: "{{ snap_list_base.stdout_lines }}"
