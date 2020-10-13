@@ -31,6 +31,8 @@ dconf_options:
   value: "true"
 - key: /org/gnome/desktop/interface/clock-show-seconds
   value: "true"
+- key: /org/gnome/desktop/interface/enable-hot-corners
+  value: "false"
 - key: /org/gnome/desktop/interface/font-name
   value: "'Source Sans Pro 10'"
 - key: /org/gnome/desktop/interface/monospace-font-name
@@ -53,6 +55,10 @@ dconf_options:
   value: "uint32 4"
 - key: /org/gnome/gedit/preferences/editor/use-default-font
   value: "true"
+- key: /org/gnome/mutter/dynamic-workspaces
+  value: "true"
+- key: /org/gnome/mutter/workspaces-only-on-primary
+  value: "false"
 - key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
   value: "true"
 - key: /org/gnome/settings-daemon/plugins/media-keys/screensaver
@@ -65,18 +71,12 @@ dconf_options:
   value: "'1800'"
 - key: /org/gnome/settings-daemon/plugins/xsettings/overrides
   value: "{'Gtk/ShellShowsAppMenu': <0>}"
-- key: /org/gnome/shell/enable-hot-corners
-  value: "false"
 - key: /org/gnome/shell/enabled-extensions
   value: "['launch-new-instance@gnome-shell-extensions.gcampax.github.com']"
 - key: /org/gnome/shell/favorite-apps
   value: "['org.gnome.Nautilus.desktop',
            'org.gnome.gedit.desktop',
            'firefox.desktop']"
-- key: /org/gnome/shell/overrides/dynamic-workspaces
-  value: "true"
-- key: /org/gnome/shell/overrides/workspaces-only-on-primary
-  value: "false"
 - key: /org/gnome/Terminal/Legacy/Settings/new-terminal-mode
   value: "'tab'"
 
