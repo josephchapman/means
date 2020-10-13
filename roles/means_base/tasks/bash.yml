@@ -15,9 +15,9 @@
   changed_when: false
 
 - name: 'Deploy new `~/.bash_aliases`'
-  copy:
-    content: |
-      export HISTTIMEFORMAT='%FT%T%z  '
-    dest: "{{ ansible_env.HOME }}/.bash_aliases"
+  lineinfile:
+    create: yes
+    line: export HISTTIMEFORMAT='%FT%T%z  '
+    path: "{{ ansible_env.HOME }}/.bash_aliases"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
