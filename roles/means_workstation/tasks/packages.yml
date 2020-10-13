@@ -7,3 +7,29 @@
     force_apt_get: yes
     update_cache: yes
     state: latest
+
+- block:
+  - name: 'Install libvirt packages'
+    become: true
+    apt:
+      name: "{{ apt_packages_libvirt }}"
+      force_apt_get: yes
+      update_cache: yes
+      state: latest
+  when: virtualization_type == 'libvirt'
+
+- block:
+  - name: 'Enable multiverse repo'
+    become: true
+    replace:
+      path: /etc/apt/sources.list
+      regexp: '^(deb http:\/\/.*ubuntu\.com\/ubuntu focal.* main restricted universe)\s*$'
+      replace: '\1 multiverse'
+  - name: 'Install libvirt packages'
+    become: true
+    apt:
+      name: "{{ apt_packages_virtualbox }}"
+      force_apt_get: yes
+      update_cache: yes
+      state: latest
+  when: virtualization_type == 'virtualbox'
