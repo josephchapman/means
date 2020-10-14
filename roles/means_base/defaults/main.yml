@@ -8,6 +8,8 @@ package_mirrors:
     primary: http://ports.ubuntu.com/ubuntu-ports
     security: http://ports.ubuntu.com/ubuntu-ports
 
+enable_multiverse: no
+
 login_defs:
 - regexp: '^\s*(#\s*)?UMASK\s*\S*\s*$'
   line: 'UMASK		077'
