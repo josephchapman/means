@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-- means_base
+- role: means_base

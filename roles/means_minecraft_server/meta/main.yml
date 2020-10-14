@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-- means_server
+- role: means_server
