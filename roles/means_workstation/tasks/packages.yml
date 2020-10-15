@@ -7,3 +7,21 @@
     force_apt_get: yes
     update_cache: yes
     state: latest
+
+- name: 'Install libvirt packages'
+  become: true
+  apt:
+    name: "{{ apt_packages_libvirt }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+  when: virtualization_type == 'libvirt'
+
+- name: 'Install virtualbox packages'
+  become: true
+  apt:
+    name: "{{ apt_packages_virtualbox }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+  when: virtualization_type == 'virtualbox'

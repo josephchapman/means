@@ -13,14 +13,16 @@
   template:
     src: sources.list_exclude_multiverse.j2
     dest: /etc/apt/sources.list
-  when: "'raspi2' not in ansible_kernel"
+  when: (not enable_multiverse) and
+        ('raspi2' not in ansible_kernel)
 
 - name: 'Deploy new /etc/apt/sources.list (including multiverse)'
   become: true
   template:
     src: sources.list_include_multiverse.j2
     dest: /etc/apt/sources.list
-  when: "'raspi2' in ansible_kernel"  # multiverse required for `linux-firmware-raspi2`
+  when: (enable_multiverse) or
+        ('raspi2' in ansible_kernel)  # multiverse required for `linux-firmware-raspi2`
 
 - name: 'Update APT cache'
   become: true

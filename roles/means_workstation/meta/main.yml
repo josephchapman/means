@@ -1,5 +1,5 @@
 ---
 
 dependencies:
-- means_desktop
-- means_docker
+- role: means_desktop
+- role: means_docker
