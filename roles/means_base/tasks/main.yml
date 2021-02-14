@@ -63,5 +63,6 @@
 # GRUB
 - name: 'GRUB'
   include_tasks: grub.yml
+  when: "'raspi' not in ansible_kernel"
   tags:
   - grub
