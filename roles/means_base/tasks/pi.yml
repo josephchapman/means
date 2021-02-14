@@ -1,0 +1,28 @@
+---
+
+- name: 'Create systemd unit file to disable Pi3 LEDs'
+  become: true
+  copy:
+    content: |
+      [Unit]
+      Description=Disable PWR and ACT LEDs on Raspberry Pi
+      [Service]
+      Type=oneshot
+      ExecStart=/bin/bash -c "/bin/echo 'none' > /sys/class/leds/led0/trigger; /bin/echo '0' > /sys/class/leds/led0/brightness; /bin/echo 'none' > /sys/class/leds/led1/trigger; /bin/echo '0' > /sys/class/leds/led1/brightness"
+      RemainAfterExit=true
+      ExecStop=/bin/bash -c "/bin/echo 'mmc0' > /sys/class/leds/led0/trigger; /bin/echo '1' > /sys/class/leds/led0/brightness; /bin/echo 'input' > /sys/class/leds/led1/trigger; /bin/echo '1' > /sys/class/leds/led1/brightness"
+      StandardOutput=journal
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/disable-pi-leds.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: 'systemctl daemon-reload, then enable and start systemd service to disable Pi3 LEDs'
+  become: true
+  systemd:
+    daemon_reload: yes
+    name: disable-pi-leds.service
+    enabled: yes
+    state: started

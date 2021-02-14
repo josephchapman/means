@@ -66,3 +66,10 @@
   when: "'raspi' not in ansible_kernel"
   tags:
   - grub
+
+# Raspberry Pi
+- name: 'Raspberry Pi'
+  include_tasks: pi.yml
+  when: "'raspi' in ansible_kernel"
+  tags:
+  - pi3
