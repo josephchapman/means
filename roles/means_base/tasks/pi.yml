@@ -1,7 +1,13 @@
 ---
 
+- name: 'Check Pi model'
+  command: grep '^\s*Model' /proc/cpuinfo
+  changed_when: false
+  register: pi_model
+
 - name: 'Create systemd unit file to disable Pi3 LEDs'
   become: true
+  when: "'Raspberry Pi 3' in pi_model.stdout"
   copy:
     content: |
       [Unit]
@@ -21,6 +27,7 @@
 
 - name: 'systemctl daemon-reload, then enable and start systemd service to disable Pi3 LEDs'
   become: true
+  when: "'Raspberry Pi 3' in pi_model.stdout"
   systemd:
     daemon_reload: yes
     name: disable-pi-leds.service
