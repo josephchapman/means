@@ -14,7 +14,7 @@
     src: sources.list_exclude_multiverse.j2
     dest: /etc/apt/sources.list
   when: (not enable_multiverse) and
-        ('raspi2' not in ansible_kernel)
+        ('raspi' not in ansible_kernel)
 
 - name: 'Deploy new /etc/apt/sources.list (including multiverse)'
   become: true
@@ -22,7 +22,7 @@
     src: sources.list_include_multiverse.j2
     dest: /etc/apt/sources.list
   when: (enable_multiverse) or
-        ('raspi2' in ansible_kernel)  # multiverse required for `linux-firmware-raspi2`
+        ('raspi' in ansible_kernel)  # multiverse required for `linux-firmware-raspi2`
 
 - name: 'Update APT cache'
   become: true
