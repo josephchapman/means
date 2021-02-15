@@ -1,0 +1,9 @@
+---
+
+- name: 'Restart Motion'
+  become: true
+  systemd:
+    name: motion.service
+    state: restarted
+  listen:
+  - 'Restart Motion'

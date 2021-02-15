@@ -1,0 +1,54 @@
+---
+
+- name: 'Motion installed'
+  become: true
+  apt:
+    name: motion
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: 'Backup existing /etc/default/motion'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/default/motion
+    dest: "{{ backup_dir }}/motion"
+  changed_when: false
+
+- name: 'Motion daemon enable'
+  become: true
+  ini_file:
+    path: /etc/default/motion
+    section: null
+    option: start_motion_daemon
+    value: 'yes'
+    no_extra_spaces: yes
+    backup: yes
+  notify:
+  - 'Restart Motion'
+
+- name: 'Backup existing motion.conf'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/motion/motion.conf
+    dest: "{{ backup_dir }}/motion.conf"
+  changed_when: false
+
+- name: 'Motion config'
+  become: true
+  lineinfile:
+    path: /etc/motion/motion.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop: "{{ query('items', motion_config) }}"
+  notify:
+  - 'Restart Motion'
+
+- name: 'Motion enabled and started'
+  become: true
+  systemd:
+    name: motion.service 
+    enabled: yes
+    state: started
