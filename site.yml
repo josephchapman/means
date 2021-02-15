@@ -48,6 +48,9 @@
   - role: means_minecraft_server
     tags:
     - minecraft_server
+  - role: means_cam_local
+    tags:
+    - cam_local
 
   tasks:
   # PulseAudio

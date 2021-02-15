@@ -1,0 +1,7 @@
+---
+
+# Motion
+- name: 'Motion'
+  include_tasks: motion.yml
+  tags:
+  - motion
