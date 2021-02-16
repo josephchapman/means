@@ -1,5 +1,12 @@
 ---
 
+# Pi
+- name: 'Pi'
+  include_tasks: pi.yml
+  when: "'raspi' in ansible_kernel"
+  tags:
+  - pi_cam
+
 # Motion
 - name: 'Motion'
   include_tasks: motion.yml
