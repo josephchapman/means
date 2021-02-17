@@ -7,3 +7,11 @@
     state: restarted
   listen:
   - 'Restart Motion'
+
+- name: 'Restart Apache'
+  become: true
+  service:
+    name: apache2.service
+    state: restarted
+  listen:
+  - 'Restart Apache'

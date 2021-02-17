@@ -1,0 +1,37 @@
+<VirtualHost *:80>
+    RedirectMatch ^(.*)$ https://{{ ansible_default_ipv4.address }}$1
+
+    CustomLog /var/log/apache2/cam-access.log combined
+    ErrorLog  /var/log/apache2/cam-error.log
+    LogLevel warn
+</VirtualHost>
+
+<VirtualHost *:443>
+    DocumentRoot /var/www/html/
+
+    <Directory />
+        AllowOverride None
+    </Directory>
+
+    <Directory /var/www/html/archive/>
+        Options +Indexes
+    </Directory>
+
+    ProxyRequests Off
+    <Location "/stream/cam/">
+        ProxyPass "http://127.0.0.1:8081/"
+    </Location>
+
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/cam_certificate.crt
+    SSLCertificateKeyFile   /etc/ssl/private/cam_private_key.key
+    SSLProtocol             TLSv1.2
+    SSLCipherSuite          ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
+    SSLHonorCipherOrder     on
+    SSLCompression          off
+    Header always set Strict-Transport-Security "max-age=15768000"
+
+    CustomLog /var/log/apache2/cam-ssl-access.log combined
+    ErrorLog  /var/log/apache2/cam-ssl-error.log
+    LogLevel warn
+</VirtualHost>

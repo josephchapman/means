@@ -1,0 +1,89 @@
+---
+
+- name: 'Private key'
+  become: true
+  openssl_privatekey:
+#    force: true
+    path: /etc/ssl/private/cam_private_key.key
+    size: 4096
+#    cipher: aes256
+
+- name: 'CSR'
+  become: true
+  openssl_csr:
+#    force: true
+    path: /etc/ssl/certs/cam_csr.csr
+    privatekey_path: /etc/ssl/private/cam_private_key.key
+    common_name: 'cam'
+    digest: sha256
+
+- name: 'Certificate'
+  become: true
+  openssl_certificate:
+#    force: true
+    path: /etc/ssl/certs/cam_certificate.crt
+    privatekey_path: /etc/ssl/private/cam_private_key.key
+    csr_path: /etc/ssl/certs/cam_csr.csr
+    provider: selfsigned
+    selfsigned_digest: sha256
+
+- name: 'Apache installed'
+  become: true
+  apt:
+    name: apache2
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: 'Apache modules enabled'
+  become: true
+  apache2_module:
+    state: present
+    name: "{{ item }}"
+  loop:
+  - ssl
+  - proxy
+  - proxy_http
+  - headers
+  notify: 'Restart Apache'
+
+- name: 'Apache vhost config'
+  become: true
+  template:
+    src: apache_vhost.j2
+    dest: /etc/apache2/sites-available/cam.conf
+
+- name: 'Apache default vhost disable'
+  become: true
+  command: a2dissite 000-default.conf
+  notify: 'Restart Apache'
+
+- name: 'Apache custom vhost enable'
+  become: true
+  command: a2ensite cam.conf
+  notify: 'Restart Apache'
+
+- name: 'Deploy application'
+  become: true
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+
+- name: 'Apache2 started and enabled'
+  become: true
+  systemd:
+    name: apache2.service
+    enabled: yes
+    state: started
+
+- name: 'UFW allow'
+  become: true
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    from_ip: 192.168.0.0/24
+    direction: in
+    proto: tcp
+  loop:
+  - '80'
+  - '443'

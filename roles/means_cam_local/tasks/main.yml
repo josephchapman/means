@@ -12,3 +12,9 @@
   include_tasks: motion.yml
   tags:
   - motion
+
+# Apache
+- name: 'Apache'
+  include_tasks: apache.yml
+  tags:
+  - apache
