@@ -69,6 +69,24 @@
     src: index.html
     dest: /var/www/html/index.html
 
+- name: 'Application data store exists'
+  become: true
+  file:
+    path: /var/www/html/archive/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: 'Application data store linked'
+  become: true
+  mount:
+    path: /var/www/html/archive/
+    src: /var/lib/motion/archive/
+    opts: bind
+    state: mounted
+    fstype: none
+
 - name: 'Apache2 started and enabled'
   become: true
   systemd:
