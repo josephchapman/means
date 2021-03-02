@@ -82,3 +82,11 @@
     value: 1
     sysctl_file: /etc/sysctl.d/flannel.conf
     reload: yes
+
+#- name: 'Configure Kubelets'
+#  become: true
+#  copy:
+#    content: |
+#      KUBELET_EXTRA_ARGS=--node-ip="{{ kubernetes_node_ip }}"
+#    dest: /etc/default/kubelet
+#    mode: 0644

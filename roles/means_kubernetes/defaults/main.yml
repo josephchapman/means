@@ -3,3 +3,7 @@
 kubernetes_version: 1.17.8-00
 kubernetes_role: master
 kubernetes_apiserver_advertise_address: "{{ ansible_default_ipv4.address }}"
+kubernetes_node_ip: "{{ ansible_default_ipv4.address }}"
+kubernetes_cluster_name: mycluster
+kubernetes_dns_domain: mydns
+

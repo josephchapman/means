@@ -1,0 +1,14 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: {{ kubernetes_apiserver_advertise_address }}
+nodeRegistration:
+  taints: []
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+clusterName: {{ kubernetes_cluster_name }}
+kind: ClusterConfiguration
+networking:
+  dnsDomain: {{ kubernetes_dns_domain }}.local
+  podSubnet: 10.244.0.0/16
+  serviceSubnet: 10.96.0.0/12
