@@ -1,0 +1,19 @@
+---
+
+- name: 'Backup existing config.txt'
+  become: true
+  copy:
+    remote_src: yes
+    src: /boot/firmware/config.txt
+    dest: "{{ backup_dir }}/config.txt"
+  changed_when: false
+
+- name: 'Configure config.txt'
+  become: true
+  ini_file:
+    path: /boot/firmware/config.txt
+    section: all
+    option: '{{ item.key }}'
+    value: '{{ item.value }}'
+    no_extra_spaces: yes
+  loop: "{{ query('items', pi_config)}}"

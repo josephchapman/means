@@ -8,6 +8,15 @@
     update_cache: yes
     state: latest
 
+- name: 'Archive subdirectory exists'
+  become: true
+  file:
+    path: /var/lib/motion/archive/
+    state: directory
+    owner: motion
+    group: www-data
+    mode: '2750'
+
 - name: 'Backup existing /etc/default/motion'
   become: true
   copy:

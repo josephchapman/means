@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cam</title>
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400">
+        <style>
+            * {
+                margin:  0px;
+                padding: 0px;
+            }
+            html {
+                height: 100%;
+                width: 100%;
+            }
+            body {
+                width:        768px;
+                font-family:  'Source Sans Pro', sans-serif;
+                margin-left:  auto;
+                margin-right: auto;
+            }
+            header, nav {
+                height: 50px;
+            }
+            h1, nav a {
+                text-align:     center;
+                line-height:    50px;
+                vertical-align: middle;
+            }
+            h1 {
+                background-color: #222222;
+                color:            #eeeeee;
+            }
+            nav a {
+                display:          block;
+                background-color: #6a2ffc;
+                color:            #eeeeee;
+                text-decoration:  none;
+                font-size:        24px;
+            }
+            nav a:hover {
+                background-color: #83a5c1;
+            }
+            nav a:active {
+                background-color: #77eeee;
+            }
+            img.stream {
+                width: 768px;
+                height: 432px;
+                object-fit: cover;
+            }
+            img.stream169h {
+                width: 768px;
+                height: 432px;
+            }
+            img.stream169v {
+                width: 768px;
+                height: 1365px;
+            }
+            img.stream43h {
+                width:  768px;
+                height: 576px;
+            }
+            img.stream43v {
+                width: 768px;
+                height: 1024px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Live Streams</h1>
+        </header>
+        <nav>
+            <a href='./archive/?C=M;O=D'>Previous Motion</a>
+        </nav>
+        <section>
+            <a href='./stream/cam/'>
+                <img class='stream' src='./stream/cam/'></img>
+            </a>
+        </section>
+    </body>
+</html>
