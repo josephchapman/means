@@ -5,7 +5,38 @@
     path: /etc/kubernetes/kubelet.conf
   register: kubernetes_join_stat
 
+- name: 'Get apiServerEndpoint'
+  shell: echo "{{ kubernetes_join_command }}" | awk '{print $3}'
+  changed_when: false
+  register: kubernetes_api_server_endpoint
+  when: not kubernetes_join_stat.stat.exists
+
+- name: 'Get token'
+  shell: echo "{{ kubernetes_join_command }}" | awk '{print $5}'
+  changed_when: false
+  register: kubernetes_token
+  when: not kubernetes_join_stat.stat.exists
+
+- name: 'Get caCertHash'
+  shell: echo "{{ kubernetes_join_command }}" | awk '{print $7}'
+  changed_when: false
+  register: kubernetes_ca_cert_hash
+  when: not kubernetes_join_stat.stat.exists
+
+- name: 'Join configuration file present'
+  become: true
+  template:
+    src: kubeadm-config-join.j2
+    dest: /tmp/kubeadm-config-join.yml
+  when: not kubernetes_join_stat.stat.exists
+
 - name: 'Join node to the Kubernetes master (if not already)'
   become: true
-  command: "{{ kubernetes_join_command }}"
+  command: kubeadm join --config /tmp/kubeadm-config-join.yml
   when: not kubernetes_join_stat.stat.exists
+
+#- name: 'Join node to the Kubernetes master (if not already)'
+#  become: true
+#  command: "{{ kubernetes_join_command }}"
+#  when: not kubernetes_join_stat.stat.exists
+
