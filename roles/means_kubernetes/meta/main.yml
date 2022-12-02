@@ -1,7 +1,8 @@
 ---
 
 dependencies:
-- role: means_docker
+- role: means_container
   vars:
     docker_version: 5:19.03.12~3-0~ubuntu-focal
     docker_version_hold: true
+- role: means_server
