@@ -1,0 +1,31 @@
+---
+
+- name: 'Backup existing .ssh from data'
+  become: true
+  copy:
+    remote_src: yes
+    src: "/media/{{ ansible_env.USER }}/{{ system.disk.uuid }}/data/.ssh"
+    dest: "{{ backup_dir }}/.ssh-from-data"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  changed_when: false
+
+- name: 'Backup existing .ssh from home'
+  become: true
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.ssh"
+    dest: "{{ backup_dir }}/.ssh-from-home"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+  changed_when: false
+
+- name: 'SymLink to SSH directory'
+  ansible.builtin.file:
+    src: "/media/{{ ansible_env.USER }}/{{ system.disk.uuid }}/data/.ssh"
+    dest: "{{ ansible_env.HOME }}/.ssh"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    state: link
+    force: true # to unlink any existing hard links (dirs) before creating sym link
+    # also allows creation of sum link before the src exists (data not yet transferred to data disk)

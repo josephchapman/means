@@ -1,5 +1,7 @@
 ---
 
+device_mapper: ubuntu--vg-data
+
 package_mirrors:
   x86_64:
     primary: http://gb.archive.ubuntu.com/ubuntu

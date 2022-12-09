@@ -1,0 +1,101 @@
+---
+
+- name: 'Microsoft''s signing key'
+  become: true
+  apt_key:
+    # Downloads an asc ut needs to be stored as gpg
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
+    state: present
+
+- name: 'Microsoft''s repository'
+  become: true
+  copy:
+    src: vscode.list
+    dest: /etc/apt/sources.list.d/vscode.list
+    mode: 0644
+
+- name: 'Apt update cache'
+  become: true
+  apt:
+    update_cache: true
+  changed_when: false
+
+- name: 'Allow Unattended-upgrade to use Microsoft Repo'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"code stable:stable";\s*$'
+    line: '        "code stable:stable";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: '`apt-transport-https` package'
+  become: true
+  apt:
+    name: apt-transport-https
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: '`VS Code` package'
+  become: true
+  apt:
+    name: code
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
+- name: '`~/.vscode/` directory'
+  file:
+    path: "{{ ansible_env.HOME }}/.vscode/"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0700
+
+- name: 'Check if there is an existing `~/.config/Code/User/settings.json`'
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+  register: vscode_config
+  changed_when: false
+
+- name: 'Backup existing `~/.config/Code/User/settings.json`'
+  when: vscode_config.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    dest: "{{ backup_dir }}/settings.json"
+  changed_when: false
+
+- name: 'Deploy `~/.config/Code/User/settings.json`'
+  copy:
+    content: |
+      {
+        "editor.acceptSuggestionOnEnter": "off",
+        "editor.fontFamily": "'Source Code Pro', 'monospace', monospace",
+        "editor.tabSize": 2,
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 79,
+        "explorer.confirmDragAndDrop": false,
+        "workbench.editor.untitled.hint": "hidden",
+        "workbench.panel.defaultLocation": "right",
+        "workbench.panel.opensMaximized": "always",
+        "workbench.startupEditor": "none",
+        "cloudcode.enableTelemetry": false,
+        "cloudcode.kubectlExecShell": "bash",
+        "dev.containers.copyGitConfig": false,
+        "dev.containers.gitCredentialHelperConfigLocation": "none"
+      }
+    dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: 'List VS Code extensions'
+  command: code --list-extensions
+  register: vscode_extensions_installed
+  changed_when: false
+
+- name: 'Install VS Code extensions'
+  command: code --install-extensions {{ item }}
+  when: item not in vscode_extensions_installed.stdout
+  loop: "{{ query('items', vscode.extensions )}}"

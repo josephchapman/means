@@ -87,3 +87,13 @@
     dest: "{{ ansible_env.HOME }}/.atom/config.cson"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
+
+- name: 'List installed Atom packages'
+  command: apm list -ib
+  register: atom_packages_installed
+  changed_when: false
+
+- name: 'Install Atom packages'
+  command: apm install {{ item }}
+  when: item no in atom_packages_installed.stdout
+  loop: "{{ query('items', atom.packages )}}"

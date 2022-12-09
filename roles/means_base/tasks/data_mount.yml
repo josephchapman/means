@@ -1,0 +1,33 @@
+---
+
+- name: '~/.config'
+  file:
+    path: ~/.config/
+    state: directory
+
+- name: '~/.config/systemd/'
+  file:
+    path: ~/.config/systemd/
+    state: directory
+
+- name: '~/.config/systemd/user/'
+  file:
+    path: ~/.config/systemd/user/
+    state: directory
+
+- name: 'systemd data-mount.service unit file'
+  template:
+    src: data-mount.service.j2
+    dest: ~/.config/systemd/user/data-mount.service
+
+- name: 'systemctl daemon-reload'
+  systemd:
+    daemon_reload: yes
+    scope: user
+
+- name: 'data-mount.service started and enabled'
+  systemd:
+    name: data-mount.service
+    scope: user
+    enabled: yes
+    state: started

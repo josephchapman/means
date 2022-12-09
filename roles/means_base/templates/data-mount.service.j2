@@ -1,0 +1,12 @@
+[Unit]
+Description=Data Mount
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/udisksctl mount -b /dev/mapper/{{ device_mapper }}
+ExecStop=/usr/bin/udisksctl unmount -b /dev/mapper/{{ device_mapper }}
+SuccessExitStatus=1
+
+[Install]
+WantedBy=default.target

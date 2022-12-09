@@ -2,4 +2,4 @@
 
 dependencies:
 - role: means_desktop
-- role: means_docker
+- role: means_container

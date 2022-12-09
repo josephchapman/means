@@ -1,5 +1,11 @@
 ---
 
+system:
+  disk:
+    uuid: asdf
+  network:
+    cidr_network_prefix_bits: 24
+
 virtualization_type: libvirt
 
 apt_packages_workstation:
@@ -24,3 +30,17 @@ apt_packages_libvirt:
 
 apt_packages_virtualbox:
 - virtualbox                     # multiverse
+
+atom:
+  packages:
+  - busy-signal
+  - intentions
+  - linter
+  - linter-ui-default
+  - linter-js-yaml
+  - language-terraform
+  - language-docker
+
+vscode:
+  extensions:
+  - googlecloudtools.cloudcode

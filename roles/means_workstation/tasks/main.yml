@@ -11,3 +11,27 @@
   include_tasks: atom.yml
   tags:
   - atom
+
+# Electron Fix
+- name: 'Electron Fix'
+  include_tasks: electron_fix.yml
+  tags:
+  - electron_fix
+
+# Firewall
+- name: 'Firewall'
+  include_tasks: firewall.yml
+  tags:
+  - firewall_ws
+
+# vscode editor
+- name: 'VSCode'
+  include_tasks: vscode.yml
+  tags:
+  - vscode
+
+# SSD
+- name: 'SSD'
+  include_tasks: ssh.yml
+  tags:
+  - ssh
