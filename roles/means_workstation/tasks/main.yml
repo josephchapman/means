@@ -6,12 +6,6 @@
   tags:
   - packages_workstation
 
-# Atom editor
-- name: 'Atom'
-  include_tasks: atom.yml
-  tags:
-  - atom
-
 # Electron Fix
 - name: 'Electron Fix'
   include_tasks: electron_fix.yml

@@ -15,9 +15,6 @@ apt_packages_workstation:
 - git                            # main
 - pwgen                          # universe
 - jq                             # universe
-# Programming
-#- python-pip                     # universe
-- python3-pip                    # universe
 # Virtualization
 - virt-manager                   # universe
 - virt-viewer                    # universe
@@ -30,16 +27,6 @@ apt_packages_libvirt:
 
 apt_packages_virtualbox:
 - virtualbox                     # multiverse
-
-atom:
-  packages:
-  - busy-signal
-  - intentions
-  - linter
-  - linter-ui-default
-  - linter-js-yaml
-  - language-terraform
-  - language-docker
 
 vscode:
   extensions:
