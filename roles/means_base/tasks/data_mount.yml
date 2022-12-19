@@ -1,19 +1,16 @@
 ---
 
-- name: '~/.config'
+- name: 'User''s systemd directory exists'
   file:
     path: ~/.config/
     state: directory
-
-- name: '~/.config/systemd/'
-  file:
-    path: ~/.config/systemd/
-    state: directory
-
-- name: '~/.config/systemd/user/'
-  file:
-    path: ~/.config/systemd/user/
-    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0700
+  with_items:
+  - ~/.config/
+  - ~/.config/systemd/
+  - ~/.config/systemd/user/
 
 - name: 'systemd data-mount.service unit file'
   template:

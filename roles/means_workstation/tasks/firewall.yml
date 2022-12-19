@@ -19,11 +19,11 @@
   ufw:
     rule: deny
     direction: in
-    from_ip: "{{ ansible_default_ipv4.network }}/{{ system.cidr_network_prefix_bits }}"
+    from_ip: "{{ ansible_default_ipv4.network }}/{{ system.network.cidr_network_prefix_bits }}"
 
 - name: 'UFW deny outbound to rest of local network'
   become: true
   ufw:
     rule: deny
     direction: out
-    to_ip: "{{ ansible_default_ipv4.network }}/{{ system.cidr_network_prefix_bits }}"
+    to_ip: "{{ ansible_default_ipv4.network }}/{{ system.network.cidr_network_prefix_bits }}"
