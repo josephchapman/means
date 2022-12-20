@@ -1,30 +1,15 @@
 ---
 
-- name: 'Check if there is an existing `.ssh` from data'
-  stat:
-    path: "/media/{{ ansible_env.USER }}/{{ system.disk.uuid }}/data/.ssh"
-  register: ssh_from_data
-  changed_when: false
-
-- name: 'Backup existing `.ssh` from data'
-  when: ssh_from_data.stat.exists
-  become: true
-  copy:
-    remote_src: yes
-    src: "/media/{{ ansible_env.USER }}/{{ system.disk.uuid }}/data/.ssh"
-    dest: "{{ backup_dir }}/.ssh-from-data"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
-  changed_when: false
-
-- name: 'Check if there is an existing `.ssh` from data'
+- name: 'Check if there is an existing `.ssh` from home'
   stat:
     path: "{{ ansible_env.HOME }}/.ssh"
   register: ssh_from_home
   changed_when: false
 
 - name: 'Backup existing .ssh from home'
-  when: ssh_from_home.stat.exists
+  when:
+  - ssh_from_home.stat.exists
+  - not ssh_from_home.stat.islnk
   become: true
   copy:
     remote_src: yes
@@ -32,6 +17,12 @@
     dest: "{{ backup_dir }}/.ssh-from-home"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
+  changed_when: false
+
+- name: 'Check if there is an existing `.ssh` from data'
+  stat:
+    path: "/media/{{ ansible_env.USER }}/{{ system.disk.uuid }}/data/.ssh"
+  register: ssh_from_data
   changed_when: false
 
 - name: 'SymLink to SSH directory'

@@ -31,3 +31,4 @@ apt_packages_virtualbox:
 vscode:
   extensions:
   - googlecloudtools.cloudcode
+  - ms-vscode-remote.remote-containers
