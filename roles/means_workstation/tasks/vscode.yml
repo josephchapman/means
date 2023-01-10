@@ -88,13 +88,13 @@
         "editor.tabSize": 2,
         "editor.wordWrap": "bounded",
         "editor.wordWrapColumn": 79,
+        "explorer.compactFolders": false,
         "explorer.confirmDragAndDrop": false,
+        "telemetry.telemetryLevel": "off",
         "workbench.editor.untitled.hint": "hidden",
         "workbench.panel.defaultLocation": "right",
         "workbench.panel.opensMaximized": "always",
         "workbench.startupEditor": "none",
-        "cloudcode.enableTelemetry": false,
-        "cloudcode.kubectlExecShell": "bash",
         "dev.containers.copyGitConfig": false,
         "dev.containers.gitCredentialHelperConfigLocation": "none"
       }
