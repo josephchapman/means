@@ -30,4 +30,5 @@ apt_packages_virtualbox:
 
 vscode:
   extensions:
+  - ms-azuretools.vscode-docker
   - ms-vscode-remote.remote-containers
