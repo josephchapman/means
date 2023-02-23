@@ -15,7 +15,7 @@
     state: present
     update_cache: yes
     filename: docker-ce
-    mode: 0600
+    mode: 0644
 
 - name: 'Allow Unattended-upgrade to use Docker Repo'
   become: true

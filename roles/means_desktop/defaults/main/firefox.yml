@@ -1,0 +1,424 @@
+---
+
+firefox_preferences:
+
+# Last tested Firefox version : 103.0.2
+
+# Already seen Firefox View tour
+- key: browser.firefox-view.feature-tour
+  value: '"{"screen":"","complete":true}"'
+
+# Already seen welcome page
+- key: trailhead.firstrun.didSeeAboutWelcome
+  value: 'true'
+
+# Customize the UI
+- key: browser.uiCustomization.state
+  value: '"{"placements":{"widget-overflow-fixed-list":[],"unified-extensions-area":[],"nav-bar":["back-button","forward-button","stop-reload-button","customizableui-special-spring1","urlbar-container","customizableui-special-spring2","downloads-button","screenshot-button","preferences-button"],"toolbar-menubar":["menubar-items"],"TabsToolbar":["tabbrowser-tabs","new-tab-button","alltabs-button"],"PersonalToolbar":[]},"seen":["save-to-pocket-button","developer-button"],"dirtyAreaCache":["nav-bar","PersonalToolbar","toolbar-menubar","TabsToolbar"],"currentVersion":18,"newElementCount":6}"'
+
+- key: browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned
+  value: ''
+
+
+
+### about:preferences ###
+
+# General
+
+#   General
+
+#     Startup
+#       Open previous windows and tabs [On=3 / Off=1 (default)]
+- key: browser.startup.page
+  value: '1'
+#       Always check if Firefox is your default browser
+# ??
+
+#     Tabs
+#       Ctrl+Tab cycles through tabs in recently used order [On=true / Off=false (default)]
+- key: browser.ctrlTab.sortByRecentlyUsed
+  value: 'false'
+#       Open links in tabs instead of new windows [On=3 (default) / Off=2]
+- key: browser.link.open_newwindow
+  value: '3'
+#       When you open a link, image or media in a new tab, switch to it immediately [On=false / Off=true (default)]
+- key: browser.tabs.loadInBackground
+  value: 'true'
+#       Confirm before closing multiple tabs [On=true / Off=false (default)]
+- key: browser.tabs.warnOnClose
+  value: 'false'
+#       Confirm before quitting with Ctrl+Q [On=true (default) / Off=false]
+- key: browser.warnOnQuitShortcut
+  value: 'true'
+
+
+
+#   Language and Appearance
+
+#     Web site appearance [Dark=0 / Light=1 / Automatic=2 (default)]
+- key: layout.css.prefers-color-scheme.content-override
+  value: '0'
+
+#     Colors
+
+#     Fonts
+#       Advanced
+#         Serif: Source Serif Pro
+- key: font.name.serif.x-western
+  value: '"Source Serif Pro"'
+#         Sans Serif : Source Sans Pro
+- key: font.name.sans-serif.x-western
+  value: '"Source Sans Pro"'
+#         Monospace : Source Code Pro
+- key: font.name.monospace.x-western
+  value: '"Source Code Pro"'
+
+#     Zoom
+#       Default zoom
+# ??
+#       Zoom text only [On=false / Off=true (default)]
+- key: browser.zoom.full
+  value: 'true'
+#     Language
+#       Choose the languages used to display menus, messages, and notifications from Firefox. [blank=default]
+- key: intl.locale.requested
+  value: '"en-US,en-GB"'
+#       Check your spelling as you type [On=1 (default) / Off=0]
+- key: layout.spellcheckDefault
+  value: '1'
+
+
+#   Files and Applications
+
+#     Downloads
+#       Save files to [nonexistant=default]
+- key: browser.download.dir
+  value: "{{ ansible_env.HOME }}/Downloads"
+#       Always ask you where to save files [On=false / Off=true (default)]
+- key: browser.download.useDownloadDir
+  value: 'true'
+
+#     Applications
+#       What should Firefox do with other files? [Save files=false (default) / Ask=true]
+- key: browser.download.always_ask_before_handling_new_types
+  value: 'true'
+
+#     Digital Rights Management (DRM) Content
+#       Play DRM-controlled content [On=true / Off=false (default)]
+- key: media.eme.enabled
+  value: 'false'
+
+
+
+#   Performance
+#     Use recommended performance settings [On=true (default) / Off=false]
+- key: browser.preferences.defaultPerformanceSettings.enabled
+  value: 'true'
+
+#   Browsing
+#     Use autoscrolling [On=true / Off=false (default)]
+- key: general.autoScroll
+  value: 'true'
+#     Use smooth scrolling [On=true (default) / Off=false]
+- key: general.smoothScroll
+  value: 'false'
+#     Always show scrollbars [On=false / Off=true (default)]
+- key: widget.gtk.overlay-scrollbars.enabled
+  value: 'true'
+#     Always use the cursor keys to navigate within pages [On=true / Off=false (default)]
+- key: accessibility.browsewithcaret
+  value: 'false'
+#     Search for text when you start typing [On=true / Off=false (default)]
+- key: accessibility.typeaheadfind
+  value: 'false'
+#     Enable picture-in-picture video controls [On=true (default) / Off=false]
+- key: media.videocontrols.picture-in-picture.video-toggle.enabled
+  value: 'true'
+#     Control media via keyboard, headset, or virtual interface [On=true (default) / Off=false]
+- key: media.hardwaremediakeys.enabled
+  value: 'true'
+#     Recommend extensions as you browse [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons
+  value: 'false'
+#     Recommend features as you browse [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features
+  value: 'false'
+
+
+
+#   Network Settings
+
+
+
+
+
+# Home
+
+#   New Windows and Tabs
+#     Homepage and new windows [Firefox Home (Default)=about:home (default) / Blank Page=chrome://browser/content/blanktab.html]
+- key: browser.startup.homepage
+  value: '"chrome://browser/content/blanktab.html"'
+#     New tabs [Firefox Home (Default)=true (default) / Blank Page=false]
+- key: browser.newtabpage.enabled
+  value: 'false'
+
+#   Firefox Home Content
+#     Web Search [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.showSearch
+  value: 'false'
+#     Shortcuts [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.feeds.topsites
+  value: 'false'
+#       Sponsored shortcuts [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.showSponsoredTopSites
+  value: 'false'
+#     Recommended by Pocket [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.feeds.section.topstories
+  value: 'false'
+#       Sponsored Stories [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.showSponsored
+  value: 'false'
+#     Recent activity [On=true / Off=false (default)]
+- key: browser.newtabpage.activity-stream.feeds.section.highlights
+  value: 'false'
+#       Visited Pages [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.section.highlights.includeVisited
+  value: 'false'
+#       Bookmarks [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.section.highlights.includeBookmarks
+  value: 'false'
+#       Most Recent Download [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.section.highlights.includeDownloads
+  value: 'false'
+#       Pages Saved to Pocket [On=true (default) / Off=false]
+- key: browser.newtabpage.activity-stream.section.highlights.includePocket
+  value: 'false'
+#     Snippets [On=true / Off=false (default)]
+- key: browser.newtabpage.activity-stream.feeds.snippets
+  value: 'false'
+
+
+
+
+
+
+
+
+
+# Search
+
+#   Search Bar [Address bar=false (default) / Dedicated bar=true]
+- key: browser.search.widget.inNavBar
+  value: 'false'
+#   Default Search Engine [freetext=Google (default)]
+- key: browser.urlbar.placeholderName
+  value: '"Google"'
+#   Search Suggestions
+#     Provide search suggestions [On=true (default) / Off=false]
+- key: browser.search.suggest.enabled
+  value: 'false'
+#       Show search suggestions in address bar results [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.searches
+  value: 'false'
+#       Show search suggestions ahead of browsing history in address bar results [On=true (default) / Off=false]
+- key: browser.urlbar.showSearchSuggestionsFirst
+  value: 'false'
+#       Show search suggestions in Private Windows [On=true / Off=false (default)]
+- key: browser.search.suggest.enabled.private
+  value: 'false'
+#   Search Shortcuts
+# ??
+
+
+
+
+
+# Privacy & Security
+
+#   Browser Privacy
+
+#     Enhanced Tracking Protection
+# ?? a package of settings
+
+#       Send websites a "Do Not Track" signal that you don't want to be tracked [Always=true / Only known trackers=false (default)]
+- key: privacy.donottrackheader.enabled
+  value: 'true'
+
+#     Cookies and Site Data
+#       Delete cookies and site data when Firefox is closed
+# ?? a package of settings
+
+#     Logins and Passwords
+#       Ask to save logins and passwords for websites [On=true (default) / Off=false]
+- key: signon.rememberSignons
+  value: 'false'
+#         Autofill logins and passwords [On=true (default) / Off=false]
+- key: signon.autofillForms
+  value: 'false'
+#         Suggest and generate strong passwords [On=true (default) / Off=false]
+- key: signon.generation.enabled
+  value: 'false'
+#         Show alerts about passwords for breached websites [On=true (default) / Off=false]
+- key: signon.management.page.breach-alerts.enabled
+  value: 'true'
+#       Use a Primary Password
+# ??
+
+#     Forms and Autofill
+#       Autofill credit cards [On=true (default) / Off=false]
+- key: extensions.formautofill.creditCards.enabled
+  value: 'false'
+
+#     History
+#       Firefox will
+#         [Use custom settings for history=true / always remember or forget=false (default)]
+- key: privacy.history.custom
+  value: 'true'
+#       Always use private browsing mode [On=true / Off=false (default)]
+- key: browser.privatebrowsing.autostart
+  value: 'false'
+#         Remember browsing and download history [On=true (default) / Off=false]
+- key: places.history.enabled
+  value: 'false'
+#         Remember search and form history [On=true (default) / Off=false]
+- key: browser.formfill.enable
+  value: 'false'
+#         Clear history when Firefox closes [On=true / Off=false (default)]
+- key: privacy.sanitize.sanitizeOnShutdown
+  value: 'true'
+#           Settings
+#             When closed, Firefox should automatically clear all
+#               History
+#                 Browsing & download history [On=true (default) / Off=false]
+- key: privacy.clearOnShutdown.history
+  value: 'true'
+#                 Active logins [On=true (default) / Off=false]
+- key: privacy.clearOnShutdown.sessions
+  value: 'true'
+#                 Form & search history [On=true (default) / Off=false]
+- key: privacy.clearOnShutdown.formdata
+  value: 'true'
+#                 Cookies [On=true (default) / Off=false]
+- key: privacy.clearOnShutdown.cookies
+  value: 'true'
+#                 Cache [On=true (default) / Off=false]
+- key: privacy.clearOnShutdown.cache
+  value: 'true'
+#               Data
+#                 Site settings [On=true / Off=false (default)]
+- key: privacy.clearOnShutdown.siteSettings
+  value: 'false'
+#                 Offline website data [On=true / Off=false (default)]
+- key: privacy.clearOnShutdown.offlineApps
+  value: 'false'
+
+# Unlisted
+- key: privacy.sanitize.pending
+  value: '"[{"id":"shutdown","itemsToClear":["cache","cookies","offlineApps","history","formdata","downloads","sessions","siteSettings"],"options":{}}]"'
+- key: privacy.clearOnShutdown.downloads
+  value: 'true'
+
+
+#     Address Bar
+#       When using the address bar, suggest
+#         Browsing history [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.history
+  value: 'false'
+#         Bookmarks [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.bookmark
+  value: 'false'
+#         Open tabs [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.openpage
+  value: 'false'
+#         Shortcuts [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.topsites
+  value: 'false'
+#         Search engines [On=true (default) / Off=false]
+- key: browser.urlbar.suggest.engines
+  value: 'false'
+
+#   Permissions
+#     Location
+#       Block new requests asking to access your location [On=2 / Off=0 (default)]
+- key: permissions.default.geo
+  value: '2'
+#     Camera
+#       Block new requests asking to access your camera [On=2 / Off=0 (default)]
+- key: permissions.default.camera
+  value: '2'
+#     Microphone
+#       Block new requests asking to access your microphone [On=2 / Off=0 (default)]
+- key: permissions.default.microphone
+  value: '2'
+#     Notifications Learn more
+#       Block new requests asking to allow notifications [On=2 / Off=0 (default)]
+- key: permissions.default.desktop-notification
+  value: '2'
+#     Autoplay [Allow Audio and Video=0 / Block Audio=1 (default) / Block Audio and Video=5]
+- key: media.autoplay.default
+  value: '1'
+#     Virtual Reality
+#       Block new requests asking to access your virtual reality devices [On=2 / Off=0 (default)]
+- key: permissions.default.xr
+  value: '2'
+#     Block pop-up windows [On=true (default) / Off=false]
+- key: dom.disable_open_during_load
+  value: 'true'
+#     Warn you when websites try to install add-ons [On=true (default) / Off=false]
+- key: xpinstall.whitelist.required
+  value: 'true'
+
+
+#   Firefox Data Collection and Use
+#     Allow Firefox to send technical and interaction data to Mozilla [On=true (default) / Off=false]
+- key: datareporting.healthreport.uploadEnabled
+  value: 'false'
+- key: toolkit.telemetry.cachedClientID    
+  value: '"c0ffeec0-ffee-c0ff-eec0-ffeec0ffeec0"'
+#       Allow Firefox to make personalized extension recommendations [On=true (default) / Off=false]
+- key: browser.discovery.enabled
+  value: 'false'
+#     Allow Firefox to install and run studies [On=true (default) / Off=false]
+- key: app.shield.optoutstudies.enabled
+  value: 'false'
+#     Allow Firefox to send backlogged crash reports on your behalf [On=true / Off=false (default)]
+- key: browser.crashReports.unsubmittedCheck.autoSubmit2
+  value: 'false'
+
+#   Security
+#     Deceptive Content and Dangerous Software Protection
+#       Block dangerous and deceptive content [On=true (default) / Off=false]
+- key: browser.safebrowsing.malware.enabled
+  value: 'true'
+- key: browser.safebrowsing.phishing.enabled
+  value: 'true'
+#         Block dangerous downloads [On=true (default) / Off=false]
+- key: browser.safebrowsing.downloads.enabled
+  value: 'true'
+#         Warn you about unwanted and uncommon software [On=true (default) / Off=false]
+- key: browser.safebrowsing.downloads.remote.block_potentially_unwanted
+  value: 'true'
+- key: browser.safebrowsing.downloads.remote.block_uncommon
+  value: 'true'
+- key: urlclassifier.malwareTable
+  value: '"goog-malware-proto,goog-unwanted-proto,moztest-harmful-simple,moztest-malware-simple,moztest-unwanted-simple"'
+
+
+
+#     Certificates
+#       Query OCSP responder servers to confirm the current validity of certificates [On=1 (default) / Off=0]
+- key: security.OCSP.enabled
+  value: '1'
+
+
+#     HTTPS-Only Mode [Don't enable=false (default) / All Windows=true]
+- key: dom.security.https_only_mode
+  value: 'false'
+- key: dom.security.https_only_mode_ever_enabled
+  value: 'false'
+
+#     HTTPS-Only Mode [Don't enable=false (default) / Private Windows=true]
+- key: dom.security.https_only_mode_pbm
+  value: 'false'
+- key: dom.security.https_only_mode_ever_enabled_pbm
+  value: 'false'

@@ -1,0 +1,65 @@
+---
+
+dconf_options:
+- key: /org/gnome/desktop/background/picture-uri
+  value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
+- key: /org/gnome/desktop/background/show-desktop-icons
+  value: "false"
+- key: /org/gnome/desktop/interface/gtk-theme
+  value: "'Adwaita-dark'"
+- key: /org/gnome/desktop/interface/icon-theme
+  value: "'Adwaita-dark'"
+- key: /org/gnome/desktop/interface/cursor-theme
+  value: "'Adwaita-dark'"
+- key: /org/gnome/desktop/interface/clock-show-date
+  value: "true"
+- key: /org/gnome/desktop/interface/clock-show-seconds
+  value: "true"
+- key: /org/gnome/desktop/interface/enable-hot-corners
+  value: "false"
+- key: /org/gnome/desktop/interface/font-name
+  value: "'Source Sans Pro 10'"
+- key: /org/gnome/desktop/interface/monospace-font-name
+  value: "'Source Code Pro 12'"
+- key: /org/gnome/desktop/peripherals/touchpad/tap-to-click
+  value: "true"
+- key: /org/gnome/desktop/search-providers/disable-external
+  value: "true"
+- key: /org/gnome/desktop/session/idle-delay
+  value: "uint32 600"
+- key: /org/gnome/desktop/wm/preferences/titlebar-uses-system-font
+  value: "true"
+- key: /org/gnome/gedit/preferences/editor/display-line-numbers
+  value: "true"
+- key: /org/gnome/gedit/preferences/editor/insert-spaces
+  value: "true"
+- key: /org/gnome/gedit/preferences/editor/scheme
+  value: "'oblivion'"
+- key: /org/gnome/gedit/preferences/editor/tabs-size
+  value: "uint32 4"
+- key: /org/gnome/gedit/preferences/editor/use-default-font
+  value: "true"
+- key: /org/gnome/mutter/dynamic-workspaces
+  value: "true"
+- key: /org/gnome/mutter/workspaces-only-on-primary
+  value: "false"
+- key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
+  value: "true"
+- key: /org/gnome/settings-daemon/plugins/media-keys/screensaver
+  value: "'<Super>l'"
+- key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type
+  value: "'nothing'"
+- key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-type
+  value: "'suspend'"
+- key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-timeout
+  value: "'1800'"
+- key: /org/gnome/settings-daemon/plugins/xsettings/overrides
+  value: "{'Gtk/ShellShowsAppMenu': <0>}"
+- key: /org/gnome/shell/enabled-extensions
+  value: "['launch-new-instance@gnome-shell-extensions.gcampax.github.com']"
+- key: /org/gnome/shell/favorite-apps
+  value: "['org.gnome.Nautilus.desktop',
+           'org.gnome.gedit.desktop',
+           'firefox.desktop']"
+- key: /org/gnome/Terminal/Legacy/Settings/new-terminal-mode
+  value: "'tab'"
