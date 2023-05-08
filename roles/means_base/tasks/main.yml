@@ -73,3 +73,9 @@
   when: "'raspi' in ansible_kernel"
   tags:
   - pi3
+
+# Data Mount
+- name: 'Data Mount'
+  include_tasks: data_mount.yml
+  tags:
+  - data_mount

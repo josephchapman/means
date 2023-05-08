@@ -46,9 +46,6 @@
     mode: 0600
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
-    line: |
-      // {{ item.comment }}
-      user_pref("{{ item.key }}", {{ item.value }});
-
+    line: user_pref("{{ item.key }}", {{ item.value }});
   loop: "{{ query('items', firefox_preferences)}}"
   changed_when: false

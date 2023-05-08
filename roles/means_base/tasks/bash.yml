@@ -14,10 +14,13 @@
     dest: "{{ backup_dir }}/.bash_aliases"
   changed_when: false
 
-- name: 'Deploy new `~/.bash_aliases`'
+- name: 'Envvars'
   lineinfile:
     create: yes
-    line: export HISTTIMEFORMAT='%FT%T%z  '
+    line: "{{ item }}"
     path: "{{ ansible_env.HOME }}/.bash_aliases"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
+  with_items:
+  - export HISTTIMEFORMAT='%FT%T%z  '
+  - export TZ='Europe/London'

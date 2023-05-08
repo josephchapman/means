@@ -1,0 +1,30 @@
+---
+
+- name: 'User''s systemd directory exists'
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0700
+  with_items:
+  - ~/.config/
+  - ~/.config/systemd/
+  - ~/.config/systemd/user/
+
+- name: 'systemd data-mount.service unit file'
+  template:
+    src: data-mount.service.j2
+    dest: ~/.config/systemd/user/data-mount.service
+
+- name: 'systemctl daemon-reload'
+  systemd:
+    daemon_reload: yes
+    scope: user
+
+- name: 'data-mount.service started and enabled'
+  systemd:
+    name: data-mount.service
+    scope: user
+    enabled: yes
+    state: started

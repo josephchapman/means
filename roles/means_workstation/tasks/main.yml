@@ -6,8 +6,26 @@
   tags:
   - packages_workstation
 
-# Atom editor
-- name: 'Atom'
-  include_tasks: atom.yml
+# Electron Fix
+- name: 'Electron Fix'
+  include_tasks: electron_fix.yml
   tags:
-  - atom
+  - electron_fix
+
+# Firewall
+- name: 'Firewall'
+  include_tasks: firewall.yml
+  tags:
+  - firewall_ws
+
+# vscode editor
+- name: 'VSCode'
+  include_tasks: vscode.yml
+  tags:
+  - vscode
+
+# SSD
+- name: 'SSD'
+  include_tasks: ssh.yml
+  tags:
+  - ssh

@@ -1,0 +1,29 @@
+---
+
+- name: 'UFW allow inbound from default gateway'
+  become: true
+  ufw:
+    rule: allow
+    direction: in
+    from_ip: "{{ ansible_default_ipv4.gateway }}"
+
+- name: 'UFW allow outbound to default gateway'
+  become: true
+  ufw:
+    rule: allow
+    direction: out
+    to_ip: "{{ ansible_default_ipv4.gateway }}"
+
+- name: 'UFW deny inbound from rest of local network'
+  become: true
+  ufw:
+    rule: deny
+    direction: in
+    from_ip: "{{ ansible_default_ipv4.network }}/{{ system.network.cidr_network_prefix_bits }}"
+
+- name: 'UFW deny outbound to rest of local network'
+  become: true
+  ufw:
+    rule: deny
+    direction: out
+    to_ip: "{{ ansible_default_ipv4.network }}/{{ system.network.cidr_network_prefix_bits }}"

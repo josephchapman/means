@@ -15,7 +15,7 @@
     state: present
     update_cache: yes
     filename: docker-ce
-    mode: 0600
+    mode: 0644
 
 - name: 'Allow Unattended-upgrade to use Docker Repo'
   become: true
@@ -25,19 +25,23 @@
     line: '        "Docker:focal";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
-- name: '`docker-ce` package (latest)'
+- name: '`docker-ce` and `docker-compose-plugin` packages (latest)'
   become: true
   apt:
-    name: docker-ce
+    name:
+    - docker-ce
+    - docker-compose-plugin
     force_apt_get: yes
     update_cache: yes
     state: latest
   when: docker_version is undefined
 
-- name: '`docker-ce` package (specific version)'
+- name: '`docker-ce` and `docker-compose-plugin` packages (specific version)'
   become: true
   apt:
-    name: docker-ce={{ docker_version }}
+    name:
+    - docker-ce={{ docker_version }}
+    - docker-compose-plugin
     force_apt_get: yes
     update_cache: yes
     state: present

@@ -8,13 +8,13 @@
     dest: "{{ backup_dir }}/{{ ansible_env.USER }}"
   changed_when: false
 
-- name: 'Default Desktop Environment is Gnome'
+- name: 'Default Desktop Environment'
   become: true
   ini_file:
     path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
     section: User
     option: XSession
-    value: gnome
+    value: "{{ xsession }}"
     no_extra_spaces: yes
   register: xsession_update
 

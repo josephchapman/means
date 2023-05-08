@@ -1,0 +1,22 @@
+---
+
+apt_packages_desktop:
+# Desktop Environment customization
+- vanilla-gnome-default-settings # universe
+- vanilla-gnome-desktop          # universe
+- adwaita-icon-theme-full        # universe
+# Utilities
+- gimp                           # universe
+- inkscape                       # universe
+- vlc                            # universe
+- gparted                        # main
+
+google_fonts:
+- src: 'Source%20Serif%20Pro'
+  dest: 'source-serif-pro'
+- src: 'Source%20Sans%20Pro'
+  dest: 'source-sans-pro'
+- src: 'Source%20Code%20Pro'
+  dest: 'source-code-pro'
+
+xsession: gnome
