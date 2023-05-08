@@ -2,7 +2,7 @@
 
 - name: 'User''s systemd directory exists'
   file:
-    path: ~/.config/
+    path: "{{ item }}"
     state: directory
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
