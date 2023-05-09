@@ -7,13 +7,11 @@
     keyring: /etc/apt/trusted.gpg.d/google-linux.gpg
     state: present
 
-- name: 'Google repository'
+- name: 'Google Chrome repository'
   become: true
-  apt_repository:
-    repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
-    state: present
-    update_cache: yes
-    filename: google-chrome
+  copy:
+    src: google-chrome.list
+    dest: /etc/apt/sources.list.d/google-chrome.list
     mode: 0644
 
 - name: 'Allow Unattended-upgrade to use Google Repo'
