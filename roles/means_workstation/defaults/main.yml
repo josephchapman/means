@@ -13,6 +13,7 @@ apt_packages_workstation:
 - curl                           # main
 - sysstat                        # main
 - git                            # main
+- make                           # main
 - pwgen                          # universe
 - jq                             # universe
 # Virtualization
