@@ -12,10 +12,10 @@ apt_packages_desktop:
 - gparted                        # main
 
 google_fonts:
-- src: 'Source%20Serif%20Pro'
-  dest: 'source-serif-pro'
-- src: 'Source%20Sans%20Pro'
-  dest: 'source-sans-pro'
+- src: 'Source%20Serif%204'
+  dest: 'source-serif-4'
+- src: 'Source%20Sans%203'
+  dest: 'source-sans-3'
 - src: 'Source%20Code%20Pro'
   dest: 'source-code-pro'
 
