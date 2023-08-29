@@ -21,6 +21,8 @@ dconf_options:
   value: "'Source Sans Pro 10'"
 - key: /org/gnome/desktop/interface/monospace-font-name
   value: "'Source Code Pro 12'"
+- key: /org/gnome/desktop/media-handling/automount
+  value: "false"
 - key: /org/gnome/desktop/peripherals/touchpad/tap-to-click
   value: "true"
 - key: /org/gnome/desktop/search-providers/disable-external

@@ -13,6 +13,7 @@ apt_packages_workstation:
 - curl                           # main
 - sysstat                        # main
 - git                            # main
+- make                           # main
 - pwgen                          # universe
 - jq                             # universe
 # Virtualization
@@ -32,3 +33,4 @@ vscode:
   extensions:
   - ms-azuretools.vscode-docker
   - ms-vscode-remote.remote-containers
+  - redhat.vscode-yaml
