@@ -28,7 +28,7 @@ dconf_options:
 - key: /org/gnome/desktop/search-providers/disable-external
   value: "true"
 - key: /org/gnome/desktop/session/idle-delay
-  value: "uint32 600"
+  value: "uint32 1800"
 - key: /org/gnome/desktop/wm/preferences/titlebar-uses-system-font
   value: "true"
 - key: /org/gnome/gedit/preferences/editor/display-line-numbers
