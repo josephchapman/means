@@ -9,6 +9,7 @@ apt_packages_desktop:
 - gimp                           # universe
 - inkscape                       # universe
 - vlc                            # universe
+- ddcutil                        # universe
 - gparted                        # main
 
 google_fonts:
