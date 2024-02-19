@@ -42,7 +42,8 @@
     group: "{{ ansible_env.USER }}"
 
 - name: 'Configure CNI networking'
-  command: kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+  # command: kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+  command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
   register: cni_result
   changed_when: "'created' in cni_result.stdout"
 

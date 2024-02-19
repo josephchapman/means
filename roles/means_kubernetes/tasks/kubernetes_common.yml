@@ -32,24 +32,21 @@
 - name: 'Kubernetes dependencies'
   become: true
   apt:
-    name: "{{ item }}"
+    name: ['kubernetes-cni']
     force_apt_get: yes
     update_cache: yes
     state: present
-  with_items:
-  - kubernetes-cni
 
 - name: 'Kubernetes packages'
   become: true
   apt:
-    name: "{{ item }}"
+    name: 
+      - kubelet={{ kubernetes_version }}
+      - kubeadm={{ kubernetes_version }}
+      - kubectl={{ kubernetes_version }}
     force_apt_get: yes
     update_cache: yes
     state: present
-  with_items:
-  - kubelet={{ kubernetes_version }}
-  - kubeadm={{ kubernetes_version }}
-  - kubectl={{ kubernetes_version }}
 
 - name: 'Prevent upgrades to kubernetes-cni'
   become: true
@@ -79,7 +76,7 @@
   become: true
   sysctl:
     name: net.bridge.bridge-nf-call-iptables
-    value: 1
+    value: "1"
     sysctl_file: /etc/sysctl.d/flannel.conf
     reload: yes
 
@@ -90,3 +87,14 @@
 #      KUBELET_EXTRA_ARGS=--node-ip="{{ kubernetes_node_ip }}"
 #    dest: /etc/default/kubelet
 #    mode: 0644
+
+- name: 'Configure containerd'
+  become: true
+  shell: containerd config default | tee /etc/containerd/config.toml
+  # notify: 'Restart Containerd'
+
+- name: 'Restart containerd.service'
+  become: true
+  systemd:
+    name: containerd.service
+    state: restarted
