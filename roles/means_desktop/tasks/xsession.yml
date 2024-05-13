@@ -13,7 +13,7 @@
   ini_file:
     path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
     section: User
-    option: XSession
+    option: Session
     value: "{{ xsession }}"
     no_extra_spaces: yes
   register: xsession_update
