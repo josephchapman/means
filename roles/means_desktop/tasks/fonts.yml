@@ -19,8 +19,8 @@
 
 - name: 'Fonts present (Regular)'
   ansible.builtin.get_url:
-    url: {{ item.regular.src }}
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.regular.dest }}/"
+    url: "{{ item.regular.src }}"
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.regular.dest }}"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
     mode: 0775
@@ -29,8 +29,8 @@
 
 - name: 'Fonts present (Regular)'
   ansible.builtin.get_url:
-    url: {{ item.italic.src }}
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.italic.dest }}/"
+    url: "{{ item.italic.src }}"
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.italic.dest }}"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
     mode: 0775
