@@ -13,6 +13,7 @@
   become: true
   file:
     path: /etc/popularity-contest.conf
+    state: touch
     owner: root
     group: root
     mode: 0644
