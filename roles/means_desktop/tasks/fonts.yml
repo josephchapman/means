@@ -38,5 +38,5 @@
   register: font_get_italic
 
 - name: 'Rebuild font cache'
-  changed_when: font_get_regular.changed or font_get_italic.changed
+  when: font_get_regular.changed or font_get_italic.changed
   command: fc-cache -f -v {{ ansible_env.HOME }}/.fonts/
