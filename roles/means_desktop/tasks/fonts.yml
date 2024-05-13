@@ -27,7 +27,7 @@
   loop: "{{ query('items', google_fonts)}}"
   register: font_get_regular
 
-- name: 'Fonts present (Regular)'
+- name: 'Fonts present (Italic)'
   ansible.builtin.get_url:
     url: "{{ item.italic.src }}"
     dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.italic.dest }}"
