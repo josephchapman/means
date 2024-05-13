@@ -5,12 +5,12 @@ dconf_options:
   value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
 - key: /org/gnome/desktop/background/show-desktop-icons
   value: "false"
-- key: /org/gnome/desktop/interface/gtk-theme
-  value: "'Adwaita-dark'"
-- key: /org/gnome/desktop/interface/icon-theme
-  value: "'Adwaita-dark'"
 - key: /org/gnome/desktop/interface/cursor-theme
-  value: "'Adwaita-dark'"
+  value: "'Adwaita'"
+- key: /org/gnome/desktop/interface/gtk-theme
+  value: "'Adwaita'"
+- key: /org/gnome/desktop/interface/icon-theme
+  value: "'Adwaita'"
 - key: /org/gnome/desktop/interface/clock-show-date
   value: "true"
 - key: /org/gnome/desktop/interface/clock-show-seconds
