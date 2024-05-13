@@ -10,24 +10,33 @@
 
 - name: 'Ensure fonts directories exist'
   file:
-    path: "{{ ansible_env.HOME }}/.fonts/{{ item.dest }}/"
+    path: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/"
     state: directory
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
     mode: 0775
   loop: "{{ query('items', google_fonts)}}"
 
-- name: 'Fonts present'
-  unarchive:
-    src: 'https://fonts.google.com/download?family={{ item.src }}'
-    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.dest }}/"
-    remote_src: yes
+- name: 'Fonts present (Regular)'
+  ansible.builtin.get_url:
+    url: {{ item.regular.src }}
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.regular.dest }}/"
     owner: "{{ ansible_env.USER }}"
     group: "{{ ansible_env.USER }}"
     mode: 0775
   loop: "{{ query('items', google_fonts)}}"
-  register: font_unarchive
+  register: font_get_regular
+
+- name: 'Fonts present (Regular)'
+  ansible.builtin.get_url:
+    url: {{ item.italic.src }}
+    dest: "{{ ansible_env.HOME }}/.fonts/{{ item.family }}/{{ item.italic.dest }}/"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0775
+  loop: "{{ query('items', google_fonts)}}"
+  register: font_get_italic
 
 - name: 'Rebuild font cache'
-  when: font_unarchive.changed
+  changed_when: font_get_regular.changed or font_get_italic.changed
   command: fc-cache -f -v {{ ansible_env.HOME }}/.fonts/
