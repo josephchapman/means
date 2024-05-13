@@ -4,11 +4,13 @@ apt_packages_desktop:
 # Desktop Environment customization
 - vanilla-gnome-default-settings # universe
 - vanilla-gnome-desktop          # universe
-- adwaita-icon-theme-full        # universe
+- adwaita-icon-theme             # universe
 # Utilities
 - gimp                           # universe
 - inkscape                       # universe
+- krita                          # universe
 - vlc                            # universe
+- openshot-qt                    # universe
 - ddcutil                        # universe
 - gparted                        # main
 
