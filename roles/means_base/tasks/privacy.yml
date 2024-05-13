@@ -11,16 +11,10 @@
 
 - name: 'Ensure PopCon override exists'
   become: true
-  file:
-    path: /etc/popularity-contest.conf
-    state: touch
+  copy:
+    src: popularity-contest.conf
+    dest: /etc/popularity-contest.conf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
-- name: 'Ensure PopCon opt-out'
-  become: true
-  lineinfile:
-    path: /etc/popularity-contest.conf
-    regexp: '^\s*(#\s*)?PARTICIPATE'
-    line: 'PARTICIPATE="no"'
