@@ -10,7 +10,7 @@ apt_packages_desktop:
 - inkscape                       # universe
 - krita                          # universe
 - vlc                            # universe
-- openshot-qt                    # universe
+- kdenlive                       # universe
 - ddcutil                        # universe
 - gparted                        # main
 
