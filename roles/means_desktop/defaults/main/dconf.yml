@@ -5,16 +5,18 @@ dconf_options:
   value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
 - key: /org/gnome/desktop/background/show-desktop-icons
   value: "false"
-- key: /org/gnome/desktop/interface/gtk-theme
-  value: "'Adwaita-dark'"
-- key: /org/gnome/desktop/interface/icon-theme
-  value: "'Adwaita-dark'"
 - key: /org/gnome/desktop/interface/cursor-theme
-  value: "'Adwaita-dark'"
+  value: "'Adwaita'"
+- key: /org/gnome/desktop/interface/gtk-theme
+  value: "'Adwaita'"
+- key: /org/gnome/desktop/interface/icon-theme
+  value: "'Adwaita'"
 - key: /org/gnome/desktop/interface/clock-show-date
   value: "true"
 - key: /org/gnome/desktop/interface/clock-show-seconds
   value: "true"
+- key: /org/gnome/desktop/interface/color-scheme
+  value: "'prefer-dark'"
 - key: /org/gnome/desktop/interface/enable-hot-corners
   value: "false"
 - key: /org/gnome/desktop/interface/font-name
@@ -61,7 +63,7 @@ dconf_options:
   value: "['launch-new-instance@gnome-shell-extensions.gcampax.github.com']"
 - key: /org/gnome/shell/favorite-apps
   value: "['org.gnome.Nautilus.desktop',
-           'org.gnome.gedit.desktop',
+           'org.gnome.TextEditor.desktop',
            'firefox.desktop']"
 - key: /org/gnome/Terminal/Legacy/Settings/new-terminal-mode
   value: "'tab'"

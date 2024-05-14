@@ -1,5 +1,14 @@
 ---
 
+# Ubuntu 24.04 conflicts when installing gnome if pulseaudio not present
+- name: 'Install pulseaudio'
+  become: true
+  apt:
+    name: pulseaudio
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+
 - name: 'Install desktop packages'
   become: true
   apt:

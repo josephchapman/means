@@ -54,12 +54,6 @@
   tags:
   - bash
 
-# Snapd
-- name: 'snapd'
-  include_tasks: snapd.yml
-  tags:
-  - snapd
-
 # GRUB
 - name: 'GRUB'
   include_tasks: grub.yml
