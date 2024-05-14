@@ -4,20 +4,38 @@ apt_packages_desktop:
 # Desktop Environment customization
 - vanilla-gnome-default-settings # universe
 - vanilla-gnome-desktop          # universe
+- adwaita-icon-theme             # main
 - adwaita-icon-theme-full        # universe
 # Utilities
 - gimp                           # universe
 - inkscape                       # universe
+- krita                          # universe
 - vlc                            # universe
+- kdenlive                       # universe
 - ddcutil                        # universe
 - gparted                        # main
 
 google_fonts:
-- src: 'Source%20Serif%204'
-  dest: 'source-serif-4'
-- src: 'Source%20Sans%203'
-  dest: 'source-sans-3'
-- src: 'Source%20Code%20Pro'
-  dest: 'source-code-pro'
+- family: 'Source Sans 3'
+  regular:
+    src: 'https://fonts.gstatic.com/s/sourcesans3/v15/nwpStKy2OAdR1K-IwhWudF-R7wgQZMrc9HY.ttf'
+    dest: 'SourceSans3-VariableFont_wght.ttf'
+  italic:
+    src: 'https://fonts.gstatic.com/s/sourcesans3/v15/nwpMtKy2OAdR1K-IwhWudF-R3woaYOjZ5HZl8Q.ttf'
+    dest: 'SourceSans3-Italic-VariableFont_wght.ttf'
+- family: 'Source Code Pro'
+  regular:
+    src: 'https://fonts.gstatic.com/s/sourcecodepro/v23/HI_SiYsKILxRpg3hIP6sJ7fM7PqVOuHXvMY3xw.ttf'
+    dest: 'SourceCodePro-VariableFont_wght.ttf'
+  italic:
+    src: 'https://fonts.gstatic.com/s/sourcecodepro/v23/HI_QiYsKILxRpg3hIP6sJ7fM7PqlOOvTnsMnx3C9.ttf'
+    dest: 'SourceCodePro-Italic-VariableFont_wght.ttf'
+- family: 'Source Serif 4'
+  regular:
+    src: 'https://fonts.gstatic.com/s/sourceserif4/v8/vEFI2_tTDB4M7-auWDN0ahZJW2gc-NaXXq7H.ttf'
+    dest: 'SourceSerif4-VariableFont_opsz,wght.ttf'
+  italic:
+    src: 'https://fonts.gstatic.com/s/sourceserif4/v8/vEFK2_tTDB4M7-auWDN0ahZJW1ge8tK1W77HtMo.ttf'
+    dest: 'SourceSerif4-Italic-VariableFont_opsz,wght.ttf'
 
 xsession: gnome

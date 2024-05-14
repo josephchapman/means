@@ -1,5 +1,16 @@
 ---
 
+- name: 'Ensure user''s AccountsService file exists'
+  become: true
+  file:
+    path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
+    state: touch
+    mode: '0644'
+    owner: root
+    group: root
+    modification_time: preserve
+    access_time: preserve
+
 - name: 'Backup existing /var/lib/AccountsService/users/'
   become: true
   copy:
@@ -13,7 +24,7 @@
   ini_file:
     path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
     section: User
-    option: XSession
+    option: Session
     value: "{{ xsession }}"
     no_extra_spaces: yes
   register: xsession_update

@@ -3,14 +3,16 @@
 dconf_options:
 - key: /org/gnome/desktop/background/picture-uri
   value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
+- key: /org/gnome/desktop/background/picture-uri-dark
+  value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
 - key: /org/gnome/desktop/background/show-desktop-icons
   value: "false"
+- key: /org/gnome/desktop/interface/cursor-theme
+  value: "'Adwaita'"
 - key: /org/gnome/desktop/interface/gtk-theme
   value: "'Adwaita-dark'"
 - key: /org/gnome/desktop/interface/icon-theme
-  value: "'Adwaita-dark'"
-- key: /org/gnome/desktop/interface/cursor-theme
-  value: "'Adwaita-dark'"
+  value: "'Adwaita'"
 - key: /org/gnome/desktop/interface/clock-show-date
   value: "true"
 - key: /org/gnome/desktop/interface/clock-show-seconds
@@ -25,10 +27,14 @@ dconf_options:
   value: "false"
 - key: /org/gnome/desktop/peripherals/touchpad/tap-to-click
   value: "true"
+- key: /org/gnome/desktop/screensaver/picture-uri
+  value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
 - key: /org/gnome/desktop/search-providers/disable-external
   value: "true"
 - key: /org/gnome/desktop/session/idle-delay
   value: "uint32 1800"
+- key: /org/gnome/desktop/wm/preferences
+  value: "'Adwaita'"
 - key: /org/gnome/desktop/wm/preferences/titlebar-uses-system-font
   value: "true"
 - key: /org/gnome/gedit/preferences/editor/display-line-numbers
