@@ -19,12 +19,12 @@ apt_packages_workstation:
 # Virtualization
 - virt-manager                   # universe
 - virt-viewer                    # universe
-- vagrant                        # universe
+#- vagrant                        # universe
 
 apt_packages_libvirt:
 - qemu-kvm                       # main
 - libvirt-daemon                 # main
-- vagrant-libvirt                # universe
+#- vagrant-libvirt                # universe
 
 apt_packages_virtualbox:
 - virtualbox                     # multiverse
