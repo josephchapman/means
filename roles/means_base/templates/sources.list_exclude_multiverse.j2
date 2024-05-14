@@ -23,10 +23,10 @@ deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates univers
 ## your rights to use the software. Also, please note that software in 
 ## multiverse WILL NOT receive any review or updates from the Ubuntu
 ## security team.
-deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy
-# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy
-deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates
-# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates
+# deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy multiverse
+# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy multiverse
+# deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates multiverse
+# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates multiverse
 
 ## N.B. software from this repository may not have been tested as
 ## extensively as that contained in the main release, although it includes
@@ -34,14 +34,15 @@ deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-updates
 ## Also, please note that software in backports WILL NOT receive any review
 ## or updates from the Ubuntu security team.
 deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-backports main restricted universe
-# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy-backports main restricted universe
+# deb {{ package_mirrors[ansible_architecture]['primary'] }} jammy-backports main restricted universe multiverse
+# deb-src {{ package_mirrors[ansible_architecture]['primary'] }} jammy-backports main restricted universe multiverse
 
 deb {{ package_mirrors[ansible_architecture]['security'] }} jammy-security main restricted
 # deb-src {{ package_mirrors[ansible_architecture]['security'] }} jammy-security main restricted
 deb {{ package_mirrors[ansible_architecture]['security'] }} jammy-security universe
 # deb-src {{ package_mirrors[ansible_architecture]['security'] }} jammy-security universe
-deb {{ package_mirrors[ansible_architecture]['security'] }} jammy-security
-# deb-src {{ package_mirrors[ansible_architecture]['security'] }} jammy-security
+# deb {{ package_mirrors[ansible_architecture]['security'] }} jammy-security multiverse
+# deb-src {{ package_mirrors[ansible_architecture]['security'] }} jammy-security multiverse
 
 # This system was installed using small removable media
 # (e.g. netinst, live or single CD). The matching "deb cdrom"
