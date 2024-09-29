@@ -1,0 +1,44 @@
+---
+
+- name: 'containerd installed'
+  become: true
+  apt:
+    name:
+    - uidmap  # required for containerd-rootless-setuptool.sh install
+    - containerd.io
+    force_apt_get: yes
+    update_cache: yes
+    state: present
+
+- name: 'cni plugins installed'
+  become: true
+  ansible.builtin.unarchive:
+    src: https://github.com/containernetworking/plugins/releases/download/v{{ cni_plugins_version }}/cni-plugins-linux-amd64-v{{ cni_plugins_version }}.tgz
+    dest: /opt/cni/bin
+    mode: 0755
+    remote_src: yes
+  when: cni_plugins
+
+- name: 'nerdctl installed'
+  become: true
+  ansible.builtin.unarchive:
+    src: https://github.com/containerd/nerdctl/releases/download/v{{ nerdctl_version }}/nerdctl-full-{{ nerdctl_version }}-linux-amd64.tar.gz
+    dest: /usr
+    mode: 0755
+    remote_src: yes
+
+- name: 'Nerdctl completion'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/bash.bashrc
+    line: source <(nerdctl completion bash)
+
+- name: 'Rootless configured'
+  ansible.builtin.command: containerd-rootless-setuptool.sh install
+  register: rootless
+  changed_when: '"File already exists, skipping" not in rootless.stderr'
+
+- name: 'Buildkit configured'
+  ansible.builtin.command: containerd-rootless-setuptool.sh install-buildkit
+  register: buildkit
+  changed_when: '"File already exists, skipping" not in buildkit.stderr'

@@ -1,6 +1,6 @@
 ---
 
-# Docker-CE
+# Repository
 - name: 'Docker Linux signing key'
   become: true
   apt_key:
@@ -14,7 +14,7 @@
     repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable'
     state: present
     update_cache: yes
-    filename: docker-ce
+    filename: docker
     mode: 0644
 
 - name: 'Allow Unattended-upgrade to use Docker Repo'
@@ -25,44 +25,12 @@
     line: '        "Docker:focal";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
-- name: '`docker-ce` and `docker-compose-plugin` packages (latest)'
-  become: true
-  apt:
-    name:
-    - docker-ce
-    - docker-compose-plugin
-    force_apt_get: yes
-    update_cache: yes
-    state: latest
-  when: docker_version is undefined
+# Docker-CE
+- name: 'Docker'
+  include_tasks: docker.yml
+  when: runtime == "docker"
 
-- name: '`docker-ce` and `docker-compose-plugin` packages (specific version)'
-  become: true
-  apt:
-    name:
-    - docker-ce={{ docker_version }}
-    - docker-compose-plugin
-    force_apt_get: yes
-    update_cache: yes
-    state: present
-  when: docker_version is defined
-
-- name: 'Add user to `docker` group'
-  become: true
-  user:
-    name: "{{ ansible_env.USER }}"
-    groups: docker
-    append: yes
-  register: docker_user_group
-
-- name: 'Note if logout will be required'
-  when: docker_user_group.changed
-  set_fact:
-    logout_required: true
-
-- name: 'Prevent upgrades to docker-ce'
-  become: true
-  command: apt-mark hold docker-ce
-  register: apt_hold_docker
-  changed_when: "'docker-ce was already set on hold' not in apt_hold_docker.stdout"
-  when: docker_version_hold
+# containerd
+- name: 'Containerd'
+  include_tasks: containerd.yml
+  when: runtime == "containerd"

@@ -1,3 +1,9 @@
 ---
 
 docker_version_hold: false
+
+runtime: containerd
+cni_plugins: false
+
+cni_plugins_version: 1.5.1
+nerdctl_version: 1.7.7
