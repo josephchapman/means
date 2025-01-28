@@ -32,13 +32,3 @@
   ansible.builtin.lineinfile:
     path: /etc/bash.bashrc
     line: source <(nerdctl completion bash)
-
-- name: 'Rootless configured'
-  ansible.builtin.command: containerd-rootless-setuptool.sh install
-  register: rootless
-  changed_when: '"File already exists, skipping" not in rootless.stderr'
-
-- name: 'Buildkit configured'
-  ansible.builtin.command: containerd-rootless-setuptool.sh install-buildkit
-  register: buildkit
-  changed_when: '"File already exists, skipping" not in buildkit.stderr'
