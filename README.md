@@ -31,7 +31,8 @@ The roles have the following dependencies to each other:
 
 `git clone` this repository:
 ```
-$ git clone https://github.com/josephchapman/means.git
+$  mkdir -p ~/ConfigManagement/means/ \
+&& git clone https://github.com/josephchapman/means.git ~/ConfigManagement/means/
 ```
 
 This is written to be run on `localhost` with a `local` Ansible connection.  Some modification is possible to run this on remote hosts.  However, alterations to SSHD during the playbook would need considering.
