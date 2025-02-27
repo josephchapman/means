@@ -39,5 +39,5 @@ This is written to be run on `localhost` with a `local` Ansible connection.  Som
 
 Example utilization: Run the `desktop` tag to configure basic functionality:
 ```
-$ ansible-playbook -i '127.0.0.1,' -c local means/site.yml --ask-become-pass --tags 'desktop'
+$ ansible-playbook -i '127.0.0.1,' -c local ~/ConfigManagement/means/site.yml --ask-become-pass --tags 'desktop'
 ```
