@@ -6,12 +6,6 @@
   tags:
   - packages_workstation
 
-# Electron Fix
-- name: 'Electron Fix'
-  include_tasks: electron_fix.yml
-  tags:
-  - electron_fix
-
 # Firewall
 - name: 'Firewall'
   include_tasks: firewall.yml
