@@ -11,7 +11,7 @@
 - name: 'Check for existing VSCode repository file'
   stat:
     path: /etc/apt/sources.list.d/vscode.list
-  register: vscode-file
+  register: vscode_file
 
 - name: 'Backup existing any existing VSCode repository file'
   become: true
@@ -19,7 +19,7 @@
     remote_src: yes
     src: /etc/apt/sources.list.d/vscode.list
     dest: "{{ backup_dir }}/vscode.list"
-  when: vscode-file.stat.exists
+  when: vscode_file.stat.exists
   changed_when: false
 
 - name: 'VSCode repository'

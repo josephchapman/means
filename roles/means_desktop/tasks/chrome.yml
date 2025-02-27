@@ -10,7 +10,7 @@
 - name: 'Check for existing Chrome repository file'
   stat:
     path: /etc/apt/sources.list.d/google-chrome.list
-  register: chrome-file
+  register: chrome_file
 
 - name: 'Backup existing any existing Chrome repository file'
   become: true
@@ -18,7 +18,7 @@
     remote_src: yes
     src: /etc/apt/sources.list.d/google-chrome.list
     dest: "{{ backup_dir }}/google-chrome.list"
-  when: chrome-file.stat.exists
+  when: chrome_file.stat.exists
   changed_when: false
 
 - name: 'Google Chrome repository'
