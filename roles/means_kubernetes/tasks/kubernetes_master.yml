@@ -17,14 +17,6 @@
   command: kubeadm init --config /tmp/kubeadm-config-init.yml
   when: not kubernetes_init_stat.stat.exists
 
-#- name: 'Initialize Kubernetes master (if not already)'
-#  become: true
-#  command: >
-#    kubeadm init
-#    --pod-network-cidr=10.244.0.0/16
-#    --apiserver-advertise-address={{ kubernetes_apiserver_advertise_address }}
-#  when: not kubernetes_init_stat.stat.exists
-
 - name: 'Ensure ~/.kube exists'
   file:
     path: "{{ ansible_env.HOME }}/.kube"
@@ -42,8 +34,7 @@
     group: "{{ ansible_env.USER }}"
 
 - name: 'Configure CNI networking'
-  # command: kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
-  command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
+  command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
   register: cni_result
   changed_when: "'created' in cni_result.stdout"
 
