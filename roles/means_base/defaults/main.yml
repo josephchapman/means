@@ -2,6 +2,9 @@
 
 device_mapper: ubuntu--vg-data
 
+apt_packages_base:
+- udisks2 # main (for udisksctl, for data-mount)
+
 package_mirrors:
   x86_64:
     primary: http://gb.archive.ubuntu.com/ubuntu/
@@ -41,4 +44,4 @@ grub_options:
 - key: 'GRUB_CMDLINE_LINUX_DEFAULT'
   value: '""'
 - key: 'GRUB_GFXMODE'
-  value: '1920x1080x32,640x480,auto'
+  value: '2560x1440x32,1920x1080x32,640x480,auto'

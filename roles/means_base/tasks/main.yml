@@ -24,6 +24,12 @@
   tags:
   - login_defs
 
+# Packages
+- name: 'Packages'
+  include_tasks: packages.yml
+  tags:
+  - packages
+
 # Firewall
 - name: 'Firewall'
   include_tasks: firewall.yml

@@ -1,0 +1,9 @@
+---
+
+- name: 'Install base packages'
+  become: true
+  apt:
+    name: "{{ apt_packages_base }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
