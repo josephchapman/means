@@ -31,6 +31,9 @@ apt_packages_virtualbox:
 
 vscode:
   extensions:
+  - github.copilot
+  - gitHub.copilot-chat
+  - github.vscode-github-actions
   - ms-azuretools.vscode-docker
   - ms-vscode-remote.remote-containers
   - redhat.vscode-yaml
