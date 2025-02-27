@@ -64,10 +64,10 @@ dconf_options:
 - key: /org/gnome/settings-daemon/plugins/xsettings/overrides
   value: "{'Gtk/ShellShowsAppMenu': <0>}"
 - key: /org/gnome/shell/enabled-extensions
-  value: "['launch-new-instance@gnome-shell-extensions.gcampax.github.com']"
+  value: "\"['launch-new-instance@gnome-shell-extensions.gcampax.github.com']\""
 - key: /org/gnome/shell/favorite-apps
-  value: "['org.gnome.Nautilus.desktop',
+  value: "\"['org.gnome.Nautilus.desktop',
            'org.gnome.gedit.desktop',
-           'firefox.desktop']"
+           'firefox.desktop']\""
 - key: /org/gnome/Terminal/Legacy/Settings/new-terminal-mode
   value: "'tab'"
