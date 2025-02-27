@@ -14,9 +14,11 @@ apt_packages_workstation:
 - sysstat                        # main
 - git                            # main
 - make                           # main
+- whois                          # main (for mkpasswd)
 - pwgen                          # universe
 - jq                             # universe
 # Virtualization
+- cloud-utils                    # main (for cloud-localds)
 - virt-manager                   # universe
 - virt-viewer                    # universe
 #- vagrant                        # universe
