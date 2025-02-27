@@ -7,6 +7,20 @@
     keyring: /etc/apt/trusted.gpg.d/google-linux.gpg
     state: present
 
+- name: 'Check for existing Chrome repository file'
+  stat:
+    path: /etc/apt/sources.list.d/google-chrome.list
+  register: chrome_file
+
+- name: 'Backup existing any existing Chrome repository file'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/apt/sources.list.d/google-chrome.list
+    dest: "{{ backup_dir }}/google-chrome.list"
+  when: chrome_file.stat.exists
+  changed_when: false
+
 - name: 'Google Chrome repository'
   become: true
   copy:
@@ -14,6 +28,7 @@
     dest: /etc/apt/sources.list.d/google-chrome.list
     mode: 0644
 
+# sudo apt-cache policy -> o:a pairs (e.g. Google LLC:stable)
 - name: 'Allow Unattended-upgrade to use Google Repo'
   become: true
   lineinfile:

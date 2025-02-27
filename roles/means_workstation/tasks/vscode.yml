@@ -3,12 +3,26 @@
 - name: 'Microsoft''s signing key'
   become: true
   apt_key:
-    # Downloads an asc ut needs to be stored as gpg
+    # Downloads an asc but needs to be stored as gpg
     url: https://packages.microsoft.com/keys/microsoft.asc
     keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
     state: present
 
-- name: 'Microsoft''s repository'
+- name: 'Check for existing VSCode repository file'
+  stat:
+    path: /etc/apt/sources.list.d/vscode.list
+  register: vscode_file
+
+- name: 'Backup existing any existing VSCode repository file'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/apt/sources.list.d/vscode.list
+    dest: "{{ backup_dir }}/vscode.list"
+  when: vscode_file.stat.exists
+  changed_when: false
+
+- name: 'VSCode repository'
   become: true
   copy:
     src: vscode.list
@@ -21,6 +35,7 @@
     update_cache: true
   changed_when: false
 
+# sudo apt-cache policy -> o:a pairs (e.g. code stable:stable)
 - name: 'Allow Unattended-upgrade to use Microsoft Repo'
   become: true
   lineinfile:
