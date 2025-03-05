@@ -21,17 +21,20 @@
     filename: kubernetes
     mode: 0600
 
+
+# unattended-upgrades doesn't like this origin name
+#
 # Origin:Archive pair
 # $ grep -iE '^\s*(Archive|Origin)' /var/lib/apt/lists/pkgs.k8s.io_core\:_stable\:_v1.32_deb_InRelease
 # Archive: deb
 # Origin: obs://build.opensuse.org/isv:kubernetes:core:stable:v1.32/deb
-- name: 'Allow Unattended-upgrade to use Kubernetes Repo'
-  become: true
-  lineinfile:
-    path: /etc/apt/apt.conf.d/50unattended-upgrades
-    regexp: '^\s*(//\s*)?"obs://build.opensuse.org/isv:kubernetes:core:stable:v{{ kubernetes_version_short }}/deb:deb";\s*$'
-    line: '        "obs://build.opensuse.org/isv:kubernetes:core:stable:v{{ kubernetes_version_short }}/deb:deb";'
-    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+# - name: 'Allow Unattended-upgrade to use Kubernetes Repo'
+#   become: true
+#   lineinfile:
+#     path: /etc/apt/apt.conf.d/50unattended-upgrades
+#     regexp: '^\s*(//\s*)?"obs://build.opensuse.org/isv:kubernetes:core:stable:v{{ kubernetes_version_short }}/deb:deb";\s*$'
+#     line: '        "obs://build.opensuse.org/isv:kubernetes:core:stable:v{{ kubernetes_version_short }}/deb:deb";'
+#     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
 - name: 'Kubernetes dependencies'
   become: true
@@ -97,7 +100,6 @@
 
 - name: 'Configure containerd to use Systemd Cgroup Driver'
   become: true
-  # command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
   ansible.builtin.lineinfile:
     path: /etc/containerd/config.toml
     regexp: '^\s*SystemdCgroup'
