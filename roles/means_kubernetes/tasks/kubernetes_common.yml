@@ -91,9 +91,17 @@
     sysctl_file: /etc/sysctl.d/flannel.conf
     reload: yes
 
-- name: 'Configure containerd'
+- name: 'Configure containerd with default values'
   become: true
   shell: containerd config default | tee /etc/containerd/config.toml
+
+- name: 'Configure containerd to use Systemd Cgroup Driver'
+  become: true
+  # command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+  ansible.builtin.lineinfile:
+    path: /etc/containerd/config.toml
+    regexp: '^\s*SystemdCgroup'
+    line: '            SystemdCgroup = true'
 
 - name: 'Restart containerd.service'
   become: true

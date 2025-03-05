@@ -1,12 +1,12 @@
 ---
 
 - name: 'Include Kubernetes common tasks'
-  include: kubernetes_common.yml
+  ansible.builtin.include_tasks: kubernetes_common.yml
 
 - name: 'Include Kubernetes Master tasks'
-  include: kubernetes_master.yml
+  ansible.builtin.include_tasks: kubernetes_master.yml
   when: kubernetes_role == 'master'
 
 - name: 'Include Kubernetes common tasks'
-  include: kubernetes_node.yml
+  ansible.builtin.include_tasks: kubernetes_node.yml
   when: kubernetes_role == 'node'
