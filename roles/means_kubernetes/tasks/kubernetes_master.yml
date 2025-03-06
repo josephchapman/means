@@ -59,3 +59,31 @@
 #- name: 'Untaint all masters'
 #  command: 'kubectl taint nodes --all node-role.kubernetes.io/master-'
 #  when: "'node-role.kubernetes.io/master' in kubernetes_taints.stdout"
+
+- name: Install helm if not exists
+  become: true
+  unarchive:
+    src: https://get.helm.sh/helm-v3.17.0-linux-amd64.tar.gz
+    dest: /usr/local/bin
+    extra_opts: "--strip-components=1"
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: true
+  args:
+    creates: /usr/local/bin/helm
+
+- name:  'Add FluxCD repository'
+  community.kubernetes.helm_repository:
+    name: fluxcd
+    repo_url: https://charts.fluxcd.io
+
+- name:  'Install FluxCD'
+  community.kubernetes.helm:
+    name: fluxcd
+    chart_ref: fluxcd/flux
+    release_namespace: flux-system
+    create_namespace: true
+    release_values:
+      installCRDs: true
+    wait: true
