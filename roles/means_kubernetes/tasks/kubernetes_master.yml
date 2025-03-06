@@ -75,13 +75,13 @@
 
 - name:  'Add FluxCD repository'
   community.kubernetes.helm_repository:
-    name: fluxcd
-    repo_url: https://charts.fluxcd.io
+    name: fluxcd-community
+    repo_url: https://fluxcd-community.github.io/helm-charts
 
 - name:  'Install FluxCD'
   community.kubernetes.helm:
-    name: fluxcd
-    chart_ref: fluxcd/flux
+    name: flux2
+    chart_ref: fluxcd-community/flux2
     release_namespace: flux-system
     create_namespace: true
     release_values:
