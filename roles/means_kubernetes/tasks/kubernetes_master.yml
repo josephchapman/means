@@ -60,6 +60,15 @@
 #  command: 'kubectl taint nodes --all node-role.kubernetes.io/master-'
 #  when: "'node-role.kubernetes.io/master' in kubernetes_taints.stdout"
 
+- name: 'Ensure /var/lib/k8s-pv/ exists'
+  become: true
+  file:
+    path: /var/lib/k8s-pv/
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Install helm if not exists
   become: true
   unarchive:
