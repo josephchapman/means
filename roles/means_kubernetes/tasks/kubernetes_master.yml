@@ -82,17 +82,31 @@
   args:
     creates: /usr/local/bin/helm
 
-- name:  'Add FluxCD repository'
+- name:  'Add ArgoCD repository'
   community.kubernetes.helm_repository:
-    name: fluxcd-community
-    repo_url: https://fluxcd-community.github.io/helm-charts
+    name: argo
+    repo_url: https://argoproj.github.io/argo-helm
 
-- name:  'Install FluxCD'
+- name:  'Install ArgoCD'
   community.kubernetes.helm:
-    name: flux2
-    chart_ref: fluxcd-community/flux2
-    release_namespace: flux-system
+    name: argo-cd
+    chart_ref: argo/argo-cd
+    release_namespace: argocd
     create_namespace: true
     release_values:
-      installCRDs: true
+      crds:
+        install: true
+    wait: true
+
+- name:  'Add Crossplane repository'
+  community.kubernetes.helm_repository:
+    name: crossplane-stable
+    repo_url: https://charts.crossplane.io/stable
+
+- name:  'Install Crossplane'
+  community.kubernetes.helm:
+    name: crossplane-system
+    chart_ref: crossplane-stable/crossplane
+    release_namespace: crossplane-system
+    create_namespace: true
     wait: true
