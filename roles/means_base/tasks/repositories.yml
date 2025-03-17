@@ -30,7 +30,7 @@
     force_apt_get: yes
     update_cache: yes
   register: update_apt_cache
-  until: update_apt_cache.rc == 0
+  until: update_apt_cache.cache_updated == true
   retries: 180
   delay: 60
   changed_when: false
