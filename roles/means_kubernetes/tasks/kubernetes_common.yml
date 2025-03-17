@@ -86,6 +86,14 @@
     name: br_netfilter
     state: present
 
+- name: 'br_netfilter module enabled (permanent)'
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/modules-load.d/br_netfilter.conf
+    regexp: '^\s*br_netfilter'
+    line: 'br_netfilter'
+    create: yes
+
 - name: 'net.bridge.bridge-nf-call-iptables'
   become: true
   sysctl:

@@ -1,10 +1,10 @@
 ---
 
 - name: 'Apply upgrades (retry every minute for 3 hours (waiting for lock))'
+  become: true
   command: unattended-upgrade -v
   register: unattended_upgrade
   until: unattended_upgrade.rc == 0
   retries: 180
   delay: 60
   changed_when: "'No packages found that can be upgraded unattended and no pending auto-removals' not in unattended_upgrade.stdout"
-  become: true
