@@ -3,6 +3,7 @@
 sshd_port: '2222'
 
 apt_packages_server:
+- avahi-daemon                   # main
 - openssh-server                 # main
 - sysstat                        # main
 
