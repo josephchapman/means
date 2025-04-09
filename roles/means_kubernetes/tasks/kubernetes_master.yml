@@ -69,6 +69,33 @@
     group: root
     mode: '0755'
 
+- name: 'Ensure /var/lib/k8s-pv/prometheus-server/ exists'
+  become: true
+  file:
+    path: /var/lib/k8s-pv/prometheus-server/
+    state: directory
+    owner: '999'
+    group: '65534'
+    mode: '0755'
+
+- name: 'Ensure /var/lib/k8s-pv/storage-prometheus-alertmanager-0/ exists'
+  become: true
+  file:
+    path: /var/lib/k8s-pv/storage-prometheus-alertmanager-0/
+    state: directory
+    owner: '999'
+    group: '65534'
+    mode: '0755'
+
+- name: 'Ensure /var/lib/k8s-pv/spire-data-spire-server-0/ exists'
+  become: true
+  file:
+    path: /var/lib/k8s-pv/spire-data-spire-server-0/
+    state: directory
+    owner: '1000'
+    group: '0'
+    mode: '0755'
+
 - name: Install helm if not exists
   become: true
   unarchive:
