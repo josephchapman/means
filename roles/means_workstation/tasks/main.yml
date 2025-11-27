@@ -18,6 +18,12 @@
   tags:
   - vscode
 
+# vscode editor
+- name: 'Antigravity'
+  include_tasks: antigravity.yml
+  tags:
+  - antigravity
+
 # SSD
 - name: 'SSD'
   include_tasks: ssh.yml
