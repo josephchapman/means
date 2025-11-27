@@ -1,26 +1,26 @@
 ---
 
-- name: 'Ensure default-release profile exists'
+- name: 'Ensure default profile exists'
   become: true
   become_user: "{{ ansible_env.USER }}"
-  command: firefox -no-remote -CreateProfile default-release    # This command takes no action if it already exists
+  command: firefox -no-remote -CreateProfile default    # This command takes no action if it already exists
   changed_when: false
 
 - name: 'Locate Firefox profile directory'
   find:
     paths: "{{ ansible_env.HOME }}/snap/firefox/common/.mozilla/firefox/"
     file_type: directory
-    patterns: "^[A-Za-z0-9]{8}.default-release$"
+    patterns: "^[A-Za-z0-9]{8}.default$"
     use_regex: yes
   register: firefox_directory
 
-- name: 'Check if there is an existing `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default-release/user.js`'
+- name: 'Check if there is an existing `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default/user.js`'
   stat:
     path: "{{ firefox_directory.files.0.path }}/user.js"
   register: firefox_userjs
   changed_when: false
 
-- name: 'Backup existing `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default-release/user.js` (if it exists)'
+- name: 'Backup existing `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default/user.js` (if it exists)'
   when: firefox_userjs.stat.exists
   copy:
     remote_src: yes
@@ -40,7 +40,7 @@
     state: touch
   changed_when: false
 
-- name: 'Deploy new `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default-release/user.js` file'
+- name: 'Deploy new `~/snap/firefox/common/.mozilla/firefox/XXXXXXXX.default/user.js` file'
   lineinfile:
     path: "{{ firefox_directory.files.0.path }}/user.js"
     mode: 0600
