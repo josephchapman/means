@@ -13,7 +13,7 @@
     path: /etc/apt/sources.list.d/vscode.list
   register: vscode_file
 
-- name: 'Backup existing any existing VSCode repository file'
+- name: 'Backup any existing VSCode repository file'
   become: true
   copy:
     remote_src: yes
