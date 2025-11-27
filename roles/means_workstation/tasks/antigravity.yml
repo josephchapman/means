@@ -1,18 +1,17 @@
 ---
-
-- name: 'Signing key'
+- name: "Signing key"
   become: true
   apt_key:
     url: https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg
     keyring: /etc/apt/trusted.gpg.d/antigravity-repo-key.gpg
     state: present
 
-- name: 'Check for existing Antigravity repository file'
+- name: "Check for existing Antigravity repository file"
   stat:
     path: /etc/apt/sources.list.d/antigravity.list
   register: antigravity_file
 
-- name: 'Backup any existing Antigravity repository file'
+- name: "Backup any existing Antigravity repository file"
   become: true
   copy:
     remote_src: yes
@@ -21,21 +20,21 @@
   when: antigravity_file.stat.exists
   changed_when: false
 
-- name: 'Antigravity repository'
+- name: "Antigravity repository"
   become: true
   copy:
     src: antigravity.list
     dest: /etc/apt/sources.list.d/antigravity.list
     mode: 0644
 
-- name: 'Apt update cache'
+- name: "Apt update cache"
   become: true
   apt:
     update_cache: true
   changed_when: false
 
 # sudo apt-cache policy -> o:a pairs (e.g. antigravity-debian:antigravity-debian)
-- name: 'Allow Unattended-upgrade to use Antigravity Repo'
+- name: "Allow Unattended-upgrade to use Antigravity Repo"
   become: true
   lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
@@ -43,7 +42,7 @@
     line: '        "antigravity-debian:antigravity-debian";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
-- name: '`apt-transport-https` package'
+- name: "`apt-transport-https` package"
   become: true
   apt:
     name: apt-transport-https
@@ -51,7 +50,7 @@
     update_cache: yes
     state: latest
 
-- name: '`antigravity` package'
+- name: "`antigravity` package"
   become: true
   apt:
     name: antigravity
@@ -59,7 +58,7 @@
     update_cache: yes
     state: latest
 
-- name: '`~/.antigravity/` directory'
+- name: "`~/.antigravity/` directory"
   file:
     path: "{{ ansible_env.HOME }}/.antigravity/"
     state: directory
@@ -67,61 +66,100 @@
     group: "{{ ansible_env.USER }}"
     mode: 0700
 
-# - name: 'Check if there is an existing `~/.config/Code/User/settings.json`'
-#   stat:
-#     path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
-#   register: vscode_config
-#   changed_when: false
+- name: "Check if there is an existing `~/.config/Antigravity/User/settings.json`"
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
+  register: antigravity_config
+  changed_when: false
 
-# - name: 'Backup existing `~/.config/Code/User/settings.json`'
-#   when: vscode_config.stat.exists
-#   copy:
-#     remote_src: yes
-#     src: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
-#     dest: "{{ backup_dir }}/settings.json"
-#   changed_when: false
+- name: "Backup existing `~/.config/Antigravity/User/settings.json`"
+  when: antigravity_config.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
+    dest: "{{ backup_dir }}/settings.json"
+  changed_when: false
 
-# - name: 'Config file directory structure'
-#   file:
-#     path: "{{ item }}"
-#     state: directory
-#     owner: "{{ ansible_env.USER }}"
-#     group: "{{ ansible_env.USER }}"
-#     mode: 0700
-#   with_items:
-#   - ~/.config/
-#   - ~/.config/Code/
-#   - ~/.config/Code/User/
+- name: "Check if there is an existing `~/.config/Antigravity/User/keybindings.json`"
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
+  register: antigravity_keybindings
+  changed_when: false
 
-# - name: 'Deploy `~/.config/Code/User/settings.json`'
-#   copy:
-#     content: |
-#       {
-#         "editor.acceptSuggestionOnEnter": "off",
-#         "editor.fontFamily": "'Source Code Pro', 'monospace', monospace",
-#         "editor.tabSize": 2,
-#         "editor.wordWrap": "bounded",
-#         "editor.wordWrapColumn": 79,
-#         "explorer.compactFolders": false,
-#         "explorer.confirmDragAndDrop": false,
-#         "telemetry.telemetryLevel": "off",
-#         "workbench.editor.untitled.hint": "hidden",
-#         "workbench.panel.defaultLocation": "right",
-#         "workbench.panel.opensMaximized": "always",
-#         "workbench.startupEditor": "none",
-#         "dev.containers.copyGitConfig": false,
-#         "dev.containers.gitCredentialHelperConfigLocation": "none"
-#       }
-#     dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
-#     owner: "{{ ansible_env.USER }}"
-#     group: "{{ ansible_env.USER }}"
+- name: "Backup existing `~/.config/Antigravity/User/keybindings.json`"
+  when: antigravity_keybindings.stat.exists
+  copy:
+    remote_src: yes
+    src: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
+    dest: "{{ backup_dir }}/keybindings.json"
+  changed_when: false
 
-# - name: 'List VS Code extensions'
-#   command: code --list-extensions
-#   register: vscode_extensions_installed
-#   changed_when: false
+- name: "Config file directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+    mode: 0700
+  with_items:
+    - ~/.config/
+    - ~/.config/Antigravity/
+    - ~/.config/Antigravity/User/
 
-# - name: 'Install VS Code extensions'
-#   command: code --install-extension {{ item }}
-#   when: item not in vscode_extensions_installed.stdout
-#   loop: "{{ query('items', vscode.extensions )}}"
+- name: "Deploy `~/.config/Antigravity/User/settings.json`"
+  copy:
+    content: |
+      {
+        "editor.acceptSuggestionOnEnter": "off",
+        "editor.fontFamily": "'Source Code Pro', 'monospace', monospace",
+        "editor.tabSize": 2,
+        "editor.wordWrap": "bounded",
+        "editor.wordWrapColumn": 79,
+        "explorer.compactFolders": false,
+        "explorer.confirmDragAndDrop": false,
+        "telemetry.telemetryLevel": "off",
+        "workbench.editor.untitled.hint": "hidden",
+        "workbench.panel.defaultLocation": "right",
+        "workbench.panel.opensMaximized": "always",
+        "workbench.startupEditor": "none"
+      }
+    dest: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: "Deploy `~/.config/Antigravity/User/keybindings.json`"
+  copy:
+    content: |
+      // Place your key bindings in this file to override the defaults
+      [
+        {
+          "key": "ctrl+l",
+          "command": "workbench.action.terminal.clear",
+          "when": "terminalFocus"
+        },
+        {
+          "key": "ctrl+l",
+          "command": "-workbench.action.chat.newChat"
+        },
+        {
+          "key": "ctrl+l",
+          "command": "-workbench.action.chat.focus"
+        },
+        {
+          "key": "ctrl+l",
+          "command": "-workbench.action.chat.open"
+        }
+      ]
+    dest: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: "List Antigravity extensions"
+  command: antigravity --list-extensions
+  register: antigravity_extensions_installed
+  changed_when: false
+
+- name: "Install Antigravity extensions"
+  command: antigravity --install-extension {{ item }}
+  when: item not in antigravity_extensions_installed.stdout
+  loop: "{{ query('items', antigravity.extensions )}}"
