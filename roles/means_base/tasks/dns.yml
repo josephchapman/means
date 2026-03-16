@@ -1,0 +1,13 @@
+---
+
+- name: Configure systemd-resolved options
+  become: true
+  ansible.builtin.ini_file:
+    path: /etc/systemd/resolved.conf
+    section: Resolve
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    mode: '0644'
+  with_items: "{{ resolved_settings }}"
+  notify: 'Restart systemd-resolved'

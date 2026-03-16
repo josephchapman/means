@@ -24,6 +24,12 @@
   tags:
   - login_defs
 
+# dns
+- name: 'DNS'
+  include_tasks: dns.yml
+  tags:
+  - dns
+
 # Packages
 - name: 'Packages'
   include_tasks: packages.yml

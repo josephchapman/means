@@ -1,0 +1,9 @@
+---
+
+- name: 'Restart systemd-resolved'
+  become: true
+  service:
+    name: systemd-resolved.service
+    state: restarted
+  listen:
+  - 'Restart systemd-resolved'

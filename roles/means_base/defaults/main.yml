@@ -45,3 +45,11 @@ grub_options:
   value: '""'
 - key: 'GRUB_GFXMODE'
   value: '2560x1440x32,1920x1080x32,640x480,auto'
+
+resolved_settings:
+  - key: 'DNS'
+    value: '8.8.8.8'
+  - key: 'FallbackDNS'
+    value: '8.8.4.4'
+  - key: 'DNSOverTLS'
+    value: 'yes'
