@@ -21,6 +21,14 @@ firefox_preferences:
 
 
 
+### about:config ###
+
+# Always show bookmarks bar
+- key: browser.toolbars.bookmarks.visibility
+  value: 'always'
+
+
+
 ### about:preferences ###
 
 # General
@@ -421,4 +429,50 @@ firefox_preferences:
 - key: dom.security.https_only_mode_pbm
   value: 'false'
 - key: dom.security.https_only_mode_ever_enabled_pbm
+  value: 'false'
+
+
+
+# AI Controls
+
+- key: browser.ai.control.default
+  value: 'blocked'
+
+- key: browser.ai.control.linkPreviewKeyPoints
+  value: 'blocked'
+
+- key: browser.ai.control.pdfjsAltText
+  value: 'blocked'
+
+- key: browser.ai.control.sidebarChatbot
+  value: 'blocked'
+
+- key: browser.ai.control.smartTabGroups
+  value: 'blocked'
+
+- key: browser.ai.control.translations
+  value: 'blocked'
+
+- key: browser.ml.chat.enabled
+  value: 'false'
+
+- key: browser.ml.chat.page
+  value: 'false'
+
+- key: browser.ml.linkPreview.enabled
+  value: 'false'
+
+- key: browser.tabs.groups.smart.enabled
+  value: 'false'
+
+- key: browser.tabs.groups.smart.userEnabled
+  value: 'false'
+
+- key: browser.translations.enable
+  value: 'false'
+
+- key: extensions.ml.enabled
+  value: 'false'
+
+- key: pdfjs.enableAltText
   value: 'false'
