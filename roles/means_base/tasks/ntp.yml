@@ -1,9 +1,9 @@
 ---
 
-- name: 'Ensure systemd-timesyncd.service is enabled and started'
+- name: 'Ensure chrony.service is enabled and started'
   become: true
   systemd:
-    name: systemd-timesyncd.service
+    name: chrony.service
     masked: no
     state: started
     enabled: yes

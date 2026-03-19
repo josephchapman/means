@@ -5,17 +5,24 @@
   ufw:
     state: disabled
 
-- name: 'k8s packages signing key'
+- name: 'Ensure the keyrings directory exists'
   become: true
-  apt_key:
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/
+    state: directory
+    mode: 0755
+
+- name: 'Download k8s''s Linux signing key'
+  become: true
+  ansible.builtin.get_url:
     url: https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version_short }}/deb/Release.key
-    keyring: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
-    state: present
+    dest: /etc/apt/keyrings/k8s-linux.asc
+    mode: 0644
 
 - name: 'Kubernetes repository'
   become: true
   apt_repository:
-    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version_short }}/deb/ /'
+    repo: 'deb [signed-by=/etc/apt/keyrings/k8s-linux.asc] https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version_short }}/deb/ /'
     state: present
     update_cache: yes
     filename: kubernetes

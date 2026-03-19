@@ -7,8 +7,8 @@ apt_packages_base:
 
 package_mirrors:
   x86_64:
-    primary: http://gb.archive.ubuntu.com/ubuntu/
-    security: http://security.ubuntu.com/ubuntu
+    primary: http://archive.ubuntu.com/ubuntu/
+    security: http://security.ubuntu.com/ubuntu/
   aarch64:
     primary: http://ports.ubuntu.com/ubuntu-ports
     security: http://ports.ubuntu.com/ubuntu-ports
