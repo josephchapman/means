@@ -36,20 +36,42 @@ dconf_options:
     value: "'Adwaita'"
   - key: /org/gnome/desktop/wm/preferences/titlebar-uses-system-font
     value: "true"
-  - key: /org/gnome/gedit/preferences/editor/display-line-numbers
-    value: "true"
-  - key: /org/gnome/gedit/preferences/editor/insert-spaces
-    value: "true"
-  - key: /org/gnome/gedit/preferences/editor/scheme
-    value: "'oblivion'"
-  - key: /org/gnome/gedit/preferences/editor/tabs-size
-    value: "uint32 4"
-  - key: /org/gnome/gedit/preferences/editor/use-default-font
-    value: "true"
   - key: /org/gnome/mutter/dynamic-workspaces
+    value: "true"
+  - key: /org/gnome/mutter/edge-tiling
     value: "true"
   - key: /org/gnome/mutter/workspaces-only-on-primary
     value: "false"
+  - key: /org/gnome/Ptyxis/font-name
+    value: "'Source Code Pro Medium 11 @wght=500'"
+  - key: /org/gnome/Ptyxis/use-system-font
+    value: "false"
+  - key: /org/gnome/rhythmbox/encoding-settings/media-type
+    value: "'audio/mpeg'"
+  - key: /org/gnome/rhythmbox/library/layout-filename
+    value: "'%tN - %tt'"
+  - key: /org/gnome/rhythmbox/library/layout-path
+    value: "'%aa'"
+  - key: /org/gnome/rhythmbox/plugins/active-plugins
+    value: "['audiocd',
+      'dbus-media-server',
+      'android',
+      'mpris',
+      'notification',
+      'iradio',
+      'power-manager',
+      'rb',
+      'generic-player']"
+  - key: /org/gnome/rhythmbox/source/sorting
+    value: "('Artist', false)"
+  - key: /org/gnome/rhythmbox/sources/browser-views
+    value: "'genres-artists'"
+  - key: /org/gnome/rhythmbox/sources/visible-columns
+    value: "['post-time',
+      'duration',
+      'genre',
+      'artist',
+      'date']"
   - key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
     value: "true"
   - key: /org/gnome/settings-daemon/plugins/media-keys/screensaver
@@ -65,10 +87,28 @@ dconf_options:
   - key: /org/gnome/shell/enabled-extensions
     value: '"[''launch-new-instance@gnome-shell-extensions.gcampax.github.com'']"'
   - key: /org/gnome/shell/favorite-apps
-    value: "['org.gnome.Nautilus.desktop',
-      'org.gnome.gedit.desktop',
-      'google-chrome.desktop',
+    value: "['google-chrome.desktop',
       'firefox.desktop',
-      'rhythmbox.desktop']"
-  - key: /org/gnome/Terminal/Legacy/Settings/new-terminal-mode
-    value: "'tab'"
+      'org.gnome.Rhythmbox3.desktop',
+      'org.gnome.Nautilus.desktop',
+      'org.gnome.TextEditor.desktop',
+      'org.gnome.Ptyxis.desktop']"
+  - key: /org/gnome/TextEditor/custom-font
+    value: "'Source Code Pro 11 @wght=400'"
+  - key: /org/gnome/TextEditor/highlight-current-line
+    value: "true"
+  - key: /org/gnome/TextEditor/indent-style
+    value: "'space'"
+  - key: /org/gnome/TextEditor/restore-session
+    value: "false"
+  - key: /org/gnome/TextEditor/show-line-numbers
+    value: "true"
+  - key: /org/gnome/TextEditor/style-scheme
+    value: "'Adwaita-dark'"
+  - key: /org/gnome/TextEditor/style-variant
+    value: "'dark'"
+  - key: /org/gnome/TextEditor/tab-width
+    value: "uint32 4"
+  - key: /org/gnome/TextEditor/use-system-font
+    value: "false"
+
