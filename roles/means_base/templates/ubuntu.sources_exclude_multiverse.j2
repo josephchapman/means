@@ -1,11 +1,11 @@
 Types: deb
-URIs: {{ package_mirrors[ansible_architecture]['primary'] }}
-Suites: questing questing-updates questing-backports
+URIs: {{ package_mirrors[ansible_facts['architecture']]['primary'] }}
+Suites: {{ ansible_facts['distribution_release'] }} {{ ansible_facts['distribution_release'] }}-updates {{ ansible_facts['distribution_release'] }}-backports
 Components: main restricted universe
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 Types: deb
-URIs: {{ package_mirrors[ansible_architecture]['security'] }}
-Suites: questing-security
+URIs: {{ package_mirrors[ansible_facts['architecture']]['security'] }}
+Suites: {{ ansible_facts['distribution_release'] }}-security
 Components: main restricted universe
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg

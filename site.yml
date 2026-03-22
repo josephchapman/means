@@ -67,7 +67,7 @@
           set-default-sink alsa_output.plughw_0_2
     - name: 'Restart PulseAudio'
       command: pulseaudio -k
-      become_user: "{{ ansible_env.USER }}"
+      become_user: "{{ ansible_facts['env']['USER'] }}"
       register: pulse_restart
       failed_when: pulse_restart.rc > 1
       changed_when: false
