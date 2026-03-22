@@ -1,48 +1,53 @@
 ---
-
-- name: 'Ensure the keyrings directory exists'
+# Microsoft seems to handle its own keyrings
+- name: "Ensure the keyrings directory exists"
   become: true
   ansible.builtin.file:
-    path: /etc/apt/keyrings/
+    path: /usr/share/keyrings/
     state: directory
     mode: 0755
 
-- name: 'Download Microsoft''s signing key'
-  become: true
+- name: "Download Microsoft's signing key"
   ansible.builtin.get_url:
     url: https://packages.microsoft.com/keys/microsoft.asc
-    dest: /etc/apt/keyrings/microsoft.asc
+    dest: /tmp/microsoft.asc
     mode: 0644
 
-- name: 'Check for existing VSCode repository file'
+- name: "Dearmor Microsoft signing key"
+  become: true
+  ansible.builtin.shell:
+    cmd: gpg --dearmor -o /usr/share/keyrings/microsoft.gpg /tmp/microsoft.asc && chmod 644 /usr/share/keyrings/microsoft.gpg
+    creates: /usr/share/keyrings/microsoft.gpg
+
+- name: "Check for existing VSCode repository file"
   stat:
     path: /etc/apt/sources.list.d/vscode.list
   register: vscode_file
 
-- name: 'Backup any existing VSCode repository file'
+- name: "Backup any existing VSCode repository file"
   become: true
   copy:
     remote_src: yes
-    src: /etc/apt/sources.list.d/vscode.list
-    dest: "{{ backup_dir }}/vscode.list"
+    src: /etc/apt/sources.list.d/vscode.sources
+    dest: "{{ backup_dir }}/vscode.sources"
   when: vscode_file.stat.exists
   changed_when: false
 
-- name: 'VSCode repository'
+- name: "VSCode repository"
   become: true
   copy:
-    src: vscode.list
-    dest: /etc/apt/sources.list.d/vscode.list
+    src: vscode.sources
+    dest: /etc/apt/sources.list.d/vscode.sources
     mode: 0644
 
-- name: 'Apt update cache'
+- name: "Apt update cache"
   become: true
   apt:
     update_cache: true
   changed_when: false
 
 # sudo apt-cache policy -> o:a pairs (e.g. code stable:stable)
-- name: 'Allow Unattended-upgrade to use Microsoft Repo'
+- name: "Allow Unattended-upgrade to use Microsoft Repo"
   become: true
   lineinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
@@ -50,7 +55,7 @@
     line: '        "code stable:stable";'
     insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
 
-- name: '`apt-transport-https` package'
+- name: "`apt-transport-https` package"
   become: true
   apt:
     name: apt-transport-https
@@ -58,7 +63,7 @@
     update_cache: yes
     state: latest
 
-- name: '`VS Code` package'
+- name: "`VS Code` package"
   become: true
   apt:
     name: code
@@ -66,7 +71,7 @@
     update_cache: yes
     state: latest
 
-- name: '`~/.vscode/` directory'
+- name: "`~/.vscode/` directory"
   file:
     path: "{{ ansible_facts['env']['HOME'] }}/.vscode/"
     state: directory
@@ -74,13 +79,13 @@
     group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
 
-- name: 'Check if there is an existing `~/.config/Code/User/settings.json`'
+- name: "Check if there is an existing `~/.config/Code/User/settings.json`"
   stat:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/Code/User/settings.json"
   register: vscode_config
   changed_when: false
 
-- name: 'Backup existing `~/.config/Code/User/settings.json`'
+- name: "Backup existing `~/.config/Code/User/settings.json`"
   when: vscode_config.stat.exists
   copy:
     remote_src: yes
@@ -88,7 +93,7 @@
     dest: "{{ backup_dir }}/settings.json"
   changed_when: false
 
-- name: 'Config file directory structure'
+- name: "Config file directory structure"
   file:
     path: "{{ item }}"
     state: directory
@@ -96,11 +101,11 @@
     group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
   with_items:
-  - ~/.config/
-  - ~/.config/Code/
-  - ~/.config/Code/User/
+    - ~/.config/
+    - ~/.config/Code/
+    - ~/.config/Code/User/
 
-- name: 'Deploy `~/.config/Code/User/settings.json`'
+- name: "Deploy `~/.config/Code/User/settings.json`"
   copy:
     content: |
       {
@@ -123,12 +128,12 @@
     owner: "{{ ansible_facts['env']['USER'] }}"
     group: "{{ ansible_facts['env']['USER'] }}"
 
-- name: 'List VS Code extensions'
+- name: "List VS Code extensions"
   command: code --list-extensions
   register: vscode_extensions_installed
   changed_when: false
 
-- name: 'Install VS Code extensions'
+- name: "Install VS Code extensions"
   command: code --install-extension {{ item }}
   when: item not in vscode_extensions_installed.stdout
   loop: "{{ query('items', vscode.extensions )}}"
