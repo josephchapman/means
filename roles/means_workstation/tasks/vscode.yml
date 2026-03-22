@@ -68,15 +68,15 @@
 
 - name: '`~/.vscode/` directory'
   file:
-    path: "{{ ansible_env.HOME }}/.vscode/"
+    path: "{{ ansible_facts['env']['HOME'] }}/.vscode/"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
 
 - name: 'Check if there is an existing `~/.config/Code/User/settings.json`'
   stat:
-    path: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/Code/User/settings.json"
   register: vscode_config
   changed_when: false
 
@@ -84,7 +84,7 @@
   when: vscode_config.stat.exists
   copy:
     remote_src: yes
-    src: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+    src: "{{ ansible_facts['env']['HOME'] }}/.config/Code/User/settings.json"
     dest: "{{ backup_dir }}/settings.json"
   changed_when: false
 
@@ -92,8 +92,8 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
   with_items:
   - ~/.config/
@@ -119,9 +119,9 @@
         "dev.containers.copyGitConfig": false,
         "dev.containers.gitCredentialHelperConfigLocation": "none"
       }
-    dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/Code/User/settings.json"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
 
 - name: 'List VS Code extensions'
   command: code --list-extensions

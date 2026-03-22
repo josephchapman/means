@@ -68,15 +68,15 @@
 
 - name: "`~/.antigravity/` directory"
   file:
-    path: "{{ ansible_env.HOME }}/.antigravity/"
+    path: "{{ ansible_facts['env']['HOME'] }}/.antigravity/"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
 
 - name: "Check if there is an existing `~/.config/Antigravity/User/settings.json`"
   stat:
-    path: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/settings.json"
   register: antigravity_config
   changed_when: false
 
@@ -84,13 +84,13 @@
   when: antigravity_config.stat.exists
   copy:
     remote_src: yes
-    src: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
+    src: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/settings.json"
     dest: "{{ backup_dir }}/settings.json"
   changed_when: false
 
 - name: "Check if there is an existing `~/.config/Antigravity/User/keybindings.json`"
   stat:
-    path: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/keybindings.json"
   register: antigravity_keybindings
   changed_when: false
 
@@ -98,7 +98,7 @@
   when: antigravity_keybindings.stat.exists
   copy:
     remote_src: yes
-    src: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
+    src: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/keybindings.json"
     dest: "{{ backup_dir }}/keybindings.json"
   changed_when: false
 
@@ -106,8 +106,8 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
   with_items:
     - ~/.config/
@@ -131,9 +131,9 @@
         "workbench.panel.opensMaximized": "always",
         "workbench.startupEditor": "none"
       }
-    dest: "{{ ansible_env.HOME }}/.config/Antigravity/User/settings.json"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/settings.json"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
 
 - name: "Deploy `~/.config/Antigravity/User/keybindings.json`"
   copy:
@@ -158,9 +158,9 @@
           "command": "-workbench.action.chat.open"
         }
       ]
-    dest: "{{ ansible_env.HOME }}/.config/Antigravity/User/keybindings.json"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/Antigravity/User/keybindings.json"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
 
 - name: "List Antigravity extensions"
   command: antigravity --list-extensions

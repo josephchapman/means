@@ -3,7 +3,7 @@
 # Pi
 - name: 'Pi'
   include_tasks: pi.yml
-  when: "'raspi' in ansible_kernel"
+  when: "'raspi' in ansible_facts['kernel']"
   tags:
   - pi_cam
 

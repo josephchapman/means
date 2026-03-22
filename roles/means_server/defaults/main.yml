@@ -15,7 +15,7 @@ sshd_config:
 - regexp: '^\s*(#\s*)?PasswordAuthentication\s*\S*\s*$'
   line: 'PasswordAuthentication no'
 - regexp: '^\s*(#\s*)?AllowUsers'
-  line: 'AllowUsers {{ ansible_env.USER }}'
+  line: "AllowUsers {{ ansible_facts['env']['USER'] }}"
 
 unattended_upgrade_server:
 - regexp: '^\s*(//\s*)?Unattended-Upgrade::Automatic-Reboot\s*\S*\s*$'

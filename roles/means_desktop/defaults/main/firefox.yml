@@ -101,7 +101,7 @@ firefox_preferences:
 #     Downloads
 #       Save files to [nonexistant=default]
 - key: browser.download.dir
-  value: "{{ ansible_env.HOME }}/Downloads"
+  value: "{{ ansible_facts['env']['HOME'] }}/Downloads"
 #       Always ask you where to save files [On=false / Off=true (default)]
 - key: browser.download.useDownloadDir
   value: 'true'

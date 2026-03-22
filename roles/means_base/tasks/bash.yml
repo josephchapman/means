@@ -2,7 +2,7 @@
 
 - name: 'Check if there is an existing `~/.bash_aliases`'
   stat:
-    path: "{{ ansible_env.HOME }}/.bash_aliases"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bash_aliases"
   register: bash_aliases
   changed_when: false
 
@@ -10,7 +10,7 @@
   when: bash_aliases.stat.exists
   copy:
     remote_src: yes
-    src: "{{ ansible_env.HOME }}/.bash_aliases"
+    src: "{{ ansible_facts['env']['HOME'] }}/.bash_aliases"
     dest: "{{ backup_dir }}/.bash_aliases"
   changed_when: false
 
@@ -18,9 +18,9 @@
   lineinfile:
     create: yes
     line: "{{ item }}"
-    path: "{{ ansible_env.HOME }}/.bash_aliases"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bash_aliases"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
   with_items:
   - export HISTTIMEFORMAT='%FT%T%z  '
   - export TZ='Europe/London'
@@ -29,6 +29,6 @@
   lineinfile:
     create: yes
     line: alias updates='sudo apt update; sudo unattended-upgrade -v; sudo test -f /run/reboot-required && sudo systemctl reboot'
-    path: "{{ ansible_env.HOME }}/.bash_aliases"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    path: "{{ ansible_facts['env']['HOME'] }}/.bash_aliases"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"

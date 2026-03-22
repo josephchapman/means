@@ -3,7 +3,7 @@
 - name: 'Ensure user''s AccountsService file exists'
   become: true
   file:
-    path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
+    path: /var/lib/AccountsService/users/{{ ansible_facts['env']['USER'] }}
     state: touch
     mode: '0644'
     owner: root
@@ -15,14 +15,14 @@
   become: true
   copy:
     remote_src: yes
-    src: /var/lib/AccountsService/users/{{ ansible_env.USER }}
-    dest: "{{ backup_dir }}/{{ ansible_env.USER }}"
+    src: /var/lib/AccountsService/users/{{ ansible_facts['env']['USER'] }}
+    dest: "{{ backup_dir }}/{{ ansible_facts['env']['USER'] }}"
   changed_when: false
 
 - name: 'Default Desktop Environment'
   become: true
   ini_file:
-    path: /var/lib/AccountsService/users/{{ ansible_env.USER }}
+    path: /var/lib/AccountsService/users/{{ ansible_facts['env']['USER'] }}
     section: User
     option: Session
     value: "{{ xsession }}"

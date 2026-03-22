@@ -19,19 +19,19 @@
 
 - name: 'Ensure ~/.kube exists'
   file:
-    path: "{{ ansible_env.HOME }}/.kube"
+    path: "{{ ansible_facts['env']['HOME'] }}/.kube"
     state: directory
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
 
 - name: 'Ensure ~/.kube/config populated'
   become: true
   copy:
     remote_src: true
     src: /etc/kubernetes/admin.conf
-    dest: "{{ ansible_env.HOME }}/.kube/config"
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    dest: "{{ ansible_facts['env']['HOME'] }}/.kube/config"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
 
 - name: 'Configure CNI networking'
   command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml

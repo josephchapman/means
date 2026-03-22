@@ -2,13 +2,13 @@
 
 - name: 'Ensure default profile exists'
   become: true
-  become_user: "{{ ansible_env.USER }}"
+  become_user: "{{ ansible_facts['env']['USER'] }}"
   command: firefox -no-remote -CreateProfile default    # This command takes no action if it already exists
   changed_when: false
 
 - name: 'Locate Firefox profile directory'
   find:
-    paths: "{{ ansible_env.HOME }}/snap/firefox/common/.mozilla/firefox/"
+    paths: "{{ ansible_facts['env']['HOME'] }}/snap/firefox/common/.mozilla/firefox/"
     file_type: directory
     patterns: "^[A-Za-z0-9]{8}.default$"
     use_regex: yes
@@ -44,8 +44,8 @@
   lineinfile:
     path: "{{ firefox_directory.files.0.path }}/user.js"
     mode: 0600
-    owner: "{{ ansible_env.USER }}"
-    group: "{{ ansible_env.USER }}"
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
     line: user_pref("{{ item.key }}", {{ item.value }});
   loop: "{{ query('items', firefox_preferences)}}"
   changed_when: false

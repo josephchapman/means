@@ -1,10 +1,10 @@
 ---
 
 - name: 'Assess initial SSH connection (if exists)'
-  shell: echo {{ ansible_env['SSH_CONNECTION'] }} | awk '{print $NF}'
+  shell: echo {{ ansible_facts['env']['SSH_CONNECTION'] }} | awk '{print $NF}'
   register: initial_ssh_connection
   changed_when: false
-  when: ansible_env['SSH_CONNECTION'] is defined
+  when: ansible_facts['env']['SSH_CONNECTION'] is defined
 
 - name: 'UFW allow for existing connection (if exists)'
   become: true
