@@ -9,26 +9,26 @@
 
     # Each run of this play creates a new directory named by its timestamp
     # Files which are changed by the play are backed up here
-    backup_dir: "{{ ansible_env.HOME }}/.ansible_backups/{{ ansible_date_time.iso8601 }}"
+    backup_dir: "{{ ansible_facts['env']['HOME'] }}/.ansible_backups/{{ ansible_facts['date_time']['iso8601'] }}"
 
   pre_tasks:
   - block:
-    - name: 'Check host is Ubuntu 25.10 (questing)'
+    - name: 'Check host is Ubuntu 26.04 (resolute)'
       assert:
         that:
-        - ansible_distribution == 'Ubuntu'
-        - ansible_distribution_version == '25.10'
-        - ansible_distribution_release == 'questing'
+        - ansible_facts['distribution'] == 'Ubuntu'
+        - ansible_facts['distribution_version'] == '26.04'
+        - ansible_facts['distribution_release'] == 'resolute'
         msg:
-        - This Ansible playbook has been designed for Ubuntu 25.10 (questing)
-        - This appears to be {{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_distribution_release }})
+        - This Ansible playbook has been designed for Ubuntu 26.04 (resolute)
+        - This appears to be {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }} ({{ ansible_facts['distribution_release'] }})
         - ABORTING
     - name: 'Create directory for backup files'
       file:
         path: "{{ backup_dir }}"
         state: directory
-        owner: "{{ ansible_env.USER }}"
-        group: "{{ ansible_env.USER }}"
+        owner: "{{ ansible_facts['env']['USER'] }}"
+        group: "{{ ansible_facts['env']['USER'] }}"
         mode: 0700
       changed_when: false
     tags:
