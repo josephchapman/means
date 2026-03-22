@@ -23,8 +23,8 @@ apt_packages_workstation:
 #- vagrant                        # universe
 
 apt_packages_libvirt:
-  - qemu-kvm # main
-  - libvirt-daemon # main
+  - qemu-system # main
+  - libvirt-daemon-system # main
 #- vagrant-libvirt                # universe
 
 apt_packages_virtualbox:
