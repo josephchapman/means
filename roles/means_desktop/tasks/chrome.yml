@@ -8,11 +8,16 @@
     mode: 0755
 
 - name: 'Download Google''s Linux signing key'
-  become: true
   ansible.builtin.get_url:
     url: https://dl.google.com/linux/linux_signing_key.pub
-    dest: /etc/apt/trusted.gpg.d/google-chrome.gpg #chrome manages this key
+    dest: /tmp/linux_signing_key.pub
     mode: 0644
+
+- name: 'Dearmor Google Linux signing key'
+  become: true
+  ansible.builtin.shell:
+    cmd: gpg --dearmor -o /etc/apt/trusted.gpg.d/google-chrome.gpg /tmp/linux_signing_key.pub && chmod 644 /etc/apt/trusted.gpg.d/google-chrome.gpg
+    creates: /etc/apt/trusted.gpg.d/google-chrome.gpg #chrome manages this key
 
 - name: 'Check for existing Chrome repository file'
   stat:
