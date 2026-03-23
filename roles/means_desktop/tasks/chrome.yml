@@ -1,9 +1,9 @@
 ---
 
-- name: 'Ensure the keyrings directory exists'
+- name: 'Ensure the trusted.gpg.d directory exists'
   become: true
   ansible.builtin.file:
-    path: /etc/apt/keyrings/
+    path: /etc/apt/trusted.gpg.d/
     state: directory
     mode: 0755
 
@@ -11,7 +11,7 @@
   become: true
   ansible.builtin.get_url:
     url: https://dl.google.com/linux/linux_signing_key.pub
-    dest: /etc/apt/keyrings/google-linux.asc
+    dest: /etc/apt/trusted.gpg.d/google-chrome.gpg #chrome manages this key
     mode: 0644
 
 - name: 'Check for existing Chrome repository file'
@@ -23,7 +23,7 @@
   become: true
   copy:
     remote_src: yes
-    src: /etc/apt/sources.list.d/google-chrome.list
+    src: /etc/apt/sources.list.d/google-chrome.list #chrome manages this list
     dest: "{{ backup_dir }}/google-chrome.list"
   when: chrome_file.stat.exists
   changed_when: false
