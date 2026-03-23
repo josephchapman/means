@@ -1,4 +1,5 @@
 ---
+
 dconf_options:
   - key: /org/gnome/desktop/background/picture-uri
     value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
@@ -48,6 +49,8 @@ dconf_options:
     value: "true"
   - key: /org/gnome/mutter/workspaces-only-on-primary
     value: "false"
+  - key: /org/gnome/nautilus/preferences/default-folder-viewer
+    value: "'list-view'"
   - key: /org/gnome/Ptyxis/font-name
     value: "'Source Code Pro Medium 11 @wght=500'"
   - key: /org/gnome/Ptyxis/use-system-font
