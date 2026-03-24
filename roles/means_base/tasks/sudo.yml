@@ -1,0 +1,12 @@
+---
+
+- name: 'Disable sudo password asterisks (pwfeedback)'
+  become: true
+  copy:
+    content: |
+      Defaults !pwfeedback
+    dest: "/etc/sudoers.d/disable-asterisks"
+    owner: root
+    group: root
+    mode: 0644
+    validate: '/usr/sbin/visudo -cf %s'

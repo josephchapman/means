@@ -24,6 +24,12 @@
   tags:
   - login_defs
 
+# sudo
+- name: 'sudo'
+  include_tasks: sudo.yml
+  tags:
+  - sudo
+
 # dns
 - name: 'DNS'
   include_tasks: dns.yml
