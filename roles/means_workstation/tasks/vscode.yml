@@ -21,7 +21,7 @@
 
 - name: "Check for existing VSCode repository file"
   stat:
-    path: /etc/apt/sources.list.d/vscode.list
+    path: /etc/apt/sources.list.d/vscode.sources
   register: vscode_file
 
 - name: "Backup any existing VSCode repository file"

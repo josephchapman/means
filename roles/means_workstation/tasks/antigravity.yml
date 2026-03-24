@@ -16,23 +16,23 @@
 
 - name: "Check for existing Antigravity repository file"
   stat:
-    path: /etc/apt/sources.list.d/antigravity.list
+    path: /etc/apt/sources.list.d/antigravity.sources
   register: antigravity_file
 
 - name: "Backup any existing Antigravity repository file"
   become: true
   copy:
     remote_src: yes
-    src: /etc/apt/sources.list.d/antigravity.list
-    dest: "{{ backup_dir }}/antigravity.list"
+    src: /etc/apt/sources.list.d/antigravity.sources
+    dest: "{{ backup_dir }}/antigravity.sources"
   when: antigravity_file.stat.exists
   changed_when: false
 
 - name: "Antigravity repository"
   become: true
   copy:
-    src: antigravity.list
-    dest: /etc/apt/sources.list.d/antigravity.list
+    src: antigravity.sources
+    dest: /etc/apt/sources.list.d/antigravity.sources
     mode: 0644
 
 - name: "Apt update cache"
