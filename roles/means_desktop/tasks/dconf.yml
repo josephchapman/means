@@ -8,6 +8,13 @@
     update_cache: yes
     state: latest
 
+- name: 'Read Ptyxis default profile UUID'
+  dconf:
+    key: "/org/gnome/Ptyxis/default-profile-uuid"
+    state: read
+  register: ptyxis_default_profile_uuid
+  changed_when: false
+
 - name: 'dconf settings'
   dconf:
     key: "{{ item.key }}"
