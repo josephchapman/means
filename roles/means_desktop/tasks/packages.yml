@@ -7,3 +7,12 @@
     force_apt_get: yes
     update_cache: yes
     state: latest
+
+- name: 'Install desktop packages (media additions)'
+  become: true
+  apt:
+    name: "{{ apt_packages_desktop_media }}"
+    force_apt_get: yes
+    update_cache: yes
+    state: latest
+  when: media == "enabled"

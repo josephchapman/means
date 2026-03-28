@@ -24,14 +24,21 @@
   tags:
   - xsession
 
+# Firefox
+- name: 'Firefox'
+  include_tasks: firefox.yml
+  tags:
+  - firefox
+
 # Google Chrome
 - name: 'Chrome'
   include_tasks: chrome.yml
   tags:
   - google-chrome
 
-# Firefox
-- name: 'Firefox'
-  include_tasks: firefox.yml
+# Brave
+- name: 'Brave'
+  include_tasks: brave.yml
+  when: media == "enabled"
   tags:
-  - firefox
+  - brave

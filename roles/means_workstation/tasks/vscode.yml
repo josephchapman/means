@@ -12,6 +12,7 @@
     url: https://packages.microsoft.com/keys/microsoft.asc
     dest: /tmp/microsoft.asc
     mode: 0644
+  changed_when: false
 
 - name: "Dearmor Microsoft signing key"
   become: true

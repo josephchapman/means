@@ -1,0 +1,55 @@
+---
+
+- name: 'Ensure the keyrings directory exists'
+  become: true
+  ansible.builtin.file:
+    path: /usr/share/keyrings/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: 'Download Brave''s Linux signing key'
+  become: true
+  ansible.builtin.get_url:
+    url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    mode: 0644
+
+- name: 'Check for existing Brave repository file'
+  stat:
+    path: /etc/apt/sources.list.d/brave-browser-release.sources
+  register: brave_file
+
+- name: 'Backup existing any existing Brave repository file'
+  become: true
+  copy:
+    remote_src: yes
+    src: /etc/apt/sources.list.d/brave-browser-release.sources
+    dest: "{{ backup_dir }}/brave-browser-release.sources"
+  when: brave_file.stat.exists
+  changed_when: false
+
+- name: 'Brave repository'
+  become: true
+  copy:
+    src: brave-browser-release.sources
+    dest: /etc/apt/sources.list.d/brave-browser-release.sources
+    mode: 0644
+
+# sudo apt-cache policy -> o:a pairs (e.g. Brave Software:stable)
+- name: 'Allow Unattended-upgrade to use Brave Repo'
+  become: true
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '^\s*(//\s*)?"Brave Software:stable";\s*$'
+    line: '        "Brave Software:stable";'
+    insertafter: '^\s*(//\s*)?"\${distro_id}:\${distro_codename}-backports";$'
+
+- name: '`brave-browser` package'
+  become: true
+  apt:
+    name: brave-browser
+    force_apt_get: yes
+    update_cache: yes
+    state: latest

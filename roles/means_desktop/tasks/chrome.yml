@@ -12,6 +12,7 @@
     url: https://dl.google.com/linux/linux_signing_key.pub
     dest: /tmp/linux_signing_key.pub
     mode: 0644
+  changed_when: false
 
 - name: 'Dearmor Google Linux signing key'
   become: true
