@@ -1,9 +1,9 @@
 ---
 
-- name: 'Purge whoopsie, ubuntu-report'
+- name: 'Purge ubuntu-report'
   become: true
   apt:
-    name: [whoopsie, ubuntu-report]
+    name: ubuntu-report
     force_apt_get: yes
     update_cache: yes
     state: absent
