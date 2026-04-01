@@ -1,6 +1,8 @@
 ---
 
 dconf_options:
+  - key: /net/nokyan/Resources/show-logical-cpus
+    value: "true"
   - key: /org/gnome/desktop/background/picture-uri
     value: "'file:///usr/share/backgrounds/Greenish_by_EstebanMitnick.jpg'"
   - key: /org/gnome/desktop/background/picture-uri-dark
@@ -15,6 +17,8 @@ dconf_options:
     value: "'prefer-dark'"
   - key: /org/gnome/desktop/interface/cursor-theme
     value: "'Adwaita'"
+  - key: /org/gnome/desktop/interface/gtk-enable-primary-paste
+    value: "true"
   - key: /org/gnome/desktop/interface/gtk-theme
     value: "'Adwaita-dark'"
   - key: /org/gnome/desktop/interface/icon-theme
