@@ -1,4 +1,5 @@
 ---
 
 dependencies:
+- role: means_desktop
 - role: means_container
