@@ -36,9 +36,3 @@
   tags:
   - google-chrome
 
-# Brave
-- name: 'Brave'
-  include_tasks: brave.yml
-  when: media == "enabled"
-  tags:
-  - brave
