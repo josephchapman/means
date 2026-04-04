@@ -132,3 +132,5 @@ dconf_options:
     value: "uint32 4"
   - key: /org/gnome/TextEditor/use-system-font
     value: "false"
+  - key: /org/gtk/gtk4/settings/file-chooser/show-hidden
+    value: "true"
