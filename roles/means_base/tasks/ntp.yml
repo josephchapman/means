@@ -8,7 +8,7 @@
     state: started
     enabled: yes
 
-- name: 'Ensure timedatectl timezone is Europe/London'
+- name: 'Ensure timedatectl timezone is Europe/Malta'
   become: true
   timezone:
-    name: Europe/London
+    name: Europe/Malta

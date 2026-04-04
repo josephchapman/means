@@ -39,7 +39,6 @@
   - role: means_desktop
     tags:
     - desktop
-    - container
   - role: means_container
     tags:
     - container
@@ -49,34 +48,9 @@
   - role: means_server
     tags:
     - server
-  - role: means_minecraft_server
+  - role: means_media
     tags:
-    - minecraft_server
-  - role: means_cam_local
-    tags:
-    - cam_local
-
-  tasks:
-  # PulseAudio
-  - block:
-    - name: 'Add HDMI audio output'
-      blockinfile:
-        path: /etc/pulse/default.pa
-        block: |
-          load-module module-alsa-sink device=plughw:0,2
-          set-default-sink alsa_output.plughw_0_2
-    - name: 'Restart PulseAudio'
-      command: pulseaudio -k
-      become_user: "{{ ansible_facts['env']['USER'] }}"
-      register: pulse_restart
-      failed_when: pulse_restart.rc > 1
-      changed_when: false
-    become: true
-    tags:
-    - never
-    - computestick
-
-
+    - media
 
   post_tasks:
   - block:

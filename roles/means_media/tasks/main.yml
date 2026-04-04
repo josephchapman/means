@@ -1,0 +1,38 @@
+---
+
+# Packages
+- name: 'Packages'
+  include_tasks: packages.yml
+  tags:
+  - packages_media
+
+# Brave
+- name: 'Brave'
+  include_tasks: brave.yml
+  tags:
+  - brave
+
+# HDMI-CEC
+- name: 'HDMI-CEC'
+  include_tasks: hdmi_cec.yml
+  tags:
+  - hdmi_cec
+
+# Input Remapper
+- name: 'Input Remapper'
+  include_tasks: input_remapper.yml
+  tags:
+  - input_remapper
+
+# Data Mount
+- name: 'Data Mount'
+  include_tasks: data_mount.yml
+  tags:
+  - data_mount
+
+# TeeVee
+- name: 'TeeVee'
+  include_tasks: teevee.yml
+  tags:
+  - teevee
+

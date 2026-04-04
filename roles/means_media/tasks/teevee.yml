@@ -1,0 +1,50 @@
+---
+
+- name: '~/.local/share/tunarr/ directory exists'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+
+- name: '~/.local/share/tunarr/config/ directory exists'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/config/"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+
+- name: 'Tunarr Docker Compose file exists'
+  copy:
+    src: docker-compose.yml
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/"
+    mode: 0600
+
+- name: 'Tunarr systemd service unit file exists'
+  copy:
+    src: tunarr.service
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/tunarr.service"
+    mode: 0600
+  notify: systemctl daemon-reload
+
+- name: 'Tunarr gnome desktop launcher file exists'
+  copy:
+    src: tunarr.desktop
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/tunarr.desktop"
+    mode: 0600
+
+- name: 'TeeVee systemd service unit file exists'
+  copy:
+    src: teevee.service
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/teevee.service"
+    mode: 0600
+  notify: systemctl daemon-reload
+
+- name: 'TeeVee gnome desktop launcher file exists'
+  copy:
+    src: teevee.desktop
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/teevee.desktop"
+    mode: 0600
+

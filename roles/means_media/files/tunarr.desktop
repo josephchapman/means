@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Tunarr
+Comment=Launch Tunarr Docker Stack
+Exec=systemctl --user start tunarr.service
+Icon=vlc
+Terminal=false
+Actions=Stop;
+
+[Desktop Action Stop]
+Name=Stop Tunarr
+Exec=systemctl --user stop tunarr.service

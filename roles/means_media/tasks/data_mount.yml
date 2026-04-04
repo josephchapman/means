@@ -1,0 +1,33 @@
+---
+
+- name: 'User''s systemd directory exists'
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+  with_items:
+  - "{{ ansible_facts['env']['HOME'] }}/.config/"
+  - "{{ ansible_facts['env']['HOME'] }}/.config/systemd/"
+  - "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
+
+- name: 'Create systemd mount service files'
+  ansible.builtin.template:
+    src: data-mount.service.j2
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/mount-{{ item.vg }}-{{ item.lv }}.service"
+    mode: 0600
+  loop: "{{ device_mapper }}"
+  notify: systemctl daemon-reload
+
+- name: 'Force handlers to run now (reload systemd)'
+  ansible.builtin.meta: flush_handlers
+
+- name: 'Ensure mount services are enabled and started'
+  ansible.builtin.systemd:
+    name: "mount-{{ item.vg }}-{{ item.lv }}.service"
+    scope: user
+    enabled: yes
+    state: started
+  loop: "{{ device_mapper }}"
+

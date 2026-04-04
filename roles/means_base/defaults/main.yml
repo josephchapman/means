@@ -1,7 +1,5 @@
 ---
 
-device_mapper: ubuntu--vg-data
-
 apt_packages_base:
 - udisks2 # main (for udisksctl, for data-mount)
 

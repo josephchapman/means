@@ -1,0 +1,19 @@
+---
+
+device_mapper:
+  - vg: media
+    lv: image
+  - vg: media
+    lv: music
+  - vg: media
+    lv: games-raw
+  - vg: media
+    lv: games
+  - vg: media
+    lv: video
+
+apt_packages_media:
+- libcec7                        # universe
+- cec-utils                      # universe
+- input-remapper                 # universe
+

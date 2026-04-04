@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=TeeVee
+Comment=Start VLC and tune into Tunarr
+Exec=systemctl --user start teevee.service
+Icon=vlc
+Terminal=false
+Actions=Stop;
+
+[Desktop Action Stop]
+Name=Stop TeeVee
+Exec=systemctl --user stop teevee.service

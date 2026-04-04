@@ -1,0 +1,11 @@
+---
+
+- name: "Copy script to system-sleep directory"
+  become: true
+  ansible.builtin.copy:
+    src: hdmi-cec
+    dest: /usr/lib/systemd/system-sleep/hdmi-cec
+    owner: root
+    group: root
+    mode: 0700
+

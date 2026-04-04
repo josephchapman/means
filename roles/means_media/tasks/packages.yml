@@ -1,9 +1,9 @@
 ---
 
-- name: 'Install desktop packages'
+- name: 'Install media packages'
   become: true
   apt:
-    name: "{{ apt_packages_desktop }}"
+    name: "{{ apt_packages_media }}"
     force_apt_get: yes
     update_cache: yes
     state: latest

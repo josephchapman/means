@@ -1,0 +1,20 @@
+services:
+  tunarr:
+    image: chrisbenincasa/tunarr:latest
+    container_name: tunarr
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ                 # Change to your timezone
+    devices:
+      - /dev/dri:/dev/dri # Maps Intel iGPU for hardware transcoding
+    volumes:
+      - ./config:/config/tunarr
+      - ~/Videos:/media/videos:ro  # Mounts your Videos folder as read-only
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/channels.m3u"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

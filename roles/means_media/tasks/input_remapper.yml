@@ -1,0 +1,8 @@
+---
+
+- name: "Input Remapper configuration file present"
+  ansible.builtin.copy:
+    src: XboxGuideSuperL.json
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/input-remapper-2/presets/Microsoft Xbox Series S_X Controller/XboxGuideSuperL.json"
+    mode: 0600
+

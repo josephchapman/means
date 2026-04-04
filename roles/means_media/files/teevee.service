@@ -1,0 +1,12 @@
+[Unit]
+Description=TeeVee
+# Starts Tunarr if not running; stops VLC if tunarr disappears
+BindsTo=tunarr.service
+# Ensures Tunarr starts before VLC
+After=tunarr.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/vlc --fullscreen http://127.0.0.1:8000/api/channels.m3u
+ExecStopPost=/usr/bin/systemctl --user stop tunarr.service
+TimeoutStopSec=15s

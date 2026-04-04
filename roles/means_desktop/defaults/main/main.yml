@@ -1,7 +1,5 @@
 ---
 
-media: disabled
-
 apt_packages_desktop:
 # Desktop Environment customization
 - vanilla-gnome-default-settings # universe
@@ -17,10 +15,6 @@ apt_packages_desktop:
 - ddcutil                        # universe
 - gparted                        # main
 - rhythmbox                      # main
-
-apt_packages_desktop_media:
-- libfuse2t64                    # universe
-- libgl1                         # main
 
 google_fonts:
 - family: 'Source Sans 3'
