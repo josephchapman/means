@@ -94,9 +94,13 @@ dconf_options:
   - key: /org/gnome/settings-daemon/plugins/color/night-light-enabled
     value: "true"
   - key: /org/gnome/settings-daemon/plugins/media-keys/screensaver
-    value: "'<Super>l'"
+    value: "['<Super>l']"
+  - key: /org/gnome/settings-daemon/plugins/power/power-button-action
+    value: "'suspend'"
   - key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type
-    value: "'nothing'"
+    value: "'suspend'"
+  - key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout
+    value: "'5400'"
   - key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-type
     value: "'suspend'"
   - key: /org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-timeout
