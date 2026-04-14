@@ -2,35 +2,39 @@
 case "$1" in
     pre)
         # Commands to run BEFORE suspend
-        logger "TV-CEC: System entering standby. Sending 'standby 0' ..."
+        if ! cec-client -l | grep -q "Found devices: NONE"; then
+            logger "TV-CEC: System entering standby. Sending 'standby 0' ..."
 
-        # Send initial standby command
-        echo "standby 0" | cec-client -s -d 1
+            # Send initial standby command
+            echo "standby 0" | cec-client -s -d 1
 
-        # Loop until "standby" status is confirmed
-        until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: standby"; do
-            logger "TV-CEC: Waiting for TV 'standby' status ..."
-            sleep 2
-        done
+            # Loop until "standby" status is confirmed
+            until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: standby"; do
+                logger "TV-CEC: Waiting for TV 'standby' status ..."
+                sleep 2
+            done
 
-        logger "TV-CEC: TV Power-Standby confirmed."
+            logger "TV-CEC: TV Power-Standby confirmed."
+        fi
         ;;
     post)
         # Commands to run AFTER wake
-        logger "TV-CEC: Starting Power-On sequence ..."
+        if ! cec-client -l | grep -q "Found devices: NONE"; then
+            logger "TV-CEC: Starting Power-On sequence ..."
 
-        # Send initial on command
-        echo "on 0" | cec-client -s -d 1
+            # Send initial on command
+            echo "on 0" | cec-client -s -d 1
 
-        # Loop until "on" status is confirmed
-        until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: on"; do
-            logger "TV-CEC: Waiting for TV 'on' status ..."
-            sleep 2
-        done
+            # Loop until "on" status is confirmed
+            until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: on"; do
+                logger "TV-CEC: Waiting for TV 'on' status ..."
+                sleep 2
+            done
 
-        logger "TV-CEC: TV Power-On confirmed."
+            logger "TV-CEC: TV Power-On confirmed."
 
-        sleep 5
-        echo "as" | cec-client -s -d 1
+            sleep 5
+            echo "as" | cec-client -s -d 1
+        fi
         ;;
 esac

@@ -1,6 +1,6 @@
 ---
 
-- name: "Copy script to system-sleep directory"
+- name: "HDMI-CEC script exists in system-sleep directory"
   become: true
   ansible.builtin.copy:
     src: hdmi-cec
