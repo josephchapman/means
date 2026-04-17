@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox Private
+Comment=Browse the Web in Private Mode
+Exec=firefox --private-window %u
+Icon=firefox
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+StartupWMClass=firefox
