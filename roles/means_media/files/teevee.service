@@ -7,6 +7,6 @@ After=tunarr.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/vlc --fullscreen http://127.0.0.1:8000/api/channels.m3u
+ExecStart=/usr/bin/vlc --fullscreen --key-nav-up "" --key-nav-down "" --key-nav-left "" --key-nav-right "" --key-nav-activate "" --key-vol-up "Up" --key-vol-down "Down" --key-prev "Left" --key-next "Right" --key-vol-mute "Enter" http://127.0.0.1:8000/api/channels.m3u
 ExecStopPost=/usr/bin/systemctl --user stop tunarr.service
 TimeoutStopSec=15s
