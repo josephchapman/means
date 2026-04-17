@@ -49,4 +49,16 @@
     line: user_pref("{{ item.key }}", {{ item.value }});
   loop: "{{ query('items', firefox_preferences)}}"
   changed_when: false
+
+- name: '~/.local/share/applications/ directory exists for Firefox'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/"
+    state: directory
+    mode: 0700
+
+- name: 'Firefox Private gnome desktop launcher file exists'
+  copy:
+    src: firefox-private.desktop
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/firefox-private.desktop"
+    mode: 0600
   

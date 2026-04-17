@@ -36,3 +36,9 @@
   tags:
   - google-chrome
 
+# VLC
+- name: 'VLC'
+  include_tasks: vlc.yml
+  tags:
+  - vlc
+

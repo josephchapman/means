@@ -1,5 +1,4 @@
 ---
-
 dconf_options:
   - key: /net/nokyan/Resources/show-logical-cpus
     value: "true"
@@ -111,7 +110,7 @@ dconf_options:
     value: '"[''launch-new-instance@gnome-shell-extensions.gcampax.github.com'']"'
   - key: /org/gnome/shell/favorite-apps
     value: "['google-chrome.desktop',
-      'firefox.desktop',
+      'firefox-private.desktop',
       'org.gnome.Rhythmbox3.desktop',
       'org.gnome.Nautilus.desktop',
       'org.gnome.TextEditor.desktop',
