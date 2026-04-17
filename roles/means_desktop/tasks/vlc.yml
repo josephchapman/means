@@ -1,0 +1,12 @@
+---
+- name: 'Generate VLC config file (~/.config/vlc/vlcrc)'
+  command: cvlc --reset-config vlc://quit
+  args:
+    creates: "{{ ansible_facts['env']['HOME'] }}/.config/vlc/vlcrc"
+
+- name: 'Set qt-privacy-ask=0 in ~/.config/vlc/vlcrc'
+  lineinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/vlc/vlcrc"
+    regexp: '^#?\s*qt-privacy-ask='
+    line: 'qt-privacy-ask=0'
+    state: present
