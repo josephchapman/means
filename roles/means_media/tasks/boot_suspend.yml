@@ -1,0 +1,20 @@
+---
+- name: '~/.config/systemd/user/ directory exists for boot-suspend'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
+    state: directory
+    mode: 0700
+
+- name: 'boot-suspend systemd service unit file exists'
+  copy:
+    src: boot-suspend.service
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/boot-suspend.service"
+    mode: 0644
+  notify: systemctl daemon-reload
+
+- name: 'boot-suspend service is enabled via systemd'
+  systemd:
+    name: boot-suspend.service
+    enabled: yes
+    scope: user
+    daemon_reload: yes

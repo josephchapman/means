@@ -1,0 +1,26 @@
+[Unit]
+Description=EmulationStation Desktop Edition
+# Ensure it starts only after the graphical session is ready
+PartOf=graphical-session.target
+After=graphical-session.target
+StartLimitIntervalSec=0
+
+[Service]
+# Monitor log for readiness
+Type=notify
+NotifyAccess=all
+
+# Block service startup until wayland-info succeeds (wayland socket is ready)
+ExecStartPre=/usr/bin/bash -c 'while ! /usr/bin/wayland-info >/dev/null 2>&1; do sleep 1; done'
+ExecStart=/bin/bash -c '\
+  %h/.local/share/ES-DE/ES-DE_x64.AppImage & \
+  tail --pid=$! -F -n0 %h/ES-DE/logs/es_log.txt | grep -m 1 "Application startup time"; \
+  systemd-notify --ready; \
+  wait'
+
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+
+[Install]
+WantedBy=graphical-session.target

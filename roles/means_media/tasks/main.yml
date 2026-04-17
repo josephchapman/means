@@ -36,3 +36,14 @@
   tags:
   - teevee
 
+# ES-DE
+- name: 'ES-DE'
+  include_tasks: es_de.yml
+  tags:
+  - es_de
+
+# Boot Suspend
+- name: 'Boot Suspend'
+  include_tasks: boot_suspend.yml
+  tags:
+  - boot_suspend

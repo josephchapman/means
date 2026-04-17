@@ -1,0 +1,62 @@
+---
+- name: 'Check if ES-DE is installed'
+  stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/ES-DE_x64.AppImage"
+  register: es_de_installed
+
+- name: 'Install ES-DE'
+  block:
+    - name: 'ES-DE directory exists'
+      file:
+        path: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/"
+        state: directory
+        mode: 0700
+
+    - name: 'Get ES-DE release JSON from GitLab API'
+      uri:
+        url: https://gitlab.com/api/v4/projects/es-de%2Femulationstation-de/releases
+        return_content: yes
+      register: es_de_releases
+
+    - name: 'Set ES-DE download URL'
+      set_fact:
+        es_de_download_url: "{{ (es_de_releases.json[0].assets.links | selectattr('name', 'equalto', 'ES-DE_x64.AppImage') | first).direct_asset_url }}"
+
+    - name: 'Download ES-DE_x64.AppImage'
+      get_url:
+        url: "{{ es_de_download_url }}"
+        dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/ES-DE_x64.AppImage"
+        mode: 0755
+  when: not es_de_installed.stat.exists
+
+- name: '~/.local/share/applications/ directory exists for ES-DE'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/"
+    state: directory
+    mode: 0700
+
+- name: 'ES-DE gnome desktop launcher file exists'
+  template:
+    src: es-de.desktop.j2
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/es-de.desktop"
+    mode: 0600
+
+- name: '~/.config/systemd/user/ directory exists for ES-DE'
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
+    state: directory
+    mode: 0700
+
+- name: 'ES-DE systemd service unit file exists'
+  copy:
+    src: es-de.service
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/es-de.service"
+    mode: 0644
+  notify: systemctl daemon-reload
+
+- name: 'ES-DE service is enabled via systemd'
+  systemd:
+    name: es-de.service
+    enabled: yes
+    scope: user
+    daemon_reload: yes
