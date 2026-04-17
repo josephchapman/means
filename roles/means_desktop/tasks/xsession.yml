@@ -1,17 +1,17 @@
 ---
 
-- name: 'Ensure user''s AccountsService file exists'
+- name: "Ensure user's AccountsService file exists"
   become: true
   file:
     path: /var/lib/AccountsService/users/{{ ansible_facts['env']['USER'] }}
     state: touch
-    mode: '0644'
+    mode: 600
     owner: root
     group: root
     modification_time: preserve
     access_time: preserve
 
-- name: 'Backup existing /var/lib/AccountsService/users/'
+- name: "Backup existing /var/lib/AccountsService/users/"
   become: true
   copy:
     remote_src: yes
@@ -19,7 +19,7 @@
     dest: "{{ backup_dir }}/{{ ansible_facts['env']['USER'] }}"
   changed_when: false
 
-- name: 'Default Desktop Environment'
+- name: "Default Desktop Environment"
   become: true
   ini_file:
     path: /var/lib/AccountsService/users/{{ ansible_facts['env']['USER'] }}
@@ -29,7 +29,7 @@
     no_extra_spaces: yes
   register: xsession_update
 
-- name: 'Note if reboot will be required' # Restarting GDM doesn't seem to kill session
+- name: "Note if reboot will be required" # Restarting GDM doesn't seem to kill session
   when: xsession_update.changed
   set_fact:
     reboot_required: true
