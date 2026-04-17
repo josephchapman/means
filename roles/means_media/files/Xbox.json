@@ -92,78 +92,6 @@
         "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
       },
       {
-        "type": 3,
-        "code": 17,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059",
-        "analog_threshold": -1
-      }
-    ],
-    "target_uinput": "keyboard",
-    "output_symbol": "KEY_UP",
-    "mapping_type": "key_macro"
-  },
-  {
-    "input_combination": [
-      {
-        "type": 1,
-        "code": 316,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
-      },
-      {
-        "type": 3,
-        "code": 17,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059",
-        "analog_threshold": 1
-      }
-    ],
-    "target_uinput": "keyboard",
-    "output_symbol": "KEY_DOWN",
-    "mapping_type": "key_macro"
-  },
-  {
-    "input_combination": [
-      {
-        "type": 1,
-        "code": 316,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
-      },
-      {
-        "type": 3,
-        "code": 16,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059",
-        "analog_threshold": -1
-      }
-    ],
-    "target_uinput": "keyboard",
-    "output_symbol": "KEY_LEFT",
-    "mapping_type": "key_macro"
-  },
-  {
-    "input_combination": [
-      {
-        "type": 1,
-        "code": 316,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
-      },
-      {
-        "type": 3,
-        "code": 16,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059",
-        "analog_threshold": 1
-      }
-    ],
-    "target_uinput": "keyboard",
-    "output_symbol": "KEY_RIGHT",
-    "mapping_type": "key_macro"
-  },
-  {
-    "input_combination": [
-      {
-        "type": 1,
-        "code": 316,
-        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
-      },
-      {
         "type": 1,
         "code": 317,
         "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
@@ -187,7 +115,7 @@
       }
     ],
     "target_uinput": "keyboard",
-    "output_symbol": "KEY_END",
+    "output_symbol": "KEY_DOWN",
     "mapping_type": "key_macro"
   },
   {
@@ -204,7 +132,7 @@
       }
     ],
     "target_uinput": "keyboard",
-    "output_symbol": "KEY_PAGEDOWN",
+    "output_symbol": "KEY_RIGHT",
     "mapping_type": "key_macro"
   },
   {
@@ -221,7 +149,7 @@
       }
     ],
     "target_uinput": "keyboard",
-    "output_symbol": "KEY_PAGEUP",
+    "output_symbol": "KEY_LEFT",
     "mapping_type": "key_macro"
   },
   {
@@ -238,7 +166,7 @@
       }
     ],
     "target_uinput": "keyboard",
-    "output_symbol": "KEY_HOME",
+    "output_symbol": "KEY_UP",
     "mapping_type": "key_macro"
   }
 ]
