@@ -168,5 +168,27 @@
     "target_uinput": "keyboard",
     "output_symbol": "KEY_UP",
     "mapping_type": "key_macro"
+  },
+  {
+    "input_combination": [
+      {
+        "type": 1,
+        "code": 316,
+        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
+      },
+      {
+        "type": 1,
+        "code": 310,
+        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
+      },
+      {
+        "type": 1,
+        "code": 311,
+        "origin_hash": "3379a5b9ff7a32193ab5191b8d78c059"
+      }
+    ],
+    "target_uinput": "keyboard",
+    "output_symbol": "KEY_MUTE",
+    "mapping_type": "key_macro"
   }
 ]
