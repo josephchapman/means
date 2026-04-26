@@ -1,40 +1,123 @@
 #!/bin/sh
+
+# Wrapper to prevent multiple cec-client instances from colliding on the serial port.
+# Collisions on /dev/ttyACM0 can cause the driver to enter an invalid state and block system suspend.
+cec() {
+    flock -w 20 /var/lock/hdmi-cec.lock cec-client "$@"
+}
+
+get_hdmi_device() {
+    # Scan for connected devices and return the TV device
+    echo "scan" | cec -s -d 1 | awk -F'#' '/^device #[0-9A-Fa-f]+:/ { split($2, a, ":"); dev = a[1] } /^osd string:.*TV/ { print dev; exit }'
+}
+
 case "$1" in
     pre)
-        # Commands to run BEFORE suspend
-        if ! cec-client -l | grep -q "Found devices: NONE"; then
-            logger "TV-CEC: System entering standby. Sending 'standby 0' ..."
+        # Signal the background wake script to exit cooperatively
+        touch /var/tmp/hdmi_cec_suspend
 
-            # Send initial standby command
-            echo "standby 0" | cec-client -s -d 1
+        # Wait cooperatively for the background wake task to finish its current operation.
+        # Killing it abruptly with SIGTERM can corrupt the USB driver state and prevent sleep.
+        for i in $(seq 1 15); do
+            if ! systemctl is-active --quiet hdmi-cec-wake.service 2>/dev/null; then break; fi
+            sleep 1
+        done
 
-            # Loop until "standby" status is confirmed
-            until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: standby"; do
-                logger "TV-CEC: Waiting for TV 'standby' status ..."
-                sleep 2
-            done
+        if ! cec -l | grep -q "Found devices: NONE"; then
+            if [ -f /var/tmp/hdmi_cec_device ]; then
+                DEV=$(cat /var/tmp/hdmi_cec_device)
+            else
+                logger "TV-CEC: Device cache not found. Performing full scan on FIRST SUSPEND..."
+                DEV=$(get_hdmi_device)
+                [ -n "$DEV" ] && echo "$DEV" > /var/tmp/hdmi_cec_device
+            fi
+            
+            [ -z "$DEV" ] && DEV="0"
 
-            logger "TV-CEC: TV Power-Standby confirmed."
+            logger "TV-CEC: System entering standby. Sending 'standby $DEV' ..."
+            echo "standby $DEV" | cec -s -d 1
+            logger "TV-CEC: Device $DEV Power-Standby command sent."
+            
+            # Give the kernel USB/TTY workqueues a moment to settle after closing the port
+            # This prevents suspend from failing with a "Freezing remaining freezable tasks failed" timeout
+            sleep 5
         fi
         ;;
     post)
-        # Commands to run AFTER wake
-        if ! cec-client -l | grep -q "Found devices: NONE"; then
-            logger "TV-CEC: Starting Power-On sequence ..."
+        # Clear the suspend flag
+        rm -f /var/tmp/hdmi_cec_suspend
+        
+        logger "TV-CEC: System waking up. Queuing HDMI-CEC Power-On sequence in the background..."
+        
+        BG_SCRIPT=$(cat << 'EOF'
+cec() {
+    flock -w 20 /var/lock/hdmi-cec.lock cec-client "$@"
+}
 
-            # Send initial on command
-            echo "on 0" | cec-client -s -d 1
+# Wait for the CEC adapter to be detected on the USB bus
+for attempt in $(seq 1 30); do
+    [ -f /var/tmp/hdmi_cec_suspend ] && exit 0
+    if ! cec -l | grep -q "Found devices: NONE"; then
+        break
+    fi
+    sleep 1
+done
 
-            # Loop until "on" status is confirmed
-            until echo "pow 0" | cec-client -s -d 1 | grep -q "power status: on"; do
-                logger "TV-CEC: Waiting for TV 'on' status ..."
-                sleep 2
-            done
+[ -f /var/tmp/hdmi_cec_suspend ] && exit 0
+if cec -l | grep -q "Found devices: NONE"; then
+    logger "TV-CEC: CEC adapter failed to initialize after wake."
+    exit 1
+fi
 
-            logger "TV-CEC: TV Power-On confirmed."
+if [ -f /var/tmp/hdmi_cec_device ]; then
+    DEV=$(cat /var/tmp/hdmi_cec_device)
+else
+    logger "TV-CEC: Device cache not found. Performing full scan on WAKE..."
+    DEV=$(echo "scan" | cec -s -d 1 | awk -F'#' '/^device #[0-9A-Fa-f]+:/ { split($2, a, ":"); dev = a[1] } /^osd string:.*TV/ { print dev; exit }')
+    [ -z "$DEV" ] && DEV="0"
+    [ -n "$DEV" ] && echo "$DEV" > /var/tmp/hdmi_cec_device
+fi
 
-            sleep 5
-            echo "as" | cec-client -s -d 1
-        fi
+logger "TV-CEC: Starting Power-On sequence for device $DEV ..."
+echo "on $DEV" | cec -s -d 1
+logger "TV-CEC: Device $DEV Power-On command sent. Queuing active source..."
+
+for i in $(seq 1 5); do
+    # Sleep in 1-second chunks so we can exit immediately if the system suspends
+    for s in $(seq 1 5); do
+        [ -f /var/tmp/hdmi_cec_suspend ] && exit 0
+        sleep 1
+    done
+    
+    echo "as" | cec -s -d 1
+    logger "TV-CEC: Active source command sent (attempt $i)."
+    
+    [ -f /var/tmp/hdmi_cec_suspend ] && exit 0
+    SCAN_OUT=$(echo "scan" | cec -s -d 1)
+    
+    if echo "$SCAN_OUT" | grep -A 8 "device #$DEV:" | grep -q "power status: on"; then
+        logger "TV-CEC: Device $DEV is on."
+        break
+    fi
+    
+    MY_DEV=$(echo "$SCAN_OUT" | awk -F"#" '/^device #[0-9A-Fa-f]+:/ { split($2, a, ":"); curr = a[1] } /^osd string:.*ASUS NUC/ { dev = curr; exit } /^osd string:.*(CECTester|Pulse-Eight)/ { dev = curr } END { print dev }')
+    ACT_DEV=$(echo "$SCAN_OUT" | grep "^currently active source:" | grep -o "([0-9-]*)" | tail -n 1 | tr -d "()")
+    
+    if [ -n "$MY_DEV" ]; then
+        MY_DEV_DEC=$(printf "%d" "0x$MY_DEV" 2>/dev/null)
+    else
+        MY_DEV_DEC=""
+    fi
+    
+    if [ -n "$MY_DEV_DEC" ] && [ "$MY_DEV_DEC" = "$ACT_DEV" ]; then
+        logger "TV-CEC: Correct active source reported (Logical Address $MY_DEV_DEC)."
+        break
+    fi
+done
+
+EOF
+)
+        # Execute the script in the background
+        systemd-run --unit=hdmi-cec-wake --no-block /bin/sh -c "$BG_SCRIPT"
         ;;
 esac
