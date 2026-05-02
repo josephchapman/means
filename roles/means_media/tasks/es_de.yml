@@ -114,6 +114,7 @@
     regexp: "(<{{ item.type }} name=\"{{ item.name }}\" value=\").*?(\" />)"
     replace: "\\1{{ item.value }}\\2"
   loop:
+    - { type: "bool", name: "AlternativeEmulatorPerGame", value: "false" }
     - { type: "bool", name: "DisplayClock", value: "true" }
     - { type: "bool", name: "RunInBackground", value: "true" }
     - { type: "bool", name: "ShowQuitMenu", value: "true" }
