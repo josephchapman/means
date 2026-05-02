@@ -1,6 +1,7 @@
 {
     "version": "2.2.0",
     "autoload": {
-        "Microsoft Xbox Series S|X Controller": "Xbox"
+        "Microsoft Xbox Series S|X Controller": "Xbox",
+        "Microsoft Xbox Series S|X Controller 2": "Xbox"
     }
 }
