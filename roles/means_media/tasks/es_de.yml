@@ -1,62 +1,127 @@
 ---
-- name: 'Check if ES-DE is installed'
+- name: "Check if ES-DE is installed"
   stat:
     path: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/ES-DE_x64.AppImage"
   register: es_de_installed
 
-- name: 'Install ES-DE'
+- name: "Install ES-DE"
   block:
-    - name: 'ES-DE directory exists'
+    - name: "ES-DE directory exists"
       file:
         path: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/"
         state: directory
-        mode: 0700
+        mode: "0700"
 
-    - name: 'Get ES-DE release JSON from GitLab API'
+    - name: "Get ES-DE release JSON from GitLab API"
       uri:
         url: https://gitlab.com/api/v4/projects/es-de%2Femulationstation-de/releases
         return_content: yes
       register: es_de_releases
 
-    - name: 'Set ES-DE download URL'
+    - name: "Set ES-DE download URL"
       set_fact:
-        es_de_download_url: "{{ (es_de_releases.json[0].assets.links | selectattr('name', 'equalto', 'ES-DE_x64.AppImage') | first).direct_asset_url }}"
+        es_de_download_url: "{{ (es_de_releases.json[0].assets.links |
+          selectattr('name', 'equalto', 'ES-DE_x64.AppImage') |
+          first).direct_asset_url }}"
 
-    - name: 'Download ES-DE_x64.AppImage'
+    - name: "Download ES-DE_x64.AppImage"
       get_url:
         url: "{{ es_de_download_url }}"
         dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/ES-DE/ES-DE_x64.AppImage"
-        mode: 0755
+        mode: "0755"
   when: not es_de_installed.stat.exists
 
-- name: '~/.local/share/applications/ directory exists for ES-DE'
+- name: "~/.local/share/applications/ directory exists for ES-DE"
   file:
     path: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/"
     state: directory
-    mode: 0700
+    mode: "0700"
 
-- name: 'ES-DE gnome desktop launcher file exists'
+- name: "ES-DE gnome desktop launcher file exists"
   template:
     src: es-de.desktop.j2
-    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/es-de.desktop"
-    mode: 0600
+    dest: "{{ ansible_facts['env']['HOME']
+      }}/.local/share/applications/es-de.desktop"
+    mode: "0600"
 
-- name: '~/.config/systemd/user/ directory exists for ES-DE'
+- name: "~/.config/systemd/user/ directory exists for ES-DE"
   file:
     path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/"
     state: directory
-    mode: 0700
+    mode: "0700"
 
-- name: 'ES-DE systemd service unit file exists'
+- name: "ES-DE systemd service unit file exists"
   copy:
     src: es-de.service
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/es-de.service"
-    mode: 0644
+    mode: "0644"
   notify: systemctl daemon-reload
 
-- name: 'ES-DE service is enabled via systemd'
+- name: "ES-DE service is enabled via systemd"
   systemd:
     name: es-de.service
     enabled: yes
     scope: user
     daemon_reload: yes
+
+- name: "Start the es-de service"
+  ansible.builtin.systemd:
+    name: es-de.service
+    scope: user
+    state: started
+  changed_when: false
+
+- name: "Wait for ES-DE settings file to be created on first run"
+  wait_for:
+    path: "{{ ansible_facts['env']['HOME'] }}/ES-DE/settings/es_settings.xml"
+    state: present
+    timeout: 300
+
+- name: "Stop the es-de service"
+  ansible.builtin.systemd:
+    name: es-de.service
+    scope: user
+    state: stopped
+  changed_when: false
+
+- name: "lxml Python package is installed (for Ansible xml module)"
+  become: true
+  apt:
+    name: python3-lxml
+    state: present
+
+# - name: "Configure ES-DE settings"
+#   community.general.xml:
+#     path: "{{ ansible_facts['env']['HOME'] }}/ES-DE/settings/es_settings.xml"
+#     xpath: "{{ item.xpath }}"
+#     attribute: value
+#     value: "{{ item.value }}"
+#   loop:
+#     - { xpath: "//bool[@name='DisplayClock']", value: "true" }
+#     - { xpath: "//bool[@name='RunInBackground']", value: "true" }
+#     - { xpath: "//bool[@name='ShowQuitMenu']", value: "true" }
+#     - { xpath: "//string[@name='ThemeColorScheme']", value: "oled" }
+#     - { xpath: "//string[@name='ThemeFontSize']", value: "medium" }
+#     - { xpath: "//string[@name='ThemeVariant']", value: "simpleTextlistWithVideos" }
+#     - {
+#         xpath: "//string[@name='ROMDirectory']",
+#         value: "{{ ansible_facts['env']['HOME'] }}/.local/share/media/",
+#       }
+
+- name: "Configure ES-DE settings"
+  ansible.builtin.replace:
+    path: "{{ ansible_facts['env']['HOME'] }}/ES-DE/settings/es_settings.xml"
+    regexp: "(<{{ item.type }} name=\"{{ item.name }}\" value=\").*?(\" />)"
+    replace: "\\1{{ item.value }}\\2"
+  loop:
+    - { type: "bool", name: "DisplayClock", value: "true" }
+    - { type: "bool", name: "RunInBackground", value: "true" }
+    - { type: "bool", name: "ShowQuitMenu", value: "true" }
+    - { type: "string", name: "ThemeColorScheme", value: "oled" }
+    - { type: "string", name: "ThemeFontSize", value: "medium" }
+    - { type: "string", name: "ThemeVariant", value: "simpleTextlistWithVideos" }
+    - {
+        type: "string",
+        name: "ROMDirectory",
+        value: "{{ ansible_facts['env']['HOME'] }}/.local/share/media/",
+      }
