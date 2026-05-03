@@ -115,9 +115,12 @@
     replace: "\\1{{ item.value }}\\2"
   loop:
     - { type: "bool", name: "AlternativeEmulatorPerGame", value: "false" }
+    - { type: "bool", name: "DisableComposition", value: "true" }
     - { type: "bool", name: "DisplayClock", value: "true" }
     - { type: "bool", name: "RunInBackground", value: "true" }
     - { type: "bool", name: "ShowQuitMenu", value: "true" }
+    - { type: "int", name: "AntiAliasing", value: "2" }
+    - { type: "int", name: "MaxPlayTimeTracking", value: "0" }
     - { type: "string", name: "ThemeColorScheme", value: "oled" }
     - { type: "string", name: "ThemeFontSize", value: "medium" }
     - { type: "string", name: "ThemeVariant", value: "simpleTextlistWithVideos" }
