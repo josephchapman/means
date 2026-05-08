@@ -1,4 +1,18 @@
 ---
+
+- name: "User's input-remapper directories exist"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+  with_items:
+  - "{{ ansible_facts['env']['HOME'] }}/.config/"
+  - "{{ ansible_facts['env']['HOME'] }}/.config/input-remapper-2/"
+  - "{{ ansible_facts['env']['HOME'] }}/.config/input-remapper-2/presets/"
+  - "{{ ansible_facts['env']['HOME'] }}/.config/input-remapper-2/presets/Microsoft Xbox Series S_X Controller/"
+
 - name: "Input Remapper preset"
   ansible.builtin.copy:
     src: Xbox.json

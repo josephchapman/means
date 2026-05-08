@@ -13,4 +13,5 @@ apt_packages_media:
   - libcec7 # universe
   - cec-utils # universe
   - input-remapper # universe
+  - wayland-utils # universe (required for wayland-info in es-de.service)
 

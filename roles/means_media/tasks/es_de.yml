@@ -111,8 +111,8 @@
 - name: "Configure ES-DE settings"
   ansible.builtin.replace:
     path: "{{ ansible_facts['env']['HOME'] }}/ES-DE/settings/es_settings.xml"
-    regexp: "(<{{ item.type }} name=\"{{ item.name }}\" value=\").*?(\" />)"
-    replace: "\\1{{ item.value }}\\2"
+    regexp: '(<{{ item.type }} name=\"{{ item.name }}\" value=\").*?(\" />)'
+    replace: '\g<1>{{ item.value }}\g<2>'
   loop:
     - { type: "bool", name: "AlternativeEmulatorPerGame", value: "false" }
     - { type: "bool", name: "DisableComposition", value: "true" }
