@@ -1,19 +1,19 @@
 ---
+# Purging ubuntu-report seems to cause system issues elsewhere, so commented out for now
+# - name: "Purge ubuntu-report"
+#   become: true
+#   apt:
+#     name: ubuntu-report
+#     force_apt_get: yes
+#     update_cache: yes
+#     state: absent
+#     purge: yes
 
-- name: 'Purge ubuntu-report'
-  become: true
-  apt:
-    name: ubuntu-report
-    force_apt_get: yes
-    update_cache: yes
-    state: absent
-    purge: yes
-
-- name: 'Ensure PopCon override exists'
+- name: "Ensure PopCon override exists"
   become: true
   copy:
     src: popularity-contest.conf
     dest: /etc/popularity-contest.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
