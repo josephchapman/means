@@ -10,7 +10,7 @@ services:
       - /dev/dri:/dev/dri # Maps Intel iGPU for hardware transcoding
     volumes:
       - ./config:/config/tunarr
-      - ~/Videos:/media/videos:ro  # Mounts your Videos folder as read-only
+      - /mnt/media/video/video:/media/videos:ro  # Mounts your Videos folder as read-only
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/channels.m3u"]
