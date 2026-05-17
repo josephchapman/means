@@ -1,0 +1,17 @@
+---
+- name: "~/.local/share/media/desktop/ directory exists"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+  with_items:
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/media/"
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/media/desktop/"
+
+- name: "firefox-private ES-DE launcher file exists"
+  copy:
+    src: firefox-private.desktop
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/media/desktop/Firefox Private.desktop"
+    mode: 0600

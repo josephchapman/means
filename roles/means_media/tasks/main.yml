@@ -47,3 +47,9 @@
   include_tasks: es_de.yml
   tags:
     - es_de
+
+# ES-DE
+- name: "Firefox private"
+  include_tasks: firefox-private.yml
+  tags:
+    - firefox_private

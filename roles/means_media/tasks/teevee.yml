@@ -1,50 +1,60 @@
 ---
-
-- name: '~/.local/share/tunarr/ directory exists'
+- name: "~/.local/share/tunarr/config/ directory exists"
   file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/"
+    path: "{{ item }}"
     state: directory
     owner: "{{ ansible_facts['env']['USER'] }}"
     group: "{{ ansible_facts['env']['USER'] }}"
     mode: 0700
+  with_items:
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/"
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/config/"
 
-- name: '~/.local/share/tunarr/config/ directory exists'
-  file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/config/"
-    state: directory
-    owner: "{{ ansible_facts['env']['USER'] }}"
-    group: "{{ ansible_facts['env']['USER'] }}"
-    mode: 0700
-
-- name: 'Tunarr Docker Compose file exists'
+- name: "Tunarr Docker Compose file exists"
   copy:
     src: docker-compose.yml
     dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/tunarr/"
     mode: 0600
 
-- name: 'Tunarr systemd service unit file exists'
+- name: "Tunarr systemd service unit file exists"
   copy:
     src: tunarr.service
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/tunarr.service"
     mode: 0600
   notify: systemctl daemon-reload
 
-- name: 'Tunarr gnome desktop launcher file exists'
+- name: "Tunarr gnome desktop launcher file exists"
   copy:
     src: tunarr.desktop
     dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/tunarr.desktop"
     mode: 0600
 
-- name: 'TeeVee systemd service unit file exists'
+- name: "TeeVee systemd service unit file exists"
   copy:
     src: teevee.service
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/teevee.service"
     mode: 0600
   notify: systemctl daemon-reload
 
-- name: 'TeeVee gnome desktop launcher file exists'
+- name: "TeeVee gnome desktop launcher file exists"
   copy:
     src: teevee.desktop
     dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/applications/teevee.desktop"
     mode: 0600
 
+- name: "~/.local/share/media/desktop/ directory exists"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_facts['env']['USER'] }}"
+    group: "{{ ansible_facts['env']['USER'] }}"
+    mode: 0700
+  with_items:
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/media/"
+    - "{{ ansible_facts['env']['HOME'] }}/.local/share/media/desktop/"
+
+- name: "TeeVee ES-DE launcher file exists"
+  copy:
+    src: teevee.desktop
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/media/desktop/TeeVee.desktop"
+    mode: 0600
