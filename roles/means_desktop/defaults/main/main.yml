@@ -9,6 +9,7 @@ apt_packages_desktop:
 # Utilities
 - gimp                           # universe
 - inkscape                       # universe
+- keepassxc                      # universe
 - krita                          # universe
 - vlc                            # universe
 - kdenlive                       # universe
