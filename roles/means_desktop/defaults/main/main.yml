@@ -7,6 +7,8 @@ apt_packages_desktop:
 - adwaita-icon-theme             # main
 - adwaita-icon-theme-full        # universe
 # Utilities
+- audacity                       # universe
+- pavucontrol                    # universe
 - gimp                           # universe
 - inkscape                       # universe
 - keepassxc                      # universe
