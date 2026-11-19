@@ -18,19 +18,19 @@ The roles have the following dependencies to each other:
   │       ┃ means_media ┃  │      │          │
   │       ┗━┯━━━━━━━━━┯━┛  │      │          │
   │         │         │    │      │          │
-┏━v━━━━━━━━━v━━━┓ ┏━━━v━━━━v━━━━━━v━┓ ┏━━━━━━v━━━━━━━┓
-┃ means_desktop ┃ ┃ means_container ┃ ┃ means_server ┃
-┗━━━━━━━┯━━━━━━━┛ ┗━━━━━━━━┯━━━━━━━━┛ ┗━━━━━━┯━━━━━━━┛
-        │                  │                 │
-        └──────────────┐   │   ┌─────────────┘
-                       │   │   │
-                    ┏━━v━━━v━━━v━━┓
-                    ┃ means_base  ┃
-                    ┗━━━━━━━━━━━━━┛
+┏━v━━━━━━━━━v━━━┓ ┏━━━v━━━━v━━━━━━v━┓ ┏━━━━━━v━━━━━━━┓ ┏━━━━━━━━━━━┓
+┃ means_desktop ┃ ┃ means_container ┃ ┃ means_server ┃ ┃ means_k3s ┃
+┗━━━━━━━┯━━━━━━━┛ ┗━━━━━━━━┯━━━━━━━━┛ ┗━━━━━━┯━━━━━━━┛ ┗━━━━━┯━━━━━┛
+        │                  │                 │               │
+        │                  └──────┐  ┌───────┘               │
+        └──────────────────────┐  │  │  ┌────────────────────┘
+                            ┏━━v━━v━━v━━v━━┓
+                            ┃  means_base  ┃
+                            ┗━━━━━━━━━━━━━━┛
 ```
 
 `git clone` this repository:
-```
+```bash
 $  mkdir -p ~/ConfigManagement/means/ \
 && git clone https://github.com/josephchapman/means.git ~/ConfigManagement/means/
 ```
@@ -38,10 +38,10 @@ $  mkdir -p ~/ConfigManagement/means/ \
 This is written to be run on `localhost` with a `local` Ansible connection.  Some modification is possible to run this on remote hosts.  However, alterations to SSHD during the playbook would need considering.
 
 Example utilization: Run the `desktop` tag to configure basic functionality:
-```
+```bash
 $ ansible-playbook -i '127.0.0.1,' -c local ~/ConfigManagement/means/site.yml \
     --ask-become-pass \
-    --tags 'desktop' \
+    --tags 'server,k3s' \
     --extra-vars 'ansible_become_exe=sudo.ws'
 ```
 

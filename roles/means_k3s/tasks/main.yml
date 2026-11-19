@@ -1,0 +1,55 @@
+---
+
+- name: 'Ensure k3s configuration directory exists'
+  become: true
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: 'Configure k3s'
+  become: true
+  ansible.builtin.copy:
+    src: config.yaml
+    dest: /etc/rancher/k3s/config.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  notify: 'Restart k3s'
+
+- name: 'Download k3s installer'
+  become: true
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    dest: /usr/local/bin/k3s-install.sh
+    mode: '0755'
+
+- name: 'Install k3s'
+  become: true
+  ansible.builtin.command: /usr/local/bin/k3s-install.sh
+  args:
+    creates: /usr/local/bin/k3s
+  environment:
+    INSTALL_K3S_EXEC: server
+    INSTALL_K3S_VERSION: "{{ k3s_version }}"
+
+- name: 'Ensure k3s service is enabled and started'
+  become: true
+  ansible.builtin.systemd:
+    name: k3s
+    enabled: true
+    state: started
+
+- name: 'Allow ingress HTTP and HTTPS from the private subnet'
+  become: true
+  ufw:
+    rule: allow
+    direction: in
+    from_ip: "{{ ansible_facts['default_ipv4']['network'] }}/{{ ansible_facts['default_ipv4']['prefix'] }}"
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+  - '80'
+  - '443'

@@ -48,6 +48,9 @@
   - role: means_server
     tags:
     - server
+  - role: means_k3s
+    tags:
+    - k3s
   - role: means_media
     tags:
     - media
