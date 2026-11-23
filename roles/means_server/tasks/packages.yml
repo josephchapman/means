@@ -1,9 +1,11 @@
 ---
 
-- name: 'Install server packages'
+- name: 'Install server packages (retry every minute for 3 hours (waiting for lock))'
   become: true
   apt:
     name: "{{ apt_packages_server }}"
     force_apt_get: yes
     update_cache: yes
     state: latest
+  retries: 180
+  delay: 60

@@ -7,6 +7,25 @@
     port: "{{ sshd_port }}"
     proto: tcp
 
+- name: 'SSHD socket override directory'
+  become: true
+  file:
+    path: /etc/systemd/system/ssh.socket.d
+    state: directory
+    mode: '0755'
+
+- name: 'SSHD socket port'
+  become: true
+  copy:
+    dest: /etc/systemd/system/ssh.socket.d/override.conf
+    content: |
+      [Socket]
+      ListenStream=
+      ListenStream={{ sshd_port }}
+  notify:
+  - 'Restart SSH socket'
+  - 'Restart SSH service'
+
 - name: 'Backup existing sshd_config'
   become: true
   copy:
@@ -14,6 +33,15 @@
     src: /etc/ssh/sshd_config
     dest: "{{ backup_dir }}/sshd_config"
   changed_when: false
+
+- name: 'SSHD runtime directory'
+  become: true
+  file:
+    path: /run/sshd
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: 'SSHD config'
   become: true
@@ -24,10 +52,12 @@
     validate: '/usr/sbin/sshd -tf %s'
   loop: "{{ query('items', sshd_config) }}"
   notify:
-  - 'Restart SSHD'
+  - 'Restart SSH service'
 
-- name: 'SSHD enabled and started'
+- name: 'SSHD socket enabled and started'
+  become: true
   systemd:
-    name: sshd
+    name: ssh.socket
     enabled: yes
     state: started
+    daemon_reload: yes

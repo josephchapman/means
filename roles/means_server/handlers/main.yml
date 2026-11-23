@@ -1,9 +1,18 @@
 ---
 
-- name: 'Restart SSHD'
+- name: 'Restart SSH socket'
+  become: true
+  systemd:
+    name: ssh.socket
+    state: restarted
+    daemon_reload: yes
+  listen:
+  - 'Restart SSH socket'
+
+- name: 'Restart SSH service'
   become: true
   service:
-    name: sshd.service
+    name: ssh.service
     state: restarted
   listen:
-  - 'Restart SSHD'
+  - 'Restart SSH service'
