@@ -21,7 +21,7 @@
     content: |
       [Socket]
       ListenStream=
-      ListenStream={{ sshd_port }}
+      ListenStream=0.0.0.0:{{ sshd_port }}
   notify:
   - 'Restart SSH socket'
   - 'Restart SSH service'
