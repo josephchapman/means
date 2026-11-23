@@ -3,6 +3,7 @@
 apt_packages_base:
 - udisks2                        # main (for udisksctl, for data-mount)
 - ripgrep                        # universe
+- wtmpdb                         # universe
 
 package_mirrors:
   x86_64:
